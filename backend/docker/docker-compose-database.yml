@@ -3,8 +3,8 @@ services:
     image: dpage/pgadmin4
     container_name: my-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: giljr.2009@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: catsarecool
     ports:
       - "15432:80"
     networks:
