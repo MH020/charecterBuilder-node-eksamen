@@ -1,6 +1,6 @@
 services:
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     container_name: my-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
@@ -10,21 +10,28 @@ services:
     networks:
       - my-network
     volumes:
-      - ./pgadmin-data:/var/lib/pgadmin
+      - pgadmin-data:/var/lib/pgadmin
 
   database:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     env_file:
-    - .env
+    - ../.env
     restart: always
     container_name: node_database
     ports:
       - "5432:5432"
+    networks:
+      - my-network
     volumes: 
       - database:/var/lib/postgresql
     extra_hosts:
       - "host.docker.internal:host-gateway"
 volumes:
   database:
+  pgadmin-data:
+
+networks:
+  my-network:
+    driver: bridge
