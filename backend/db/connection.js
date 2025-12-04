@@ -1,10 +1,20 @@
-import sqlite3 from 'sqlite3'
-import { open } from 'sqlite'
-
-// open the database
-const connection = await open({
-  filename: 'database.db',
-  driver: sqlite3.Database
+import pg from 'pg'
+const { Pool, Client } = pg
+const connectionString = 'postgresql://dbuser:secretpassword@database.server.com:3211/mydb'
+ 
+const pool = new Pool({
+  connectionString,
 })
-
-export default connection
+ 
+await pool.query('SELECT NOW()')
+await pool.end()
+ 
+const client = new Client({
+  connectionString,
+})
+ 
+await client.connect()
+ 
+await client.query('SELECT NOW()')
+ 
+await client.end()
