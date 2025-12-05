@@ -1,18 +1,26 @@
 <script>
   import { Router, Link, Route } from "svelte-routing";
+  import { onMount } from 'svelte';
+  import { navigate } from 'svelte-routing';
+  import { fetchGet } from '../util/fetchUtil.js';
   import 'toastr/build/toastr.min.css';
   import Login from "./pages/login.svelte";
   import Profile from "./pages/profile.svelte";
+  import AdminNav from "./componets/nav/AdminNav.svelte";
+  import NotLoggedInNav from "./componets/nav/NotLoggedInNav.svelte";
+  import UserNav from "./componets/nav/UserNav.svelte";
+
+    onMount(async () => {
+    const response = await fetchGet('/users/id')
+    if (response.status !== 200) {
+
+  });
   
 </script>
 
 
 <Router>
-  <nav class="nav">
-    <Link to='/'>Home</Link>
-    <Link to='/login'>login</Link>
-    <Link to='/profile'>profile</Link>
-  </nav>
+  
   <div>
     <Route path='/'>
       <h1>
