@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS trait (
     "description" TEXT NOT NULL,
     max_level INTEGER NOT NULL,
     race_id INTEGER NOT NULL,
-    category TEXT NOT NULL CHECK (category IN ('nothing','disorder','malliancy','malice','blessing')),
+    category TEXT NOT NULL CHECK (category IN ('nothing','disorder','malignancy','malice','blessing')),
     CONSTRAINT fk_t_race_id FOREIGN KEY (race_id) REFERENCES race(id)
 );
 
@@ -432,9 +432,9 @@ CREATE TABLE IF NOT EXISTS character_talents (
     talent_id INTEGER NOT NULL,
     characteristic_id INTEGER,
     bonus INTEGER DEFAULT 0,
-    CONSTRAINT fk_ct3_charactersheet_id FOREIGN KEY (charactersheet_id) REFERENCES charactersheet(id),
-    CONSTRAINT fk_ct3_talent_id FOREIGN KEY (talent_id) REFERENCES talent(id),
-    CONSTRAINT fk_ct3_characteristic_id FOREIGN KEY (characteristic_id) REFERENCES characteristic(id)
+    CONSTRAINT fk_cta_charactersheet_id FOREIGN KEY (charactersheet_id) REFERENCES charactersheet(id),
+    CONSTRAINT fk_cta_talent_id FOREIGN KEY (talent_id) REFERENCES talent(id),
+    CONSTRAINT fk_cta_characteristic_id FOREIGN KEY (characteristic_id) REFERENCES characteristic(id)
 );
 
 CREATE TABLE IF NOT EXISTS character_traits (
@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS character_armor (
     charactersheet_id INTEGER NOT NULL,
     armor_id INTEGER NOT NULL,
     craftsmanship_id INTEGER,
-    CONSTRAINT fk_ca3_charactersheet_id FOREIGN KEY (charactersheet_id) REFERENCES charactersheet(id),
-    CONSTRAINT fk_ca3_armor_id FOREIGN KEY (armor_id) REFERENCES armor(id),
-    CONSTRAINT fk_ca3_craftsmanship_id FOREIGN KEY (craftsmanship_id) REFERENCES craftsmanship(id)
+    CONSTRAINT fk_ca_charactersheet_id FOREIGN KEY (charactersheet_id) REFERENCES charactersheet(id),
+    CONSTRAINT fk_ca_armor_id FOREIGN KEY (armor_id) REFERENCES armor(id),
+    CONSTRAINT fk_ca_craftsmanship_id FOREIGN KEY (craftsmanship_id) REFERENCES craftsmanship(id)
 );
