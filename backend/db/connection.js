@@ -29,3 +29,5 @@ try {
 } finally {
   await pool.end()
 }
+
+export default pool
