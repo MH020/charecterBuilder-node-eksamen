@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     email TEXT UNIQUE NOT NULL,
     verification_code TEXT,
     verified BOOLEAN DEFAULT FALSE,
-    role TEXT DEFAULT 'USER' CHECK (role IN ('ADMIN', 'USER'))
+    role TEXT DEFAULT 'USER' CHECK (role IN ('ADMIN', 'USER','OWNER'))
 );
 
 CREATE TABLE IF NOT EXISTS aptitude (

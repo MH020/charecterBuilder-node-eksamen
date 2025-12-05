@@ -27,7 +27,7 @@ try {
 } catch (err) {
   console.error(err)
 } finally {
-  await pool.end()
+  //await pool.end()
 }
 
 export default pool
