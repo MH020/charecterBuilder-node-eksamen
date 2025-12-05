@@ -1,10 +1,11 @@
 import { Router } from 'express'
-import auth from './../util/encrypter.js'
-import db from '../db/connection.js'
-import sendMail from '../util/nodeMailer.js'
+import auth from '../../util/encrypter.js'
+import db from '../../db/connection.js'
+import sendMail from '../../util/nodeMailer.js'
 import crypto from 'crypto'
-import { buildSingupEmail } from '../util/emailPageBuilder.js'
+import { buildSingupEmail } from '../../util/emailPageBuilder.js'
 import { rateLimit } from 'express-rate-limit'
+import {isLoggedIn } from '../../middleware/auth.js'
 
 const router = Router()
 
@@ -17,17 +18,11 @@ const authLimiter = rateLimit({
 
 router.use(authLimiter)
 
-function isLoggedIn (req, res, next) {
-  if (req.session.user) {
-    return next()
-  }
-  res.status(401).send({ message: 'you need to be logged in to acess this content' })
-}
 
-router.get('/users/id', isLoggedIn, async (req, res) => {
+router.get('/api/user/id', isLoggedIn, async (req, res) => {
   try {
-    const result = await db.all('SELECT * FROM users where id = ?', req.session.user.id)
-    const user = result[0]
+    const result = await db.query('SELECT * FROM users where id = $1', req.session.user.id)
+    const user = result.rows[0]
 
     return res.status(200).send({ username: user.username, email: user.email, role: user.role })
   } catch (error) {
@@ -38,8 +33,8 @@ router.get('/users/id', isLoggedIn, async (req, res) => {
 
 router.post('/api/login', async (req, res) => {
   const { password, email } = req.body
-  const result = await db.all('SELECT * FROM users WHERE email = ?', email)
-  const user = result[0]
+  const result = await db.all('SELECT * FROM users WHERE email = $1', email)
+  const user = result.rows[0]
 
   if (result.length === 0 || !auth.validatePassword(password, user.password)) {
     return res.status(401).send({ message: 'incorrect' })
@@ -65,19 +60,18 @@ router.post('/api/users', async (req, res) => {
       return res.status(400).send({ message: 'missing fields' })
     }
 
-    const usedEmail = await db.all('SELECT * FROM users WHERE email = ?', email)
-    if (usedEmail.length > 0) {
+    const usedEmail = await db.query('SELECT * FROM users WHERE email = $1', email)
+    if (usedEmail.rows.length > 0) {
       return res.status(409).send({ message: 'email allready in use' })
     }
 
-    const code = crypto.randomBytes(3)
-    const verificationCode = code.toString('hex')
+    const verificationCode = crypto.randomBytes(3).toString('hex')
 
     const hashPassword = await auth.encryptPassword(password)
 
-    await db.run(
+    await db.query(
             `INSERT INTO users (username, password, email, verified, verification_code)
-             VALUES (?, ?, ?, 0, ?)`,
+             VALUES ($1, $2, $3, 0, $4)`,
             [username, hashPassword, email, verificationCode]
     )
 
@@ -96,8 +90,8 @@ router.post('/api/users', async (req, res) => {
 router.post('/api/vaify', async (req, res) => {
   try {
     const { verificationCode } = req.body
-    const result = await db.all('SELECT * FROM users WHERE verification_code = ?', verificationCode)
-    const user = result[0]
+    const result = await db.query('SELECT * FROM users WHERE verification_code = $1', verificationCode)
+    const user = result.rows[0]
 
     if (result.length === 0 || user.verification_code !== verificationCode) {
       return res.status(401).send({ message: 'incorrect' })
@@ -107,7 +101,7 @@ router.post('/api/vaify', async (req, res) => {
       return res.status(403).send({ message: 'this user is allready varified' })
     }
 
-    await db.run('UPDATE users SET verified = 1 WHERE verification_code = ?', verificationCode)
+    await db.query('UPDATE users SET verified = 1 WHERE verification_code = $1', verificationCode)
 
     return res.status(200).send({ message: 'vaification successful' })
   } catch (error) {

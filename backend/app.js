@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
-import authRouthes from './routers/authRoutes.js'
+import authRouthes from './routers/authRoutes/authRoutes.js'
 import path from 'path'
 import helmet from 'helmet'
 import { rateLimit } from 'express-rate-limit'
