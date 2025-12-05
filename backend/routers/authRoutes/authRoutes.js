@@ -1,10 +1,11 @@
 import { Router } from 'express'
-import auth from './../util/encrypter.js'
-import db from '../db/connection.js'
-import sendMail from '../util/nodeMailer.js'
+import auth from '../../util/encrypter.js'
+import db from '../../db/connection.js'
+import sendMail from '../../util/nodeMailer.js'
 import crypto from 'crypto'
-import { buildSingupEmail } from '../util/emailPageBuilder.js'
+import { buildSingupEmail } from '../../util/emailPageBuilder.js'
 import { rateLimit } from 'express-rate-limit'
+import {isLoggedIn } from '../../middleware/auth.js'
 
 const router = Router()
 
@@ -17,12 +18,6 @@ const authLimiter = rateLimit({
 
 router.use(authLimiter)
 
-function isLoggedIn (req, res, next) {
-  if (req.session.user) {
-    return next()
-  }
-  res.status(401).send({ message: 'you need to be logged in to acess this content' })
-}
 
 router.get('/api/user/id', isLoggedIn, async (req, res) => {
   try {
