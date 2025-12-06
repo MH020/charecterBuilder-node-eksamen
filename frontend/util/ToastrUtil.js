@@ -20,7 +20,8 @@ toastr.options = {
 }
 
 function toastrDisplayHTTPCode (code, message) {
-  if (code >= 200 && code < 300) {
+  if (code >= 0 && code < 100) {
+  } else if (code >= 200 && code < 300) {
     toastr.success(message, `Status ${code}`)
   } else if (code >= 300 && code < 400) {
     toastr.info(message, `Status ${code}`)
@@ -31,6 +32,7 @@ function toastrDisplayHTTPCode (code, message) {
   } else {
     toastr.error(message, `Status ${code}`)
   }
+
 }
 
 export default toastrDisplayHTTPCode

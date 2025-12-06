@@ -7,12 +7,12 @@ export async function fetchGet (endpoint) {
     })
     const data = await response.json()
     return { status: response.status, data }
-    
+
   } catch (error) {
 
     console.log(error)
 
-    return {status: 0, data: null,}
+    return {status: 0, data: null, message: "server Error please try again later or inform the admin team on discord"}
   }
 }
 
@@ -34,6 +34,6 @@ export async function fetchPost (endpoint, body) {
   } catch (error) {
     console.log(error)
 
-    return {status: 0,data: null,}
+    return {status: 0, data: null, message: "server Error please try again later or inform the admin team on discord"}
   }
 }

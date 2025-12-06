@@ -1,8 +1,6 @@
 <script>
 
     import { onMount } from 'svelte';
-    import { navigate } from 'svelte-routing';
-    import { fetchGet } from '../../../util/fetchUtil';
 
     export let data;
     let charectersheetList = [];
@@ -62,6 +60,72 @@
     {/each}
 
     {#if filteredSheets.length === 0}
-        <p>No sheets for this class.</p>
+        <p>currently you dont have any sheets</p>
     {/if}
 </div>
+
+
+<style>
+    
+div > label {
+    display: inline-block;
+    margin-right: 1.5rem;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+select {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+
+.sheet-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+
+.sheet-card {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sheet-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.sheet-card p {
+    margin: 0.3rem 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.sheet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.sheet-list p {
+    grid-column: 1 / -1;
+    font-style: italic;
+    color: #888;
+    text-align: center;
+}
+
+div {
+    margin-bottom: 1rem;
+}
+</style>

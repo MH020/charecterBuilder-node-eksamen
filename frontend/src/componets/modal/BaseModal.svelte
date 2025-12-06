@@ -5,10 +5,10 @@
 
 {#if show}
 <div class="modal-overlay">
+    <div class="modal-box">
         <button class="close-button" on:click={onClose}>✕</button>
-        <slot>
-
-        </slot> 
+        <slot></slot>
+    </div>
 </div>
 {/if}
 
@@ -26,14 +26,27 @@
     z-index: 1000;
 }
 
+
+.modal-box {
+    background: #fff;
+    padding: 2rem;       
+    border-radius: 8px;
+    position: relative;
+    min-width: 500px;    
+    min-height: 150px;   
+    max-width: 90%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+
 .close-button {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 0.5rem;
+    right: 0.5rem;
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #fff;
+    color: #333;
 }
 </style>

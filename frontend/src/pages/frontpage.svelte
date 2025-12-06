@@ -2,34 +2,56 @@
 	import UserCharectersheetList from "../componets/lists/userCharectersheetList.svelte";
 	import BaseModal from "../componets/modal/BaseModal.svelte";
     import { fetchGet } from "../../util/fetchUtil";
-    import redirectAfterlogin from "../store/redirect";
     import { navigate } from 'svelte-routing';
+    import toastrDisplayHTTPCode from "../../util/ToastrUtil";
+    import {lockBodyScroll, unlockBodyScroll} from "../../util/scrolling.js"
+    import { onDestroy } from 'svelte';
 
 	let showModal = false;
 	let modalPage = null;
     let data = null; 
+
+
+    $: if (showModal) {
+        lockBodyScroll();
+    } else {
+        unlockBodyScroll();
+    }
+
+    onDestroy(() => {
+        unlockBodyScroll(); 
+    });
+
 	function newCharecter() {
 	}
 
 	async function loadCharecter() {
         const response = await fetchGet('/users/id/charectersheet')
         if (response.status === 200) {
+            toastrDisplayHTTPCode(200, response.message)
             data = response.data
             modalPage = "load";
 			showModal = true;
         } else {
+            toastrDisplayHTTPCode(response.status, response.message)
             navigate("/login")
         }
 
 		console.log("Load character clicked!");
-		modalPage = "load";
-		showModal = true;
 	}
 
-	function Campaigns() {
+	async function Campaigns() {
 		console.log("Campaigns clicked!");
 		modalPage = "campaigns";
-		showModal = true;
+        const response = await fetchGet('/users/id/charectersheet')
+        if (response.status === 200) {
+            data = response.data
+            modalPage = "campaigns";
+			showModal = true;
+        } else {
+            toastrDisplayHTTPCode(response.status, response.message)
+            navigate("/login")
+        }
 	}
 
 	function closeModal() {
