@@ -1,17 +1,26 @@
 <script>
 	import UserCharectersheetList from "../componets/lists/userCharectersheetList.svelte";
 	import BaseModal from "../componets/modal/BaseModal.svelte";
-
-
+    import { fetchGet } from "../../util/fetchUtil";
+    import redirectAfterlogin from "../store/redirect";
     import { navigate } from 'svelte-routing';
-    
+
 	let showModal = false;
 	let modalPage = null;
-
+    let data = null; 
 	function newCharecter() {
 	}
 
-	function loadCharecter() {
+	async function loadCharecter() {
+        const response = await fetchGet('/users/id/charectersheet')
+        if (response.status === 200) {
+            data = response.data
+            modalPage = "load";
+			showModal = true;
+        } else {
+            navigate("/login")
+        }
+
 		console.log("Load character clicked!");
 		modalPage = "load";
 		showModal = true;
@@ -49,7 +58,7 @@
 
 <BaseModal show={showModal} onClose={closeModal}>
 	{#if modalPage === "load"}
-		<UserCharectersheetList />
+		<UserCharectersheetList data={data} />
 	{:else if modalPage === "campaigns"}
 
 	{/if}

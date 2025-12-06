@@ -2,6 +2,7 @@
     import {fetchPost} from '../../util/fetchUtil.js'
     import { navigate } from "svelte-routing";
     import toastrDisplayHTTPCode from "../../util/ToastrUtil.js"
+    import  redirectAfterlogin  from '../store/redirect.js';
 
   let email;
   let password;
@@ -20,7 +21,11 @@
     toastrDisplayHTTPCode(data.status,data.message)
 
     if(data.status === 200){
-      navigate("/profile")
+      let redirectTo 
+
+      
+      redirectAfterlogin.subscribe(value => redirectTo = value)();
+      navigate(redirectTo || "/")
 
     } else if(data.status === 403) {
       needsVerification = true;     

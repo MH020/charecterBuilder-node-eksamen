@@ -7,15 +7,18 @@ export async function fetchGet (endpoint) {
     })
     const data = await response.json()
     return { status: response.status, data }
+    
   } catch (error) {
+
     console.log(error)
+
+    return {status: 0, data: null,}
   }
 }
 
 export async function fetchPost (endpoint, body) {
-  console.log('run fetch login ?')
-
-  const response = await fetch(BASE_URL + endpoint, {
+  try {
+    const response = await fetch(BASE_URL + endpoint, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -27,4 +30,10 @@ export async function fetchPost (endpoint, body) {
   console.log(BASE_URL + endpoint)
   const data = await response.json()
   return { status: response.status, ...data }
+
+  } catch (error) {
+    console.log(error)
+
+    return {status: 0,data: null,}
+  }
 }

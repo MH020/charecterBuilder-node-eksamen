@@ -4,6 +4,7 @@
     import { navigate } from 'svelte-routing';
     import { fetchGet } from '../../../util/fetchUtil';
 
+    export let data;
     let charectersheetList = [];
     let uniqueClasses;
     let selectedClass = "all"; 
@@ -12,11 +13,8 @@
 
 
     onMount(async () => {
-        const response = await fetchGet('/users/id/charectersheet')
-        if (response.status === 200) {
-            charectersheetList = await response.data
+            charectersheetList = data
             uniqueClasses = new Set(charectersheetList.map(sheet => sheet.class))
-        }
     });
 
 
