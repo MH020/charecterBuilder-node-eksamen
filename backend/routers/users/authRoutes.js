@@ -21,7 +21,7 @@ router.use(authLimiter)
 
 router.get('/api/users/id', isLoggedIn, async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM users where id = $1', req.session.user.id)
+    const result = await db.query('SELECT * FROM "user" where id = $1', [req.session.user.id])
     const user = result.rows[0]
 
     return res.status(200).send({ username: user.username, email: user.email, role: user.role })
@@ -33,7 +33,7 @@ router.get('/api/users/id', isLoggedIn, async (req, res) => {
 
 router.post('/api/login', async (req, res) => {
   const { password, email } = req.body
-  const result = await db.all('SELECT * FROM users WHERE email = $1', email)
+  const result = await db.query('SELECT * FROM "user" WHERE email = $1', [email])
   const user = result.rows[0]
 
   if (result.length === 0 || !auth.validatePassword(password, user.password)) {
@@ -46,7 +46,8 @@ router.post('/api/login', async (req, res) => {
 
   req.session.user = {
     id: user.id,
-    name: user.username
+    name: user.username,
+    role: user.role
   }
   return res.status(200).send({ message: 'login successful' })
 })
@@ -60,7 +61,7 @@ router.post('/api/users', async (req, res) => {
       return res.status(400).send({ message: 'missing fields' })
     }
 
-    const usedEmail = await db.query('SELECT * FROM users WHERE email = $1', email)
+    const usedEmail = await db.query('SELECT * FROM "user" WHERE email = $1', [email])
     if (usedEmail.rows.length > 0) {
       return res.status(409).send({ message: 'email allready in use' })
     }
@@ -90,7 +91,7 @@ router.post('/api/users', async (req, res) => {
 router.post('/api/vaify', async (req, res) => {
   try {
     const { verificationCode } = req.body
-    const result = await db.query('SELECT * FROM users WHERE verification_code = $1', verificationCode)
+    const result = await db.query('SELECT * FROM "user" WHERE verification_code = $1', [verificationCode])
     const user = result.rows[0]
 
     if (result.length === 0 || user.verification_code !== verificationCode) {
@@ -98,10 +99,10 @@ router.post('/api/vaify', async (req, res) => {
     }
 
     if (user.verified === 1) {
-      return res.status(403).send({ message: 'this user is allready varified' })
+      return res.status(403).send({ message: 'this "user" is allready varified' })
     }
 
-    await db.query('UPDATE users SET verified = 1 WHERE verification_code = $1', verificationCode)
+    await db.query('UPDATE "user" SET verified = 1 WHERE verification_code = $1', [verificationCode])
 
     return res.status(200).send({ message: 'vaification successful' })
   } catch (error) {

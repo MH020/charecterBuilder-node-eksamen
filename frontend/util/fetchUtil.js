@@ -43,6 +43,7 @@ export async function fetchPost (endpoint, body) {
 
 	export async function fetchModal(endpoint, modalPage) {
         const response = await fetchGet(endpoint)
+        console.log(BASE_URL + endpoint)
         if (response.status === 200) {
             toastrDisplayHTTPCode(200, response.message)
 			openModal(modalPage, response.data)

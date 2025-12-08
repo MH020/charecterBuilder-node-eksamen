@@ -16,7 +16,7 @@
     }
 
     function displayskills() {
-        fetchModal("api/skill", "skills");
+        fetchModal("/api/skills", "skills");
     }
 
 
@@ -36,7 +36,7 @@
 		</button>
 
 		<button class="icon-button" on:click={displayskills}>
-			<img alt="players" class="sidebar-button" />
+			<img alt="skills" class="sidebar-button" />
 		</button>
 
   </nav>
