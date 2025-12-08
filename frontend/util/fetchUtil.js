@@ -1,3 +1,6 @@
+import { openModal } from "../src/store/modalStore";
+import toastrDisplayHTTPCode from "./ToastrUtil";
+
 const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
 
 export async function fetchGet (endpoint) {
@@ -37,3 +40,13 @@ export async function fetchPost (endpoint, body) {
     return {status: 0, data: null, message: "server Error please try again later or inform the admin team on discord"}
   }
 }
+
+	export async function fetchModal(endpoint, modalPage) {
+        const response = await fetchGet(endpoint)
+        if (response.status === 200) {
+            toastrDisplayHTTPCode(200, response.message)
+			openModal(modalPage, response.data)
+        } else {
+            toastrDisplayHTTPCode(response.status, response.message)
+        }
+	}

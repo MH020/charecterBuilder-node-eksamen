@@ -1,5 +1,5 @@
 <script>
-    import { fetchGet } from "../../../util/fetchUtil";
+    import { fetchGet, fetchModal } from "../../../util/fetchUtil";
     import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
 	import CharectersheetsList from "../lists/charectersheetsList.svelte";
 	import BaseModal from "../modal/BaseModal.svelte";
@@ -7,26 +7,13 @@
 
 
 
-		async function loadcharectersheets() {
-        const response = await fetchGet('charectersheet')
-        if (response.status === 200) {
-            toastrDisplayHTTPCode(200, response.message)
-			openModal("charectersheet", response.data)
-        } else {
-            toastrDisplayHTTPCode(response.status, response.message)
-        }
-
-		console.log("Load character clicked!");
+	async function loadcharectersheets() {
+		fetchModal("/charectersheet", "charectersheet");
 	}
 
-	async function displayPlayers() {
-        const response = await fetchGet('/users')
-        if (response.status === 200) {
-			openModal("players", response.data)
-        } else {
-            toastrDisplayHTTPCode(response.status, response.message)
-        }
-	}
+    function displayPlayers() {
+        fetchModal("/users", "players");
+    }
 
 
 
@@ -37,11 +24,11 @@
 
   <nav>
 		<button class="icon-button" on:click={loadcharectersheets}>
-			<img alt="character" class="new-load-buttons" />
+			<img alt="charactersheets" class="sidebar-button" />
 		</button>
 
 		<button class="icon-button" on:click={displayPlayers}>
-			<img alt="players" class="new-load-buttons" />
+			<img alt="players" class="sidebar-button" />
 		</button>
 
   </nav>

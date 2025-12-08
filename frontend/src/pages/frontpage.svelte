@@ -6,13 +6,10 @@
     import toastrDisplayHTTPCode from "../../util/ToastrUtil";
     import {lockBodyScroll, unlockBodyScroll} from "../../util/scrolling.js"
     import { onDestroy } from 'svelte';
-
-	let showModal = false;
-	let modalPage = null;
-    let data = null; 
+	import {modalStore, openModal, closeModal} from "../store/modalStore.js"
 
 
-    $: if (showModal) {
+    $: if ($modalStore.show) {
         lockBodyScroll();
     } else {
         unlockBodyScroll();
@@ -29,9 +26,7 @@
         const response = await fetchGet('/users/id/charectersheet')
         if (response.status === 200) {
             toastrDisplayHTTPCode(200, response.message)
-            data = response.data
-            modalPage = "load";
-			showModal = true;
+			openModal("load", response.data);
         } else {
             toastrDisplayHTTPCode(response.status, response.message)
             navigate("/login")
@@ -42,22 +37,15 @@
 
 	async function Campaigns() {
 		console.log("Campaigns clicked!");
-		modalPage = "campaigns";
         const response = await fetchGet('/users/id/charectersheet')
         if (response.status === 200) {
-            data = response.data
-            modalPage = "campaigns";
-			showModal = true;
+			openModal("campaigns", response.data);
         } else {
             toastrDisplayHTTPCode(response.status, response.message)
             navigate("/login")
         }
 	}
 
-	function closeModal() {
-		showModal = false;
-		modalPage = null;
-	}
 </script>
 
 <div class="panel-container">
@@ -78,10 +66,20 @@
 	</div>
 </div>
 
-<BaseModal show={showModal} onClose={closeModal}>
-	{#if modalPage === "load"}
-		<UserCharectersheetList data={data} />
-	{:else if modalPage === "campaigns"}
+
+<BaseModal show={$modalStore.show} onClose={closeModal}>
+	{#if $modalStore.page === "load"}
+		<UserCharectersheetList data={$modalStore.data} />
+
+		
+	{:else if $modalStore.page === "campaigns"}
+
+
+		<h2>Campaigns</h2>
+		<pre>{JSON.stringify($modalStore.data, null, 2)}</pre>
+	{:else if $modalStore.page === "newCharacter"}
+		<h2>New Character</h2>
+
 
 	{/if}
 </BaseModal>
