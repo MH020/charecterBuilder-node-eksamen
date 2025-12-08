@@ -35,6 +35,7 @@ router.post('/api/login', async (req, res) => {
   const { password, email } = req.body
   const result = await db.query('SELECT * FROM "user" WHERE email = $1', [email])
   const user = result.rows[0]
+  console.log(user)
 
   if (result.length === 0 || !auth.validatePassword(password, user.password)) {
     return res.status(401).send({ message: 'incorrect' })

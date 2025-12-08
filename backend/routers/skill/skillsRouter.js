@@ -23,7 +23,7 @@ router.get("/api/skills", isAdmin, async (req,res) => {
                 return aptitude.id === skill.secondary_aptitude_id
             })
         })
-        return res.status(200).send({skills})   
+        return res.status(200).send(skills)   
 
     } catch (error) {
         console.error(error)

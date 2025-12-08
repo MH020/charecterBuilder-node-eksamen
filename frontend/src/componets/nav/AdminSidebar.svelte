@@ -56,11 +56,11 @@
 
 <style>
 	.sidebar {
-  position: fixed;     /* Stays in place while scrolling */
+  position: fixed;     
   top: 0;
   left: 0;
-  height: 100vh;       /* Full height */
-  width: 220px;        /* Sidebar width */
+  height: 100vh;       
+  width: 220px;        
   background-color: #1e1e2f;
   color: #fff;
   padding: 1rem;
