@@ -7,23 +7,31 @@ const router = Router()
 
 
 
-router.get("/api/skills", async (req,res) => {
-    const result = await db.query('SELECT * FROM skill')
-    const secoundResult = await db.query('SELECT * FROM aptitude')
+router.get("/api/skills", isAdmin, async (req,res) => {
+    try {
+        const result = await db.query('SELECT * FROM skill')
+        const secoundResult = await db.query('SELECT * FROM aptitude')
 
-    const skills = result.rows
-    const aptitudes = secoundResult.rows
-    skills.forEach(skill =>{
-        skill.main_aptitude = aptitudes.find(aptitude => {
-            return aptitude.id === skill.main_aptitude_id
-        })
+        const skills = result.rows
+        const aptitudes = secoundResult.rows
+        skills.forEach(skill =>{
+            skill.main_aptitude = aptitudes.find(aptitude => {
+                return aptitude.id === skill.main_aptitude_id
+            })
 
-        skill.secondary_aptitude = aptitudes.find(aptitude => {
-            return aptitude.id === skill.secondary_aptitude_id
+            skill.secondary_aptitude = aptitudes.find(aptitude => {
+                return aptitude.id === skill.secondary_aptitude_id
+            })
         })
-    })
-    return res.status(200).send({skills})
+        return res.status(200).send({skills})   
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })
+    }   
 })
+
+router.post()
 
 
 export default router
