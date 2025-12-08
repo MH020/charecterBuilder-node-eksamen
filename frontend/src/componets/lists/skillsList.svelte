@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import SkillsRow from '../rows/skillsRow.svelte';
+    import { fetchDelete } from '../../../util/fetchUtil';
 
     export let data = [];
 
@@ -19,6 +20,7 @@
 
     function deleteSkill(skill){
         console.log("deleteSkill")
+        fetchDelete("/api/skills", skill.id)
     }
 
     $: if (SkillsList) {
