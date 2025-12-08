@@ -47,7 +47,7 @@
     }
 </script>
 
-<div>
+<div class="button-panel">
     <button on:click={toggleSort}>
         Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
     </button>
@@ -65,5 +65,7 @@
         />
     {/each}
 </div>
+
+
 
 
