@@ -1,15 +1,9 @@
 <script>
-    import { navigate } from "svelte-routing";
     import { fetchGet } from "../../../util/fetchUtil";
     import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
 	import CharectersheetsList from "../lists/charectersheetsList.svelte";
 	import BaseModal from "../modal/BaseModal.svelte";
-
-
-
-	let showModal = false;
-	let modalPage = null;
-    let data = null; 
+	import {modalStore, openModal, closeModal} from "../../store/modalStore.js"
 
 
 
@@ -17,9 +11,7 @@
         const response = await fetchGet('charectersheet')
         if (response.status === 200) {
             toastrDisplayHTTPCode(200, response.message)
-            data = response.data
-            modalPage = "charectersheet";
-			showModal = true;
+			openModal("charectersheet", response.data)
         } else {
             toastrDisplayHTTPCode(response.status, response.message)
         }
@@ -30,18 +22,13 @@
 	async function displayPlayers() {
         const response = await fetchGet('/users')
         if (response.status === 200) {
-            data = response.data
-            modalPage = "players";
-			showModal = true;
+			openModal("players", response.data)
         } else {
             toastrDisplayHTTPCode(response.status, response.message)
         }
 	}
 
-	function closeModal() {
-		showModal = false;
-		modalPage = null;
-	}
+
 
 </script>
 
@@ -61,10 +48,10 @@
 </aside>
 
 
-<BaseModal show={showModal} onClose={closeModal}>
-	{#if modalPage === "charectersheet"}
-		<CharectersheetsList data={data} />
-	{:else if modalPage === "players"}
+<BaseModal show={$modalStore.show} onClose={closeModal}>
+	{#if $modalStore.page === "charectersheet"}
+		<CharectersheetsList data={$modalStore.data} />
+	{:else if $modalStore.page === "players"}
 
 	{/if}
 </BaseModal>
