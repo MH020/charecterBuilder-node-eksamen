@@ -9,7 +9,7 @@
     const response = await fetchGet('/users/id')
     console.log(response)
     if (response.status !== 200) {
-      toastrDisplayHTTPCode(response.status,response.data.message);
+      toastrDisplayHTTPCode(response.status,response.message);
       navigate('/login');
     } else {
       user.set(response.data)

@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS "size" (
     "name" TEXT NOT NULL,
     score INTEGER NOT NULL
 );
+
 CREATE TABLE IF NOT EXISTS statline_race (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
@@ -325,7 +326,7 @@ CREATE TABLE IF NOT EXISTS force_field (
     CONSTRAINT fk_ff_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id),
     CONSTRAINT fk_ff_class_id FOREIGN KEY (class_id) REFERENCES class(id)
 );
-
+--- add private or not private 
 CREATE TABLE IF NOT EXISTS charactersheet (
     id SERIAL PRIMARY KEY,
     "level" INTEGER NOT NULL DEFAULT 1,

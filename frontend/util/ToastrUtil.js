@@ -21,6 +21,7 @@ toastr.options = {
 
 function toastrDisplayHTTPCode (code, message) {
   if (code >= 0 && code < 100) {
+    toastr.error(message, `Status ${code}`)
   } else if (code >= 200 && code < 300) {
     toastr.success(message, `Status ${code}`)
   } else if (code >= 300 && code < 400) {
