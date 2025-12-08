@@ -19,7 +19,7 @@ const authLimiter = rateLimit({
 router.use(authLimiter)
 
 
-router.get('/api/user/id', isLoggedIn, async (req, res) => {
+router.get('/api/users/id', isLoggedIn, async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM users where id = $1', req.session.user.id)
     const user = result.rows[0]

@@ -1,10 +1,12 @@
 import 'dotenv/config'
 import express from 'express'
-import authRouthes from './routers/authRoutes/authRoutes.js'
 import path from 'path'
 import helmet from 'helmet'
 import { rateLimit } from 'express-rate-limit'
 import session from 'express-session'
+
+import authRouthes from './routers/users/authRoutes.js'
+import skillsRoutes from './routers/skill/skillsRouter.js'
 
 const app = express()
 
@@ -33,9 +35,7 @@ app.use(generalLimiter)
 
 app.use(authRouthes)
 
-app.get('/', (req, res) => {
-  res.send({ data: 'hello' })
-})
+app.use(skillsRoutes)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))
