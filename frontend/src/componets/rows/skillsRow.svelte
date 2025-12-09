@@ -1,7 +1,9 @@
 <script>
-    import { openModal } from "../../store/modalStore";
+    import { openModal, modalStore } from "../../store/modalStore";
+    import { fetchModal } from "../../../util/fetchUtil";
+    import ApptitudesList from "../lists/ApptitudesList.svelte";
 
-    
+    export let skillId
     export let name;
     export let description;
     export let main_aptitude;
@@ -37,8 +39,22 @@
         editableSecondary = secondary_aptitude;
     }
 
+    function displayApptitudesModal() {
+        fetchModal("/api/apptitudes", "apptitudes");
+    }
+
+    $: stack = $modalStore
+    $:topModal = stack.length ? stack[stack.length -1] : null; 
+    
+
 
 </script>
+
+
+{#if topModal.page === "apptitudes"}
+<ApptitudesList data={topModal.data} /> 
+{/if}
+
 
 <div class="skill-row">
     <div class="skill-name">
@@ -68,17 +84,38 @@
     </div>
 
     <div class="aptitudes">
+        {#if isEditing}
+            <button class="edit-button" on:click={displayApptitudesModal}>
+			    <img alt="main apptitude" class="edit-button" />
+		    </button>
+        	    <button class="edit-button" on:click={displayApptitudesModal}>
+			    <img alt="secounday apptitude" class="edit-button" />
+		    </button>
+        {:else}     
+        <span class="name">{name}</span>
+        {/if}
         <span>Main: {main_aptitude}</span>
         <span>Secondary: {secondary_aptitude}</span>
     </div>
 
     <div class="buttons">
-        <button on:click={() => editSkill()}>
+<div class="buttons">
+    {#if isEditing}
+        <button on:click={saveEdit}>
+            Save
+        </button>
+        <button on:click={cancelEdits}>
+            Cancel
+        </button>
+    {:else}
+        <button on:click={() => isEditing = true}>
             Edit
         </button>
-        <button on:click={() => deleteSkill()}>
-            Delete
-        </button>
+    <button on:click={() => deleteSkill()}>
+        Delete
+    </button>
+    {/if}
+</div>
     </div>
 </div>
 

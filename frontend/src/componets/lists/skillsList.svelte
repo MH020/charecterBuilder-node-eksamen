@@ -63,6 +63,7 @@
 <div>
     {#each sortedSkills as skill (skill.name)}
         <SkillsRow 
+            skillId={skill.id}
             name={skill.name} 
             description={skill.description} 
             main_aptitude={skill.main_aptitude.name} 

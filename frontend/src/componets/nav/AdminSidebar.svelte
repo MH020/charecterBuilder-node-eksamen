@@ -19,6 +19,9 @@
         fetchModal("/api/skills", "skills");
     }
 
+    $: stack = $modalStore
+    $:topModal = stack.length ? stack[stack.length -1] : null; 
+
 
 
 </script>
@@ -42,17 +45,17 @@
   </nav>
 </aside>
 
-
-<BaseModal show={$modalStore.show} onClose={closeModal}>
-	{#if $modalStore.page === "charectersheet"}
-		<CharectersheetsList data={$modalStore.data} />
-	{:else if $modalStore.page === "players"}
-	<CharectersheetsList data={$modalStore.data} />
-	{:else if $modalStore.page === "skills"}
-	<SkillsList data={$modalStore.data} />
+{#if topModal}
+<BaseModal show={true} onClose={closeModal}>
+	{#if topModal.page === "charectersheet"}
+		<CharectersheetsList data={topModal.data} />
+	{:else if topModal.page === "players"}
+	<CharectersheetsList data={topModal.data} />
+	{:else if topModal.page === "skills"}
+	<SkillsList data={topModal.data} />
 	{/if} 
 </BaseModal>
-
+{/if}
 
 <style>
 	.sidebar {

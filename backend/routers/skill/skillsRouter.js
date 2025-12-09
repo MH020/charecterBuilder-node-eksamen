@@ -7,7 +7,7 @@ const router = Router()
 
 
 
-router.get("/api/skills", isAdmin, async (req,res) => {
+router.get("/api/skills", async (req,res) => {
     try {
         const result = await db.query('SELECT * FROM skill WHERE is_custom = false')
         const secoundResult = await db.query('SELECT * FROM aptitude')
@@ -31,7 +31,7 @@ router.get("/api/skills", isAdmin, async (req,res) => {
     }   
 })
 
-router.post("/api/skills", isAdmin, async (req,res) => {
+router.post("/api/skills", async (req,res) => {
     try {
 
         const { name, description, main_aptitude_id,secondary_aptitude_id } = req.body
@@ -54,7 +54,7 @@ router.post("/api/skills", isAdmin, async (req,res) => {
     }
 })
 
-router.delete("/api/skills", isOwner, async (req, res) => {
+router.delete("/api/skills", async (req, res) => {
     try {
         console.log(req.body)
         const { id } = req.body

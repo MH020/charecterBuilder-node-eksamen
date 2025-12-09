@@ -1,4 +1,7 @@
 <script>
+    import {modalStore, closeModal} from '../../store/modalStore.js'
+    $: stack = $modalStore
+    $:topModal = stack.length ? stack[stack.length -1] : null; 
     export let show = false;
     export let onClose = () => {};
 </script>
@@ -6,7 +9,7 @@
 {#if show}
 <div class="modal-overlay">
     <div class="modal-box">
-        <button class="close-button" on:click={onClose}>✕</button>
+        <button class="close-button" on:click={onClose}>X</button>
         <slot></slot>
     </div>
 </div>
