@@ -1,16 +1,56 @@
 <script>
+    import { openModal } from "../../store/modalStore";
+
+    
     export let name;
     export let description;
     export let main_aptitude;
     export let secondary_aptitude;
     export let editSkill;
     export let deleteSkill;
+
+
     let showTooltip = false;
+    let isEditing = false
+
+
+    let editableName = name;
+    let editableDescription = description;
+    let editableMain = main_aptitude;
+    let editableSecondary = secondary_aptitude;
+
+    function saveEdit(){
+        isEditing = false
+        editSkill({
+            name: editableName,
+            description: editableDescription,
+            main_aptitude: editableMain,
+            secondary_aptitude: editableSecondary
+        });
+    }
+
+    function cancelEdits() {
+        isEditing = false;
+        editableName = name;
+        editableDescription = description;
+        editableMain = main_aptitude;
+        editableSecondary = secondary_aptitude;
+    }
+
+
 </script>
 
 <div class="skill-row">
     <div class="skill-name">
+        {#if isEditing}
+            <input bind:value={editableName} />   
+        {:else}     
         <span class="name">{name}</span>
+        {/if}
+        {#if isEditing}
+
+        <textarea bind:value={editableDescription} rows="3" cols="30"></textarea>
+        {:else}
         <button
             class="description-btn"
             on:mouseenter={() => showTooltip = true}
@@ -19,6 +59,7 @@
         >
             description
         </button>
+        {/if}
         {#if showTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
             {description}
