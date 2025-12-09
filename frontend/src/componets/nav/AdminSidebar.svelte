@@ -5,7 +5,7 @@
 	import {modalStore, openModal, closeModal} from "../../store/modalStore.js"
 	import CharectersheetsList from "../lists/charectersheetsList.svelte";
 	import SkillsList from "../lists/skillsList.svelte";
-
+  import ApptitudesList from "../lists/ApptitudesList.svelte";
 
 	async function loadcharectersheets() {
 		fetchModal("/charectersheet", "charectersheet");
@@ -17,6 +17,10 @@
 
     function displayskills() {
         fetchModal("/api/skills", "skills");
+    }
+
+    function displayApptitudes() {
+        fetchModal("/api/aptitudes", "aptitudes");
     }
 
     $: stack = $modalStore
@@ -42,6 +46,10 @@
 			<img alt="skills" class="sidebar-button" />
 		</button>
 
+    <button class="icon-button" on:click={displayApptitudes}>
+			<img alt="Apptitudes" class="sidebar-button" />
+		</button>
+
   </nav>
 </aside>
 
@@ -53,6 +61,8 @@
 	<CharectersheetsList data={topModal.data} />
 	{:else if topModal.page === "skills"}
 	<SkillsList data={topModal.data} />
+  {:else if topModal.page === "aptitudes"}
+	<ApptitudesList data={topModal.data} />
 	{/if} 
 </BaseModal>
 {/if}

@@ -62,8 +62,7 @@
 <div>
     {#each sortedApptitudes as apptitude (apptitude.name)}
         <ApptitudesRow
-            id={apptitude.id} 
-            name={apptitude.name} 
+            apptitude={apptitude} 
             editApptitude={() => editApptitude(apptitude)} 
             deleteApptitude={() => deleteApptitude(apptitude)} 
         />

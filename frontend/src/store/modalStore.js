@@ -10,3 +10,5 @@ export function openModal(page, data = {}) {
 export function closeModal() {
   modalStore.update(stack => stack.slice(0, -1)); 
 }
+
+export const modalSelectCallback = writable(null);

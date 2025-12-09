@@ -7,7 +7,7 @@ import session from 'express-session'
 
 import authRouthes from './routers/users/authRoutes.js'
 import skillsRoutes from './routers/skill/skillsRouter.js'
-
+import apptitudesRouter from './routers/apptitudes/apptitudesRouter.js'
 const app = express()
 
 app.use(express.json())
@@ -36,6 +36,8 @@ app.use(generalLimiter)
 app.use(authRouthes)
 
 app.use(skillsRoutes)
+
+app.use(apptitudesRouter)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))

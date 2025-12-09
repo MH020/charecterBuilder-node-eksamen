@@ -1,5 +1,5 @@
 <script>
-    import { openModal, modalStore } from "../../store/modalStore";
+    import { openModal, modalStore, modalSelectCallback } from "../../store/modalStore";
     import { fetchModal } from "../../../util/fetchUtil";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
 
@@ -13,13 +13,23 @@
 
 
     let showTooltip = false;
-    let isEditing = false
+    let isEditing = false;
 
 
-    let editableName = name;
-    let editableDescription = description;
-    let editableMain = main_aptitude;
-    let editableSecondary = secondary_aptitude;
+    let editableName 
+    let editableDescription 
+    let editableMain 
+    let editableSecondary 
+
+
+    function startEditing(){
+        isEditing = true;
+        editableName = name;
+        editableDescription = description;
+        editableMain = main_aptitude;
+        editableSecondary = secondary_aptitude;
+
+    }
 
     function saveEdit(){
         isEditing = false
@@ -39,8 +49,24 @@
         editableSecondary = secondary_aptitude;
     }
 
-    function displayApptitudesModal() {
-        fetchModal("/api/apptitudes", "apptitudes");
+    function setMainApptitude() {
+        modalSelectCallback.set((selectedAptitude) => {
+        editableMain = selectedAptitude;
+        console.log("selected apptitude", selectedAptitude)
+        modalSelectCallback.set(null);
+        });
+
+        fetchModal("/api/aptitudes", "aptitudes");
+    }
+
+    function setSecoundaryApptitude() {
+        modalSelectCallback.set((selectedAptitude) => {
+        editableSecondary = selectedAptitude;
+        console.log(selectedAptitude)
+        modalSelectCallback.set(null);
+        });
+
+        fetchModal("/api/aptitudes", "aptitudes");
     }
 
     $: stack = $modalStore
@@ -49,11 +75,6 @@
 
 
 </script>
-
-
-{#if topModal.page === "apptitudes"}
-<ApptitudesList data={topModal.data} /> 
-{/if}
 
 
 <div class="skill-row">
@@ -85,17 +106,19 @@
 
     <div class="aptitudes">
         {#if isEditing}
-            <button class="edit-button" on:click={displayApptitudesModal}>
+            <button class="edit-button" on:click={setMainApptitude}>
 			    <img alt="main apptitude" class="edit-button" />
 		    </button>
-        	    <button class="edit-button" on:click={displayApptitudesModal}>
+        	    <button class="edit-button" on:click={setSecoundaryApptitude}>
 			    <img alt="secounday apptitude" class="edit-button" />
 		    </button>
+            <span>Main: {editableMain.name || main_aptitude}</span>
+            <span>Secondary: {editableSecondary.name || secondary_aptitude}</span>
         {:else}     
-        <span class="name">{name}</span>
-        {/if}
         <span>Main: {main_aptitude}</span>
         <span>Secondary: {secondary_aptitude}</span>
+
+        {/if}
     </div>
 
     <div class="buttons">
@@ -108,7 +131,7 @@
             Cancel
         </button>
     {:else}
-        <button on:click={() => isEditing = true}>
+        <button on:click={() => startEditing()}>
             Edit
         </button>
     <button on:click={() => deleteSkill()}>

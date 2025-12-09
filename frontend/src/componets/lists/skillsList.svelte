@@ -4,16 +4,17 @@
     import { fetchDelete } from '../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
 
+
     export let data = [];
 
-    let SkillsList = [];
+    let SkillsList;
     let sortType = "all"; 
     let sortedSkills = [];
 
-    onMount(() => {
-        SkillsList = data;
-        console.log(SkillsList)
-    });
+    $: if(!SkillsList){
+        SkillsList = data
+        console.log("skilllist addad again ? ")
+    }
 
     function editSkill(skill){
         console.log("edit")
@@ -61,7 +62,7 @@
 </div>
 
 <div>
-    {#each sortedSkills as skill (skill.name)}
+    {#each sortedSkills as skill (skill.id )}
         <SkillsRow 
             skillId={skill.id}
             name={skill.name} 

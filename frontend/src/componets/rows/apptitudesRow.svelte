@@ -1,16 +1,17 @@
 <script>
-    import { openModal,modalStore } from "../../store/modalStore";
+    import { openModal,modalStore, modalSelectCallback,closeModal } from "../../store/modalStore";
 
-    export let id; 
-    export let name;
+    export let apptitude; 
     export let editApptitude
     export let deleteApptitude
+
+    console.log(apptitude)
 
     let showTooltip = false;
     let isEditing = false
 
 
-    let editableName = name;
+    let editableName = apptitude.name;
 
     function saveEdit(){
         isEditing = false
@@ -32,14 +33,14 @@
 
 <div class="row">
     <div class="id">
-        <span>{id}</span>
+        <span>{apptitude.id}</span>
     </div>
 
     <div class="row_name">
         {#if isEditing}
             <input bind:value={editableName} />   
         {:else}     
-            <span>{name}</span>
+            <span>{apptitude.name}</span>
         {/if}
     </div>
 
@@ -50,6 +51,11 @@
         <button on:click={() => deleteApptitude()}>
             Delete
         </button>
+        {#if $modalSelectCallback}
+            <button on:click={() => {$modalSelectCallback(apptitude); closeModal();}}>
+            select
+        </button>
+        {/if}
     </div>
 </div>
 
