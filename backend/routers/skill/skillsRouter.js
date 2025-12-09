@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {isAdmin } from '../../middleware/auth.js'
+import {isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 
 
@@ -51,6 +51,24 @@ router.post("/api/skills", isAdmin, async (req,res) => {
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })  
+    }
+})
+
+router.delete("/api/skills", isOwner, async (req, res) => {
+    try {
+        console.log(req.body)
+        const { id } = req.body
+        console.log("skillid?", id)
+
+        await db.query(
+            `DELETE FROM skill where id = $1 `, [id],
+        )
+
+        return res.status(200).send({ message: 'skill deleted' })
+        
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })     
     }
 })
 

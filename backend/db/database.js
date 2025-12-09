@@ -19,13 +19,13 @@ if (seedOwner) {
 
 if (seedMode) {
   const dbfile = fs.readFileSync("./db/schema.sql").toString()
-  const seedFile = fs.readFileSync("./db/testSchema.sql").toString()
-  console.log(seedFile)
+  //const seedFile = fs.readFileSync("./db/testSchema.sql").toString()
+  //console.log(seedFile)
 
 
   try {
   await db.query(dbfile)
-  await db.query(seedFile)
+  //await db.query(seedFile)
     console.log('Seed data loaded successfully!')
   } catch (err) {
     console.error('Error loading seed data:', err)

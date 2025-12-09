@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS statline_race (
     intelligence INTEGER NOT NULL,
     perception INTEGER NOT NULL,
     willpower INTEGER NOT NULL,
-    fellowship INTEGER NOT NULL
+    fellowship INTEGER NOT NULL,
     is_custom BOOLEAN DEFAULT FALSE
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS race (
     wounds INTEGER NOT NULL,
     base_statline_id INTEGER,
     max_statline_id INTEGER,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_r_size_id FOREIGN KEY (size_id) REFERENCES "size"(id),
     CONSTRAINT fk_r_base_statline_id FOREIGN KEY (base_statline_id) REFERENCES statline_race(id),
     CONSTRAINT fk_r_max_statline_id FOREIGN KEY (max_statline_id) REFERENCES statline_race(id)
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS lineage (
     description TEXT,
     defining_features TEXT,
     required_race_id INT,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_l_required_race_id FOREIGN KEY (required_race_id) REFERENCES race(id)
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS talent (
     required_race_id INTEGER,
     lineage_id INTEGER, 
     asi BOOLEAN DEFAULT FALSE,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_t_prerequisite_talent_id FOREIGN KEY (prerequisite_talent_id) REFERENCES talent(id),
     CONSTRAINT fk_t_constraint_aptitude_id FOREIGN KEY (constraint_aptitude_id) REFERENCES aptitude(id),
     CONSTRAINT fk_t_required_race_id FOREIGN KEY (required_race_id) REFERENCES race(id),
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS lineage_characteristic_bonus (
     lineage_id INT NOT NULL,
     characteristic_id INT NOT NULL,
     bonus INT NOT NULL DEFAULT 0,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (lineage_id, characteristic_id),
     CONSTRAINT fk_lcb_lineage_id FOREIGN KEY (lineage_id) REFERENCES lineage(id),
     CONSTRAINT fk_lcb_characteristic_id FOREIGN KEY (characteristic_id) REFERENCES characteristic(id)
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS trait (
     "description" TEXT NOT NULL,
     max_level INTEGER NOT NULL,
     race_id INTEGER NOT NULL,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     category TEXT NOT NULL CHECK (category IN ('nothing','disorder','malignancy','malice','blessing')),
     CONSTRAINT fk_t_race_id FOREIGN KEY (race_id) REFERENCES race(id)
 );
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS weapon (
     wt INTEGER NOT NULL,
     availability_id INTEGER NOT NULL,
     projectile_id INTEGER,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_w_weapon_class_id FOREIGN KEY (weapon_class_id) REFERENCES weapon_class(id),
     CONSTRAINT fk_w_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id),
     CONSTRAINT fk_w_projectile_id FOREIGN KEY (projectile_id) REFERENCES weapon(id)
@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS weapon (
 CREATE TABLE IF NOT EXISTS weapon_trait (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL
+    "description" TEXT NOT NULL,
     is_custom BOOLEAN DEFAULT FALSE
 );
 
@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS item (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     category_id INTEGER NOT NULL,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES item_category(id)
 );
 
@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS armor (
     left_leg_ap INTEGER NOT NULL,
     wt INTEGER NOT NULL,
     availability_id INTEGER NOT NULL,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_a_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id)
 );
 
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS skill (
     "description" TEXT NOT NULL,
     main_aptitude_id INTEGER NOT NULL,
     secondary_aptitude_id INTEGER NOT NULL,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_s_main_aptitude_id FOREIGN KEY (main_aptitude_id) REFERENCES aptitude(id),
     CONSTRAINT fk_s_secondary_aptitude_id FOREIGN KEY (secondary_aptitude_id) REFERENCES aptitude(id)
 );
@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS force_field (
     wt INTEGER NOT NULL,
     availability_id INTEGER NOT NULL,
     recharge_speed INTEGER NOT NULL,
-    is_custom BOOLEAN DEFAULT FALSE
+    is_custom BOOLEAN DEFAULT FALSE,
     class_id INTEGER,
     CONSTRAINT fk_ff_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id),
     CONSTRAINT fk_ff_class_id FOREIGN KEY (class_id) REFERENCES class(id)

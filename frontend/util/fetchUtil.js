@@ -41,8 +41,9 @@ export async function fetchPost (endpoint, body) {
   }
 }
 
-export async function fetchDelete(endpoint, body){
+export async function fetchDelete(endpoint, id){
   try {
+  const body = {id: id}
   const response = await fetch(BASE_URL + endpoint, {
     method: 'DELETE',
     credentials: 'include',
@@ -51,8 +52,6 @@ export async function fetchDelete(endpoint, body){
     },
     body: JSON.stringify(body)
   });  
-  console.log(response)
-  console.log(BASE_URL + endpoint)
   const data = await response.json()
   return { status: response.status, ...data }
 

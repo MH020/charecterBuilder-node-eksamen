@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import SkillsRow from '../rows/skillsRow.svelte';
     import { fetchDelete } from '../../../util/fetchUtil';
+    import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
 
     export let data = [];
 
@@ -18,9 +19,13 @@
         console.log("edit")
     }
 
-    function deleteSkill(skill){
+    async function deleteSkill(skill){
         console.log("deleteSkill")
-        fetchDelete("/api/skills", skill.id)
+        const response = await fetchDelete("/api/skills", skill.id)
+        toastrDisplayHTTPCode(response.status, response.message)
+        if (response.status === 200){
+            SkillsList = SkillsList.filter(skills => skills.id !== skill.id)
+        }
     }
 
     $: if (SkillsList) {
@@ -62,8 +67,8 @@
             description={skill.description} 
             main_aptitude={skill.main_aptitude.name} 
             secondary_aptitude={skill.secondary_aptitude.name} 
-            editSkill={editSkill} 
-            deleteSkill={deleteSkill} 
+            editSkill={() => editSkill(skill)} 
+            deleteSkill={() => deleteSkill(skill)} 
         />
     {/each}
 </div>
