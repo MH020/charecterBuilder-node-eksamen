@@ -3,54 +3,77 @@
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
   import { fetchGet } from '../util/fetchUtil.js';
+
   import 'toastr/build/toastr.min.css';
   import Login from "./pages/login.svelte";
   import Profile from "./pages/profile.svelte";
-  import AdminNav from "./componets/nav/AdminNav.svelte";
-  import NotLoggedInNav from "./componets/nav/NotLoggedInNav.svelte";
-  import UserNav from "./componets/nav/UserNav.svelte";
+  import Adminlayout from "./componets/layouts/adminlayout.svelte";
+  import NotLoggedinLayout from "./componets/layouts/notLoggedinLayout.svelte";
+  import UserLayout from "./componets/layouts/userLayout.svelte";
   import Frontpage from "./pages/frontpage.svelte";
   import AdminPage from "./pages/adminPage.svelte";
+  import SkillsList from "./componets/lists/skillsList.svelte";
+  import UsersList from "./componets/lists/usersList.svelte";
+  import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
+  import ApptitudesList from "./componets/lists/ApptitudesList.svelte";
 
   let user = null;
   let loading = true
 
   onMount(async () => {
-    const response = await fetchGet('/users/id')
+    const response = await fetchGet('/api/users/id')
 
     if (response.status === 200) {
       user = response.data; 
+      console.log("user", user)
     } else {
       user = null; 
     }
 
     loading = false;
-
+    console.log("user", user)
   });
-  
 </script>
 
 
 <Router>
-
-    {#if !loading}
+  {#if !loading}
     {#if user?.role === "admin"}
-      <AdminNav />
+      <Adminlayout>
+        <!-- General pages -->
+        <Route path="/"><Frontpage /></Route>
+        <Route path="/profile"><Profile /></Route>
+
+        <!-- Admin pages -->
+        <Route path="/admin_page"><AdminPage /></Route>
+        <Route path="/users"><UsersList /></Route>
+        <Route path="/charactersheets"><CharectersheetsList /></Route>
+        <Route path="/skills"><SkillsList /></Route>
+        <Route path="/aptitudes"><ApptitudesList /></Route>
+      </Adminlayout>
+      
     {:else if user?.role === "user"}
-      <UserNav />
+      <UserLayout>
+        <Route path="/"><Frontpage /></Route>
+        <Route path="/profile"><Profile /></Route>
+        <Route path="/skills"><SkillsList /></Route>
+        <Route path="/aptitudes"><ApptitudesList /></Route>
+      </UserLayout>
+      
     {:else}
-      <NotLoggedInNav />
+      <NotLoggedinLayout>
+        <Route path="/"><Frontpage /></Route>
+        <Route path="/login"><Login /></Route>
+
+
+                <!-- Admin pages -->
+        <Route path="/admin_page"><AdminPage /></Route>
+        <Route path="/users"><UsersList /></Route>
+        <Route path="/charactersheets"><CharectersheetsList /></Route>
+        <Route path="/skills"><SkillsList /></Route>
+        <Route path="/aptitudes"><ApptitudesList /></Route>
+      </NotLoggedinLayout>
     {/if}
   {/if}
-  
-  <div>
-    <Route path='/'><Frontpage /></Route>
-
-    <Route path='/login'><Login /></Route>
-
-    <Route path='/profile'><Profile /></Route>
-
-
-    <Route path='/admin_page'><AdminPage /></Route>
-  </div>
 </Router>
+

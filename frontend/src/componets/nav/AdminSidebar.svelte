@@ -1,73 +1,20 @@
 <script>
-    import { fetchGet, fetchModal } from "../../../util/fetchUtil";
-    import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
-	import BaseModal from "../modal/BaseModal.svelte";
-	import {modalStore, openModal, closeModal} from "../../store/modalStore.js"
-	import CharectersheetsList from "../lists/charectersheetsList.svelte";
-	import SkillsList from "../lists/skillsList.svelte";
-  import ApptitudesList from "../lists/ApptitudesList.svelte";
-
-	async function loadcharectersheets() {
-		fetchModal("/charectersheet", "charectersheet");
-	}
-
-    function displayPlayers() {
-        fetchModal("/users", "players");
-    }
-
-    function displayskills() {
-        fetchModal("/api/skills", "skills");
-    }
-
-    function displayApptitudes() {
-        fetchModal("/api/aptitudes", "aptitudes");
-    }
-
-    $: stack = $modalStore
-    $:topModal = stack.length ? stack[stack.length -1] : null; 
-
-
+  import { Link } from "svelte-routing";
 
 </script>
 
-<aside class="sidebar">
-  <h2 class="title">Admin Tools</h2>
-
+<div class="sidebar">
+  <div class="title">Navigation</div>
   <nav>
-		<button class="icon-button" on:click={loadcharectersheets}>
-			<img alt="charactersheets" class="sidebar-button" />
-		</button>
-
-		<button class="icon-button" on:click={displayPlayers}>
-			<img alt="players" class="sidebar-button" />
-		</button>
-
-		<button class="icon-button" on:click={displayskills}>
-			<img alt="skills" class="sidebar-button" />
-		</button>
-
-    <button class="icon-button" on:click={displayApptitudes}>
-			<img alt="Apptitudes" class="sidebar-button" />
-		</button>
-
+    <Link to='/admin_page'>Home</Link>
+    <Link to='/users'>Users</Link>
+    <Link to='/skills'>Skills</Link>
+    <Link to='/charactersheets'>Charactersheets</Link>
+    <Link to='/aptitudes'>Aptitudes</Link>
   </nav>
-</aside>
-
-{#if topModal}
-<BaseModal show={true} onClose={closeModal}>
-	{#if topModal.page === "charectersheet"}
-		<CharectersheetsList data={topModal.data} />
-	{:else if topModal.page === "players"}
-	<CharectersheetsList data={topModal.data} />
-	{:else if topModal.page === "skills"}
-	<SkillsList data={topModal.data} />
-  {:else if topModal.page === "aptitudes"}
-	<ApptitudesList data={topModal.data} />
-	{/if} 
-</BaseModal>
-{/if}
-
+</div>
 <style>
+
 	.sidebar {
   position: fixed;     
   top: 0;

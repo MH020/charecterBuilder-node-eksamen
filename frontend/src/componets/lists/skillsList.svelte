@@ -1,20 +1,21 @@
 <script>
     import { onMount } from 'svelte';
     import SkillsRow from '../rows/skillsRow.svelte';
-    import { fetchDelete } from '../../../util/fetchUtil';
+    import { fetchDelete, fetchGet } from '../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
 
 
-    export let data = [];
-
-    let SkillsList;
+    let skills;
     let sortType = "all"; 
     let sortedSkills = [];
 
-    $: if(!SkillsList){
-        SkillsList = data
-        console.log("skilllist addad again ? ")
-    }
+    onMount(async () => {
+        const response = await fetchGet("/api/skills")
+        console.log(response)
+        if (response.status === 200) {
+            skills = response.data
+        } 
+    });
 
     function editSkill(skill){
         console.log("edit")
@@ -25,12 +26,12 @@
         const response = await fetchDelete("/api/skills", skill.id)
         toastrDisplayHTTPCode(response.status, response.message)
         if (response.status === 200){
-            SkillsList = SkillsList.filter(skills => skills.id !== skill.id)
+            skills = skills.filter(skills => skills.id !== skill.id)
         }
     }
 
-    $: if (SkillsList) {
-        sortedSkills = [...SkillsList].sort((a, b) => {
+    $: if (skills) {
+        sortedSkills = [...skills].sort((a, b) => {
             if (sortType === "all") {
                 if (a.name < b.name){
                     return 1;
