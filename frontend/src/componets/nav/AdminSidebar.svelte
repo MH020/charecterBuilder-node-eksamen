@@ -44,27 +44,7 @@
   flex-grow: 1;
 }
 
-.icon-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
 
-.icon-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
 
-.icon-button img {
-  width: 24px;
-  height: 24px;
-}
 
 </style>
