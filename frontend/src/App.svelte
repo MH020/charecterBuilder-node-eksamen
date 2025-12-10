@@ -40,7 +40,7 @@
 
 <Router>
   {#if !loading}
-    {#if user?.role === "admin"}
+    {#if user?.role === "ADMIN" || user?.role ==="OWNER" }
       <Adminlayout>
         <!-- General pages -->
         <Route path="/"><Frontpage /></Route>
@@ -54,7 +54,7 @@
         <Route path="/aptitudes"><ApptitudesList /></Route>
       </Adminlayout>
       
-    {:else if user?.role === "user"}
+    {:else if user?.role === "USER"}
       <UserLayout>
         <Route path="/"><Frontpage /></Route>
         <Route path="/profile"><Profile /></Route>
