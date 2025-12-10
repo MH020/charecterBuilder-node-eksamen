@@ -52,7 +52,8 @@
     }
 
     function setMainApptitude() {
-        openModal();
+        openModal(ApptitudesList);
+        console.log(ApptitudesList)
         modalSelectCallback.set((selectedAptitude) => {
         editableMain = selectedAptitude;
         console.log("selected apptitude", selectedAptitude)
@@ -63,7 +64,7 @@
     }
 
     function setSecoundaryApptitude() {
-        openModal();
+        openModal(ApptitudesList);
         modalSelectCallback.set((selectedAptitude) => {
         editableSecondary = selectedAptitude;
         console.log(selectedAptitude)
@@ -74,11 +75,7 @@
     }
 </script>
 
-<BaseModal show={$modalStore.show} onClose={closeModal}>
-
-    <ApptitudesList/>
-
-</BaseModal>
+<BaseModal></BaseModal>
 
 
 <div class="skill-row">

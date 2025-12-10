@@ -22,6 +22,10 @@
         console.log("edit")
     }
 
+    function newSkill(){
+        
+    }
+
     async function deleteApptitude(apptitude){
         const response = await fetchDelete("/api/apptitudes", apptitude.id)
         toastrDisplayHTTPCode(response.status, response.message)
@@ -59,6 +63,9 @@
 <div class="button-panel">
     <button on:click={toggleSort}>
         Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
+    </button>
+    <button on:click={toggleSort}>
+        new skill
     </button>
 </div>
 

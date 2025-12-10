@@ -1,19 +1,16 @@
 <script>
     import {modalStore, closeModal} from '../../store/modalStore.js'
-
-    $: ({ show, Component } = $modalStore);
 </script>
 
-{#if show}
+{#if $modalStore.show}
 <div class="modal-overlay">
     <div class="modal-box">
         <button class="close-button" on:click={closeModal}>X</button>
+
+        {#if $modalStore.Component}
+            <svelte:component this={$modalStore.Component}/>
+        {/if}
     </div>
-
-
-	<div class="modal">
-		<svelte:component this={Component}/>
-	</div>
 </div>
 {/if}
 

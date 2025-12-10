@@ -5,12 +5,11 @@ export const modalStore = writable({
     Component: null
 })
 
-export function openModal(component) {
+export function openModal(Component) {
     modalStore.set({
         show: true,
-        Component: component
+        Component
     });
-
 }
 
 export function closeModal() {
