@@ -27,7 +27,6 @@
     }
 
     async function saveEdit(){
-
         const updated = {   
             id: skill.id,            
             name: editableName,
@@ -68,7 +67,6 @@
     }
 
     function setSecoundaryApptitude() {
-
         modalSelectCallback.set((selectedAptitude) => {
         editableSecondary = selectedAptitude;
         console.log(selectedAptitude)
@@ -79,8 +77,8 @@
 </script>
 
 
-<div class="skill-row">
-    <div class="skill-name">
+<div class="row">
+    <div class="row-name">
         {#if isEditing}
             <input bind:value={editableName} />   
         {:else}     
@@ -145,69 +143,6 @@
 </div>
 
 <style>
-
-.skill-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #1b1b1b; 
-    color: #e0e0e0; 
-    border: 1px solid #444;
-    padding: 10px 15px;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    position: relative;
-    transition: background-color 0.2s;
-}
-
-.skill-row:hover {
-    background-color: #2a2a2a;
-}
-
-
-.skill-name {
-    display: flex;
-    align-items: center;
-    position: relative; 
-}
-
-.name {
-    font-weight: bold;
-    margin-right: 8px;
-    color: #ffb86c; 
-}
-
-
-.description-btn {
-    background: none;
-    border: none;
-    padding: 0 4px;
-    text-decoration: underline;
-    color: #8be9fd;
-    cursor: pointer;
-    font-size: 0.9em;
-    position: relative;
-}
-
-.tooltip {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 120%;
-    background-color: #111;
-    color: #f8f8f2;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    white-space: pre-wrap;
-    box-shadow: 0 0 12px rgba(0,0,0,0.8);
-    z-index: 10;
-    max-width: 250px; 
-    text-align: left;
-}
-
-
 .aptitudes span {
     margin-right: 15px;
     font-size: 0.95em;

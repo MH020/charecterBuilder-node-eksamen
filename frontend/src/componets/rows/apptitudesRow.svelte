@@ -1,29 +1,46 @@
 <script>
+    import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { openModal,modalStore, modalSelectCallback,closeModal } from "../../store/modalStore";
 
     export let apptitude; 
     export let editApptitude
     export let deleteApptitude
+    export let isEditing;
 
     console.log(apptitude)
 
     let showTooltip = false;
-    let isEditing = false
+
+    let editableName = ""
 
 
-    let editableName = apptitude.name;
+    function startEditing(){
+        isEditing = true;
+        editableName = apptitude.name;
+    }
 
-    function saveEdit(){
-        isEditing = false
-
-        editApptitude({
+    async function saveEdit(){
+        const updated = {   
+            id: apptitude.id,            
             name: editableName,
-        });
+        }
+        if(apptitude.isNew){
+            const response = await fetchPost("/api/apptitudes", updated)
+            console.log("created?",response)
+            if(response.status === 201){
+                updated.id = response.created.id 
+            }
+
+        } else {
+            fetchUpdate("/api/skills",updated);
+        }
+        apptitude = updated
+        isEditing = false
     }
 
     function cancelEdits() {
         isEditing = false;
-        editableName = name;
+        editableName = apptitude.name;
     }
 
 
@@ -34,7 +51,7 @@
         <span>{apptitude.id}</span>
     </div>
 
-    <div class="row_name">
+    <div class="row-name">
         {#if isEditing}
             <input bind:value={editableName} />   
         {:else}     
@@ -42,17 +59,27 @@
         {/if}
     </div>
 
-    <div class="row_buttons">
-        <button on:click={() => editApptitude()}>
-            Edit
-        </button>
-        <button on:click={() => deleteApptitude()}>
-            Delete
-        </button>
-        {#if $modalSelectCallback}
+    <div class="row-buttons">
+        {#if !$modalSelectCallback}
+            {#if isEditing}
+                <button on:click={saveEdit}>
+                    Save
+                </button>
+                <button on:click={cancelEdits}>
+                    Cancel
+                </button>
+            {:else}
+                <button on:click={() => startEditing()}>
+                    Edit
+                </button>
+            <button on:click={() => deleteApptitude()}>
+                Delete
+            </button>
+        {/if}
+        {:else}
             <button on:click={() => {$modalSelectCallback(apptitude); closeModal();}}>
             select
-        </button>
+            </button>
         {/if}
     </div>
 </div>
@@ -80,13 +107,13 @@
 }
 
 
-.row_name {
+.row-name {
     display: flex;
     align-items: center;
     position: relative; 
 }
 
-.row_name {
+.row-name {
     font-weight: bold;
     margin-right: 8px;
     color: #ffb86c; 
