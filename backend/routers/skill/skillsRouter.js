@@ -33,20 +33,22 @@ router.get("/api/skills", async (req,res) => {
 
 router.post("/api/skills", async (req,res) => {
     try {
+        const { name, description, main_aptitude, secondary_aptitude } = req.body
 
-        const { name, description, main_aptitude_id,secondary_aptitude_id } = req.body
-
-        if (!name || !description || !main_aptitude_id || !secondary_aptitude_id) {
+        if (!name || !description || !main_aptitude || !secondary_aptitude) {
         return res.status(400).send({ message: 'missing fields' })
         }
 
-        const is_custom = req.session.user.role === "ADMIN"
-            await db.query(
+        const is_custom = req.session.user?.role === "ADMIN" || false
+            const result = await db.query(
             `INSERT INTO skill ("name", "description", main_aptitude_id, secondary_aptitude_id, is_custom)
-             VALUES ($1, $2, $3, $4, $5)`,
-            [name, description, main_aptitude_id, secondary_aptitude_id, is_custom]
+             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            [name, description, main_aptitude.id, secondary_aptitude.id, is_custom]
         )
-            return res.status(201).send({ message: 'skill created sucessfully' })
+        console.log("result?", result)
+        const createdSkill = result.rows[0];
+        console.log(createdSkill)
+        return res.status(201).send({ message: 'skill created sucessfully', created: createdSkill})
         
     } catch (error) {
         console.error(error)

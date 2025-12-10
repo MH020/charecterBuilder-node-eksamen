@@ -1,20 +1,20 @@
 <script>
     import { openModal, modalStore, modalSelectCallback, closeModal } from "../../store/modalStore";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
-    import { fetchUpdate, fetchDelete } from "../../../util/fetchUtil";
+    import { fetchUpdate, fetchDelete, fetchPost } from "../../../util/fetchUtil";
 
 
     export let skill
     export let deleteSkill
+    export let isEditing;
 
     let showTooltip = false;
-    let isEditing = false;
 
 
-    let editableName 
-    let editableDescription 
-    let editableMain 
-    let editableSecondary 
+    let editableName = ""
+    let editableDescription = ""
+    let editableMain = {}
+    let editableSecondary = {}
 
 
     function startEditing(){
@@ -26,7 +26,8 @@
 
     }
 
-    function saveEdit(){
+    async function saveEdit(){
+
         const updated = {   
             id: skill.id,            
             name: editableName,
@@ -34,7 +35,16 @@
             main_aptitude: editableMain,
             secondary_aptitude: editableSecondary
         }
-        fetchUpdate("/api/skills",updated);
+        if(skill.isNew){
+            const response = await fetchPost("/api/skills", updated)
+            console.log("created?",response)
+            if(response.status === 201){
+                updated.id = response.created.id 
+            }
+
+        } else {
+            fetchUpdate("/api/skills",updated);
+        }
         skill = updated
         isEditing = false
     }
@@ -74,7 +84,7 @@
         {#if isEditing}
             <input bind:value={editableName} />   
         {:else}     
-        <span class="name">{skill.name}</span>
+        <span class="name">{skill.name || "----"}</span>
         {/if}
         {#if isEditing}
 
@@ -104,8 +114,8 @@
         	    <button class="edit-button" on:click={setSecoundaryApptitude}>
 			    <img alt="secounday apptitude" class="edit-button" />
 		    </button>
-            <span>Main: {editableMain.name || skill.main_aptitude.name}</span>
-            <span>Secondary: {editableSecondary.name || skill.secondary_aptitude.name}</span>
+            <span>Main: {editableMain.name || skill.main_aptitude.name || "----"}</span>
+            <span>Secondary: {editableSecondary.name || skill.secondary_aptitude.name || "-----"}</span>
         {:else}     
         <span>Main: {skill.main_aptitude.name}</span>
         <span>Secondary: {skill.secondary_aptitude.name}</span>

@@ -5,7 +5,7 @@
     import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
 
 
-    let skills;
+    let skills = [];
     let sortType = "all"; 
     let sortedSkills = [];
 
@@ -16,6 +16,19 @@
             skills = response.data
         } 
     });
+
+    function createSkill(){
+        const newSkill = {
+            id: null,         
+            name: "",
+            description: "",
+            main_aptitude: {id: null, name: ""}, 
+            secondary_aptitude: {id: null, name: ""},
+            isNew: true
+        };
+        skills = [...skills, newSkill];
+        console.log(skills)
+    }
 
     async function deleteSkill(skill){
         console.log("deleteSkill")
@@ -56,12 +69,16 @@
     <button on:click={toggleSort}>
         Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
     </button>
+    <button on:click={createSkill}>
+        new skill 
+    </button>
 </div>
 
 <div>
     {#each sortedSkills as skill (skill.id )}
         <SkillsRow skill={skill} 
-        deleteSkill={() => deleteSkill(skill)}/>
+        deleteSkill={() => deleteSkill(skill)}
+        isEditing={skill.isNew}/>
     {/each}
 </div>
 
