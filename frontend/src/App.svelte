@@ -1,12 +1,21 @@
 <script>
-  import { Router } from "svelte-routing";
+  import { Router, Link, Route } from "svelte-routing";
   import { onMount } from 'svelte';
+  import { navigate } from 'svelte-routing';
   import { fetchGet } from '../util/fetchUtil.js';
 
   import 'toastr/build/toastr.min.css';
+  import Login from "./pages/login.svelte";
+  import Profile from "./pages/profile.svelte";
   import Adminlayout from "./componets/layouts/adminlayout.svelte";
   import NotLoggedinLayout from "./componets/layouts/notLoggedinLayout.svelte";
   import UserLayout from "./componets/layouts/userLayout.svelte";
+  import Frontpage from "./pages/frontpage.svelte";
+  import AdminPage from "./pages/adminPage.svelte";
+  import SkillsList from "./componets/lists/skillsList.svelte";
+  import UsersList from "./componets/lists/usersList.svelte";
+  import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
+  import ApptitudesList from "./componets/lists/ApptitudesList.svelte";
     import BaseModal from "./componets/modal/BaseModal.svelte";
 
   let user = null;
@@ -32,13 +41,40 @@
 <Router>
   {#if !loading}
     {#if user?.role === "admin"}
-      <Adminlayout />
+      <Adminlayout>
+        <!-- General pages -->
+        <Route path="/"><Frontpage /></Route>
+        <Route path="/profile"><Profile /></Route>
 
+        <!-- Admin pages -->
+        <Route path="/admin_page"><AdminPage /></Route>
+        <Route path="/users"><UsersList /></Route>
+        <Route path="/charactersheets"><CharectersheetsList /></Route>
+        <Route path="/skills"><SkillsList /></Route>
+        <Route path="/aptitudes"><ApptitudesList /></Route>
+      </Adminlayout>
+      
     {:else if user?.role === "user"}
-      <UserLayout />
-
+      <UserLayout>
+        <Route path="/"><Frontpage /></Route>
+        <Route path="/profile"><Profile /></Route>
+        <Route path="/skills"><SkillsList /></Route>
+        <Route path="/aptitudes"><ApptitudesList /></Route>
+      </UserLayout>
+      
     {:else}
-      <NotLoggedinLayout />
+      <NotLoggedinLayout>
+        <Route path="/"><Frontpage /></Route>
+        <Route path="/login"><Login /></Route>
+
+
+                <!-- Admin pages -->
+        <Route path="/admin_page"><AdminPage /></Route>
+        <Route path="/users"><UsersList /></Route>
+        <Route path="/charactersheets"><CharectersheetsList /></Route>
+        <Route path="/skills"><SkillsList /></Route>
+        <Route path="/aptitudes"><ApptitudesList /></Route>
+      </NotLoggedinLayout>
     {/if}
   {/if}
 </Router>
