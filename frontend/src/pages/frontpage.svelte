@@ -8,8 +8,6 @@
     import { onDestroy } from 'svelte';
 	import {modalStore, openModal, closeModal} from "../store/modalStore.js"
 
-	$: stack = $modalStore
-    $:topModal = stack.length ? stack[stack.length -1] : null; 
 
 	function newCharecter() {
 	}
@@ -58,18 +56,23 @@
 	</div>
 </div>
 
-{#if topModal}
-<BaseModal show={true} onClose={closeModal}>
-	{#if topModal.page === "load"}
-		<UserCharectersheetList data={topModal.data} />
 
-		
-	{:else if topModal.page === "campaigns"}
+<BaseModal show={$modalStore.show} onClose={closeModal}>
 
-	{:else if topModal.page === "newCharacter"}
+	{#if $modalStore.page === "load"}
+
+		<UserCharectersheetList data={$modalStore.data} />
+	
+	{:else if $modalStore.page === "campaigns"}
+
+		<h2>Campaigns</h2>
+
+		<pre>{JSON.stringify($modalStore.data, null, 2)}</pre>
+
+	{:else if $modalStore.page === "newCharacter"}
+
 		<h2>New Character</h2>
 
-
 	{/if}
+
 </BaseModal>
-{/if}

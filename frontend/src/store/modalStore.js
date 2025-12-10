@@ -1,14 +1,25 @@
 import { writable } from "svelte/store";
 
-export const modalStore = writable([]);
+export const modalStore = writable({
+    show: false,
+    page: null,
+    data: null
+})
 
-
-export function openModal(page, data = {}) {
-  modalStore.update(stack => [...stack, { page, data }]);
+export function openModal(page, data) {
+    modalStore.set({
+        show: true,
+        page,
+        data
+    });
 }
 
 export function closeModal() {
-  modalStore.update(stack => stack.slice(0, -1)); 
+    modalStore.set({
+        show: false,
+        page: null,
+        data: null
+    });
 }
 
 export const modalSelectCallback = writable(null);

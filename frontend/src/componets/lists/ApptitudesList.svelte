@@ -1,18 +1,21 @@
 <script>
     import { onMount } from 'svelte';
     import ApptitudesRow from '../rows/apptitudesRow.svelte';
-    import { fetchDelete } from '../../../util/fetchUtil';
+    import { fetchDelete,fetchGet } from '../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
 
-    export let data = [];
+
 
     let apptitudesList = [];
     let sortType = "all"; 
     let sortedApptitudes = [];
 
-    onMount(() => {
-        apptitudesList = data;
-        console.log(apptitudesList)
+    onMount(async () => {
+        const response = await fetchGet("/api/aptitudes")
+        console.log(response)
+        if (response.status === 200) {
+            apptitudesList = response.data
+        } 
     });
 
     function editApptitude(apptitude){
