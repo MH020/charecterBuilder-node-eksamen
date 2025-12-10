@@ -16,6 +16,7 @@
   import UsersList from "./componets/lists/usersList.svelte";
   import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
   import ApptitudesList from "./componets/lists/ApptitudesList.svelte";
+    import BaseModal from "./componets/modal/BaseModal.svelte";
 
   let user = null;
   let loading = true
@@ -35,6 +36,7 @@
   });
 </script>
 
+<BaseModal></BaseModal>
 
 <Router>
   {#if !loading}

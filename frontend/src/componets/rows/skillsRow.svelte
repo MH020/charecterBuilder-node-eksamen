@@ -52,30 +52,25 @@
     }
 
     function setMainApptitude() {
-        openModal(ApptitudesList);
         console.log(ApptitudesList)
         modalSelectCallback.set((selectedAptitude) => {
         editableMain = selectedAptitude;
         console.log("selected apptitude", selectedAptitude)
         modalSelectCallback.set(null);
         });
-
-        fetchModal("/api/aptitudes", "aptitudes");
+        openModal(ApptitudesList);
     }
 
     function setSecoundaryApptitude() {
-        openModal(ApptitudesList);
+
         modalSelectCallback.set((selectedAptitude) => {
         editableSecondary = selectedAptitude;
         console.log(selectedAptitude)
         modalSelectCallback.set(null);
         });
-
-        fetchModal("/api/aptitudes", "aptitudes");
+        openModal(ApptitudesList);
     }
 </script>
-
-<BaseModal></BaseModal>
 
 
 <div class="skill-row">
