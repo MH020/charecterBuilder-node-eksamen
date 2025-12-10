@@ -54,7 +54,23 @@ router.post("/api/skills", async (req,res) => {
     }
 })
 
-router.delete("/api/skills", async (req, res) => {
+router.put("/api/skills/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { name, description, main_aptitude, secondary_aptitude } = req.body;
+        await db.query(`UPDATE skill SET name = $1, description = $2, main_aptitude_id = $3, secondary_aptitude_id = $4 WHERE id = $5`,
+            [name, description, main_aptitude.id, secondary_aptitude.id, id]
+        );
+
+        return res.status(200).send({ message: 'skill updated' })
+        
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })       
+    }
+})
+
+router.delete("/api/skills/:id", async (req, res) => {
     try {
         console.log(req.body)
         const { id } = req.body

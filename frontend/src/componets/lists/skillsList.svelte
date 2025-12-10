@@ -17,10 +17,6 @@
         } 
     });
 
-    function editSkill(skill){
-        console.log("edit")
-    }
-
     async function deleteSkill(skill){
         console.log("deleteSkill")
         const response = await fetchDelete("/api/skills", skill.id)
@@ -64,15 +60,8 @@
 
 <div>
     {#each sortedSkills as skill (skill.id )}
-        <SkillsRow 
-            skillId={skill.id}
-            name={skill.name} 
-            description={skill.description} 
-            main_aptitude={skill.main_aptitude.name} 
-            secondary_aptitude={skill.secondary_aptitude.name} 
-            editSkill={() => editSkill(skill)} 
-            deleteSkill={() => deleteSkill(skill)} 
-        />
+        <SkillsRow skill={skill} 
+        deleteSkill={() => deleteSkill(skill)}/>
     {/each}
 </div>
 

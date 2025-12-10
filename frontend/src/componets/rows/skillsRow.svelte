@@ -1,18 +1,11 @@
 <script>
     import { openModal, modalStore, modalSelectCallback, closeModal } from "../../store/modalStore";
-    import { fetchModal } from "../../../util/fetchUtil";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
-    import BaseModal from "../modal/BaseModal.svelte";
+    import { fetchUpdate, fetchDelete } from "../../../util/fetchUtil";
 
 
-    export let skillId
-    export let name;
-    export let description;
-    export let main_aptitude;
-    export let secondary_aptitude;
-    export let editSkill;
-    export let deleteSkill;
-
+    export let skill
+    export let deleteSkill
 
     let showTooltip = false;
     let isEditing = false;
@@ -26,29 +19,32 @@
 
     function startEditing(){
         isEditing = true;
-        editableName = name;
-        editableDescription = description;
-        editableMain = main_aptitude;
-        editableSecondary = secondary_aptitude;
+        editableName = skill.name;
+        editableDescription = skill.description;
+        editableMain = skill.main_aptitude;
+        editableSecondary = skill.secondary_aptitude;
 
     }
 
     function saveEdit(){
-        isEditing = false
-        editSkill({
+        const updated = {   
+            id: skill.id,            
             name: editableName,
             description: editableDescription,
             main_aptitude: editableMain,
             secondary_aptitude: editableSecondary
-        });
+        }
+        fetchUpdate("/api/skills",updated);
+        skill = updated
+        isEditing = false
     }
 
     function cancelEdits() {
         isEditing = false;
-        editableName = name;
-        editableDescription = description;
-        editableMain = main_aptitude;
-        editableSecondary = secondary_aptitude;
+        editableName = skill.name;
+        editableDescription = skill.description;
+        editableMain = skill.main_aptitude;
+        editableSecondary = skill.secondary_aptitude;
     }
 
     function setMainApptitude() {
@@ -78,7 +74,7 @@
         {#if isEditing}
             <input bind:value={editableName} />   
         {:else}     
-        <span class="name">{name}</span>
+        <span class="name">{skill.name}</span>
         {/if}
         {#if isEditing}
 
@@ -95,7 +91,7 @@
         {/if}
         {#if showTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
-            {description}
+            {skill.description}
         </div>
         {/if}
     </div>
@@ -108,11 +104,11 @@
         	    <button class="edit-button" on:click={setSecoundaryApptitude}>
 			    <img alt="secounday apptitude" class="edit-button" />
 		    </button>
-            <span>Main: {editableMain.name || main_aptitude}</span>
-            <span>Secondary: {editableSecondary.name || secondary_aptitude}</span>
+            <span>Main: {editableMain.name || skill.main_aptitude.name}</span>
+            <span>Secondary: {editableSecondary.name || skill.secondary_aptitude.name}</span>
         {:else}     
-        <span>Main: {main_aptitude}</span>
-        <span>Secondary: {secondary_aptitude}</span>
+        <span>Main: {skill.main_aptitude.name}</span>
+        <span>Secondary: {skill.secondary_aptitude.name}</span>
 
         {/if}
     </div>
