@@ -1,7 +1,9 @@
 <script>
-    import { openModal, modalStore, modalSelectCallback } from "../../store/modalStore";
+    import { openModal, modalStore, modalSelectCallback, closeModal } from "../../store/modalStore";
     import { fetchModal } from "../../../util/fetchUtil";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
+    import BaseModal from "../modal/BaseModal.svelte";
+
 
     export let skillId
     export let name;
@@ -50,6 +52,7 @@
     }
 
     function setMainApptitude() {
+        openModal();
         modalSelectCallback.set((selectedAptitude) => {
         editableMain = selectedAptitude;
         console.log("selected apptitude", selectedAptitude)
@@ -60,6 +63,7 @@
     }
 
     function setSecoundaryApptitude() {
+        openModal();
         modalSelectCallback.set((selectedAptitude) => {
         editableSecondary = selectedAptitude;
         console.log(selectedAptitude)
@@ -68,13 +72,13 @@
 
         fetchModal("/api/aptitudes", "aptitudes");
     }
-
-    $: stack = $modalStore
-    $:topModal = stack.length ? stack[stack.length -1] : null; 
-    
-
-
 </script>
+
+<BaseModal show={$modalStore.show} onClose={closeModal}>
+
+    <ApptitudesList/>
+
+</BaseModal>
 
 
 <div class="skill-row">

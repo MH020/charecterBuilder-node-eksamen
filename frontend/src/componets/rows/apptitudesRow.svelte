@@ -26,8 +26,6 @@
         editableName = name;
     }
 
-    $: stack = $modalStore
-    $:topModal = stack.length ? stack[stack.length -1] : null; 
 
 </script>
 
