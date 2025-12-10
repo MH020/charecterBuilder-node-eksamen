@@ -1,4 +1,9 @@
 <script>
+// @ts-nocheck
+
+    import { Route } from "svelte-routing";
+    import Frontpage from "../../pages/frontpage.svelte";
+    import Profile from "../../pages/profile.svelte";
     import UserNav from "../nav/UserNav.svelte";
 </script>
 
@@ -8,7 +13,10 @@
     <div class="user-main">
         <UserNav />
         <main>
-            <slot /> 
+            <Router>
+                <Route path="/"><Frontpage /></Route>
+                <Route path="/profile"><Profile /></Route>
+            </Router>
         </main>
     </div>
 </div>

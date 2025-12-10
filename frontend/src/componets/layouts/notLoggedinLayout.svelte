@@ -1,5 +1,8 @@
 <script>
+    import { Route, Router } from "svelte-routing";
     import NotLoggedInNav from "../nav/NotLoggedInNav.svelte";
+    import Frontpage from "../../pages/frontpage.svelte";
+    import Login from "../../pages/login.svelte";
 </script>
 
 
@@ -8,7 +11,10 @@
     <div class="user-main">
         <NotLoggedInNav />
         <main>
-            <slot /> 
+            <Router>
+                <Route path="/"><Frontpage /></Route>
+                <Route path="/login"><Login /></Route>
+            </Router>
         </main>
     </div>
 </div>
