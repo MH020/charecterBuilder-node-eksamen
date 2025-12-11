@@ -3,7 +3,6 @@
     import { openModal,modalStore, modalSelectCallback,closeModal } from "../../store/modalStore";
 
     export let apptitude; 
-    export let editApptitude
     export let deleteApptitude
     export let isEditing;
 

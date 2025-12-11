@@ -18,14 +18,6 @@
         } 
     });
 
-    function editApptitude(apptitude){
-        console.log("edit")
-    }
-
-    function newSkill(){
-        
-    }
-
     async function deleteApptitude(apptitude){
         const response = await fetchDelete("/api/apptitudes", apptitude.id)
         toastrDisplayHTTPCode(response.status, response.message)
@@ -73,8 +65,8 @@
     {#each sortedApptitudes as apptitude (apptitude.name)}
         <ApptitudesRow
             apptitude={apptitude} 
-            editApptitude={() => editApptitude(apptitude)} 
             deleteApptitude={() => deleteApptitude(apptitude)} 
+            isEditing={apptitude.isNew}
         />
     {/each}
 </div>
