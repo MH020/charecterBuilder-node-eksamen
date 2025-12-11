@@ -71,17 +71,15 @@ export async function fetchUpdate(endpoint, row) {
 
 export async function fetchDelete(endpoint, id){
   try {
-  const body = {id: id}
-  const response = await fetch(BASE_URL + endpoint + `/${id}`,  {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });  
-  const data = await response.json()
-  return { status: response.status, ...data }
+    const response = await fetch(BASE_URL + endpoint + `/${id}`,  {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });  
+    const data = await response.json()
+    return { status: response.status, ...data }
 
   } catch (error) {
     console.log(error)

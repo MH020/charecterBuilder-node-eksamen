@@ -74,9 +74,7 @@ router.put("/api/skills/:id", async (req, res) => {
 
 router.delete("/api/skills/:id", async (req, res) => {
     try {
-        console.log(req.body)
-        const { id } = req.body
-        console.log("skillid?", id)
+        const { id } = req.params;
 
         await db.query(
             `DELETE FROM skill where id = $1 `, [id],

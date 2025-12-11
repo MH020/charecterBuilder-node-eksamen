@@ -194,11 +194,18 @@ CREATE TABLE IF NOT EXISTS weapon_quality (
     "description" TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS category (
+    id SERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    category_type TEXT NOT NULL 
+);
+
 CREATE TABLE IF NOT EXISTS weapon (
     id SERIAL PRIMARY KEY,
     weapon_class_id INTEGER NOT NULL,
     "type" TEXT NOT NULL,
-    category TEXT NOT NULL,
+    category_id INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "range" TEXT NOT NULL,
     hands TEXT,
@@ -212,6 +219,7 @@ CREATE TABLE IF NOT EXISTS weapon (
     projectile_id INTEGER,
     is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_w_weapon_class_id FOREIGN KEY (weapon_class_id) REFERENCES weapon_class(id),
+    CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES category(id),
     CONSTRAINT fk_w_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id),
     CONSTRAINT fk_w_projectile_id FOREIGN KEY (projectile_id) REFERENCES weapon(id)
 );
@@ -248,19 +256,13 @@ CREATE TABLE IF NOT EXISTS weapon_upgrade (
     CONSTRAINT fk_wu_weapon_quality_modifier_id FOREIGN KEY (weapon_quality_modifier_id) REFERENCES weapon_quality(id)
 );
 
-CREATE TABLE IF NOT EXISTS item_category (
-    id SERIAL PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "description" TEXT
-);
-
 CREATE TABLE IF NOT EXISTS item (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     category_id INTEGER NOT NULL,
     is_custom BOOLEAN DEFAULT FALSE,
-    CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES item_category(id)
+    CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
 CREATE TABLE IF NOT EXISTS craftsmanship (
