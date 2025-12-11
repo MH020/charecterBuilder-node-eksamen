@@ -9,46 +9,35 @@
     export let isEditing;
 
     let showTooltip = false;
-
+    let editableWeapon = {};
 
 
 
     function startEditing(){
         isEditing = true;
-        editableName = weapon.name;
-        editableMain = weapon.main_aptitude;
-        editableSecondary = skill.secondary_aptitude;
+        editableWeapon = structuredClone(weapon);
 
     }
 
     async function saveEdit(){
-        const updated = {   
-            id: skill.id,            
-            name: editableName,
-            description: editableDescription,
-            main_aptitude: editableMain,
-            secondary_aptitude: editableSecondary
-        }
-        if(skill.isNew){
+        const updated = {...editableWeapon };
+
+        if(weapon.isNew){
             const response = await fetchPost("/api/skills", updated)
             console.log("created?",response)
             if(response.status === 201){
-                updated.id = response.created.id 
+                weapon = response.created
             }
 
         } else {
             fetchUpdate("/api/skills",updated);
         }
-        skill = updated
         isEditing = false
     }
 
     function cancelEdits() {
         isEditing = false;
-        editableName = skill.name;
-        editableDescription = skill.description;
-        editableMain = skill.main_aptitude;
-        editableSecondary = skill.secondary_aptitude;
+        editableWeapon = structuredClone(weapon);
     }
 
     function setMainApptitude() {
@@ -75,27 +64,11 @@
 <div class="row">
     <div class="row-name">
         {#if isEditing}
-            <input bind:value={editableName} />   
+            <input bind:value={editableWeapon.name} />   
         {:else}     
-        <span class="name">{skill.name || "----"}</span>
-        {/if}
-        {#if isEditing}
-
-        <textarea bind:value={editableDescription} rows="3" cols="30"></textarea>
-        {:else}
-        <button
-            class="description-btn"
-            on:mouseenter={() => showTooltip = true}
-            on:mouseleave={() => showTooltip = false}
-            aria-describedby="tooltip-description"
-        >
-            description
-        </button>
-        {/if}
-        {#if showTooltip}
-        <div id="tooltip-description" role="tooltip" class="tooltip">
-            {skill.description}
-        </div>
+        <span class="name">{weapon.name || "----"}</span>
+        <span class="class">{weapon.weapon_class.name || "----"}</span>
+        <span class="class">{weapon.range || "----"}</span>
         {/if}
     </div>
 

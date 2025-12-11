@@ -8,6 +8,7 @@ export async function seed(knex) {
   await knex('aptitude').del();
 
   await knex('aptitude').insert([
+    
     {name: "Agility" },
     {name: "Awareness" },
     {name: "Strength" },

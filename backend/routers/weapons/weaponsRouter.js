@@ -9,32 +9,41 @@ const router = Router()
 
 router.get("/api/weapons", async (req, res) => {
     try {
-        const result = await db.query(`
-            SELECT weapon.id, weapon.type, weapon.name, weapon.range, weapon.hands, weapon.rof, weapon.damage, weapon.pen, 
-                   weapon.clip, weapon.reload, weapon.wt, weapon.is_custom,
+    const result = await db.query(`
+        SELECT 
+            weapon.id, weapon.type, weapon.name, weapon.range, weapon.hands, weapon.rof, 
+            weapon.damage, weapon.pen, weapon.clip, weapon.reload, weapon.wt, weapon.is_custom,
 
-                json_build_object(
+            json_build_object(
+                'id', category.id,
+                'name', category.name
+            ) AS category,
+
+            json_build_object(
+                'id', availability.id,
+                'name', availability.name
+            ) AS availability,
+
+            json_agg(
+                jsonb_build_object(
                     'id', weapon_class.id,
-                    'name', weapon_class.name
-                ) AS weapon_class,
+                    'name', weapon_class.name,
+                    'description', weapon_class.description
+                )
+            ) AS classes
 
-                json_build_object(
-                    'id', category.id,
-                    'name', category.name
-                ) AS category,
+        FROM weapon
+        JOIN category ON weapon.category_id = category.id
+        JOIN availability ON weapon.availability_id = availability.id
+        JOIN weapon_weapon_class wwc ON wwc.weapon_id = weapon.id
+        JOIN weapon_class ON weapon_class.id = wwc.weapon_class_id
 
-                json_build_object(
-                    'id', availability.id,
-                    'name', availability.name
-                ) AS availability
+        GROUP BY weapon.id, category.id, availability.id
+    `);
 
-            FROM weapon
-            JOIN weapon_class ON weapon.weapon_class_id = weapon_class.id
-            JOIN category ON weapon.category_id = category.id
-            JOIN availability ON weapon.availability_id = availability.id;
-        `);
-
+        //const weapon_classesResult = await db.query(`SELECT * FROM weapon_weapon_class where`)
         const weapons = result.rows;
+        //const weapon_classes = weapon_classesResult.rows
 
         return res.status(200).json(weapons);
 
@@ -71,7 +80,7 @@ router.post("/api/weapons", async (req,res) => {
 router.put("/api/weapons/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const { weapon_class_id,type, category_id, name, hands, rof, damage, pen, clip, reload, wt, availability_id, projectile_id } = req.body;
+        const { weapon_class_id,type, category, name, hands, rof, damage, pen, clip, reload, wt, availability, projectile } = req.body;
 
 
         const is_custom = req.session.user?.role === "ADMIN" || false
