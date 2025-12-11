@@ -7,9 +7,9 @@ const router = Router()
 
 
 
-router.get("/api/aptitudes", async (req,res) => {
+router.get("/api/weapons", async (req,res) => {
     try {
-        const result = await db.query('SELECT * FROM aptitude')
+        const result = await db.query('SELECT * FROM weapon')
         const apptitudes = result.rows
         return res.status(200).send(apptitudes)   
 
@@ -19,7 +19,7 @@ router.get("/api/aptitudes", async (req,res) => {
     }   
 })
 
-router.post("/api/aptitudes", async (req,res) => {
+router.post("/api/weapons", async (req,res) => {
     try {
         const { name } = req.body
 
@@ -34,7 +34,7 @@ router.post("/api/aptitudes", async (req,res) => {
             [name]
         )
         const createdAptitude = result.rows[0];
-        return res.status(201).send({ message: 'Aptitude created sucessfully', created: createdAptitude})
+        return res.status(201).send({ message: 'weapon created sucessfully', created: createdAptitude})
         
     } catch (error) {
         console.error(error)
@@ -42,7 +42,7 @@ router.post("/api/aptitudes", async (req,res) => {
     }
 })
 
-router.put("/api/aptitudes/:id", async (req, res) => {
+router.put("/api/weapons/:id", async (req, res) => {
     try {
         const id = req.params.id;
         const { name } = req.body;
@@ -57,7 +57,7 @@ router.put("/api/aptitudes/:id", async (req, res) => {
     }
 })
 
-router.delete("/api/aptitudes/:id", async (req, res) => {
+router.delete("/api/weapons/:id", async (req, res) => {
     try {
         const { id } = req.params;
         console.log("skillid?", id)
