@@ -4,24 +4,19 @@
     import { fetchUpdate, fetchDelete, fetchPost } from "../../../util/fetchUtil";
 
 
-    export let skill
-    export let deleteSkill
+    export let weapon
+    export let deleteWeapon
     export let isEditing;
 
     let showTooltip = false;
 
 
-    let editableName = ""
-    let editableDescription = ""
-    let editableMain = {}
-    let editableSecondary = {}
 
 
     function startEditing(){
         isEditing = true;
-        editableName = skill.name;
-        editableDescription = skill.description;
-        editableMain = skill.main_aptitude;
+        editableName = weapon.name;
+        editableMain = weapon.main_aptitude;
         editableSecondary = skill.secondary_aptitude;
 
     }
