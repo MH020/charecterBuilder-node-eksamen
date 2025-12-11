@@ -2,12 +2,15 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
  */
-exports.seed = async function(knex) {
+export async function seed(knex) {
   // Deletes ALL existing entries
-  await knex('table_name').del()
-  await knex('table_name').insert([
-    {id: 1, colName: 'rowValue1'},
-    {id: 2, colName: 'rowValue2'},
-    {id: 3, colName: 'rowValue3'}
-  ]);
-};
+  await knex('category').del()
+
+  await knex('category').insert([
+    {name: 'Blade', description: 'Swords, daggers, axes', category_type: 'Melee' },
+    {name: 'Firearm', description: 'Guns and rifles', category_type: 'Ranged' },
+    {name: 'Explosive', description: 'Grenades, rockets, bombs', category_type: 'Explosive' },
+    {name: 'Energy', description: 'Lasers, plasma weapons', category_type: 'Energy' },
+    {name: 'Thrown', description: 'Knives, throwing axes', category_type: 'Melee' }
+  ])
+}
