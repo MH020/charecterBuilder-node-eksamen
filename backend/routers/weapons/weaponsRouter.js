@@ -41,9 +41,7 @@ router.get("/api/weapons", async (req, res) => {
         GROUP BY weapon.id, category.id, availability.id
     `);
 
-        //const weapon_classesResult = await db.query(`SELECT * FROM weapon_weapon_class where`)
         const weapons = result.rows;
-        //const weapon_classes = weapon_classesResult.rows
 
         return res.status(200).json(weapons);
 
