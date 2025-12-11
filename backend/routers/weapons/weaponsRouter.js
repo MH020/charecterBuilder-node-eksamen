@@ -7,17 +7,44 @@ const router = Router()
 
 
 
-router.get("/api/weapons", async (req,res) => {
+router.get("/api/weapons", async (req, res) => {
     try {
-        const result = await db.query('SELECT * FROM weapon')
-        const apptitudes = result.rows
-        return res.status(200).send(apptitudes)   
+        const query = `
+            SELECT 
+                weapon.id, weapon.type, weapon.name, weapon.range, weapon.hands, weapon.rof, weapon.damage, weapon.pen, 
+                weapon.clip, weapon.reload, weapon.wt, weapon.is_custom,
+
+                json_build_object(
+                    'id', weapon_class.id,
+                    'name', weapon_class.name
+                ) AS weapon_class,
+
+                json_build_object(
+                    'id', category.id,
+                    'name', category.name
+                ) AS category,
+
+                json_build_object(
+                    'id', availability.id,
+                    'name', availability.name
+                ) AS availability
+
+            FROM weapon
+            JOIN weapon_class ON weapon.weapon_class_id = weapon_class.id
+            JOIN category ON weapon.category_id = category.id
+            JOIN availability ON weapon.availability_id = availability.id;
+        `;
+
+        const result = await db.query(query);
+        const weapons = result.rows;
+
+        return res.status(200).json(weapons);
 
     } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }   
-})
+        console.error(error);
+        return res.status(500).json({ message: 'server error', error: error.message });
+    }
+});
 
 router.post("/api/weapons", async (req,res) => {
     try {
