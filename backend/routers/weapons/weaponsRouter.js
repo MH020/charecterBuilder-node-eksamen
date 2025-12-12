@@ -74,7 +74,7 @@ router.get("/api/weapons", async (req, res) => {
 
 router.post("/api/weapons", async (req,res) => {
     try {
-        const { weapon_class, type, category, name, hands, rof, damage, pen, clip, reload, wt, availability, projectile} = req.body;
+        const {type, name, range, hands, rof, damage, pen, clip, reload, wt, category, availability, classes, traits} = req.body;
 
         if (!name ) { //add more 
         return res.status(400).send({ message: 'missing fields' })
@@ -82,13 +82,22 @@ router.post("/api/weapons", async (req,res) => {
 
         const is_custom = req.session.user?.role === "ADMIN" || false
 
-            const result = await db.query(
-            `INSERT INTO weapon (weapon_class_id, type, category_id, "name", hands, rof, damage, pen, clip, reload, wt, availability_id , projectile_id) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 ,$12 ,$13, $14) RETURNING *`,
-            [weapon_class.id, type, category.id, name, hands, rof, damage, pen, clip, reload, wt, availability.id, projectile.id , is_custom]
+        const result = await db.query(
+            `INSERT INTO weapon (type, category_id, "name", range, hands, rof, damage, pen, clip, reload, wt, availability_id, is_custom) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
+            [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom]
         )
-        const createdAptitude = result.rows[0];
-        return res.status(201).send({ message: 'weapon created sucessfully', created: createdAptitude})
+        const createdWeapon = result.rows[0];
+
+        for (const weaponClass of classes){
+            await db.query(`INSERT INTO weapon_weapon_class (weapon_class_id, weapon_id) VALUES ($1, $2)`,[weaponClass.id, createdWeapon.id ])
+        }
+
+        for (const trait of traits){
+            await db.query(`INSERT INTO weapon_weapon_traits (weapon_trait_id, weapon_id) VALUES ($1, $2)`,[trait.id, createdWeapon.id ])
+        }
+
+        return res.status(201).send({ message: 'weapon created sucessfully', created: createdWeapon})
         
     } catch (error) {
         console.error(error)
@@ -99,14 +108,31 @@ router.post("/api/weapons", async (req,res) => {
 router.put("/api/weapons/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const { weapon_class_id,type, category, name, hands, rof, damage, pen, clip, reload, wt, availability, projectile } = req.body;
+        const {type, name, range, hands, rof, damage, pen, clip, reload, wt, category, availability, classes, traits} = req.body;
 
 
         const is_custom = req.session.user?.role === "ADMIN" || false
 
-        await db.query( `UPDATE weapon SET weapon_class_id = $1, type = $2, category_id = $3, name = $4, hands = $5, rof = $6, damage = $7, pen = $8,
-        clip = $9, reload = $10, wt = $11, availability_id = $12, projectile_id = $13, is_custom =$14, WHERE id = $15 RETURNING *`, 
-        [weapon_class.id, type, category.id, name, hands, rof, damage, pen, clip, reload, wt, availability.id, projectile.id , is_custom, id]);
+        const result = await db.query(
+            `UPDATE weapon SET type = $1, category_id = $2, name = $3, range = $4, hands = $5, rof = $6, damage = $7, pen = $8, clip = $9,
+                reload = $10, wt = $11, availability_id = $12, is_custom = $13 WHERE id = $14
+            RETURNING *`,
+            [ type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom,id ]
+        );
+
+        const updatedWeapon = result.rows[0];
+
+        await db.query(`DELETE FROM weapon_weapon_class WHERE weapon_id = $1`,[id]);
+
+        await db.query(`DELETE FROM weapon_weapon_traits WHERE weapon_id = $1`,[id]);
+
+        for (const weaponClass of classes){
+            await db.query(`INSERT INTO weapon_weapon_class (weapon_class_id, weapon_id) VALUES ($1, $2)`,[weaponClass.id, createdWeapon.id ])
+        }
+
+        for (const trait of traits){
+            await db.query(`INSERT INTO weapon_weapon_traits (weapon_trait_id, weapon_id) VALUES ($1, $2)`,[trait.id, createdWeapon.id ])
+        }
 
         return res.status(200).send({ message: 'aptitude updated' })
         
@@ -121,9 +147,12 @@ router.delete("/api/weapons/:id", async (req, res) => {
         const { id } = req.params;
         console.log("skillid?", id)
 
-        await db.query(
-            `DELETE FROM weapon where id = $1 `, [id],
+        await db.query(`DELETE FROM weapon where id = $1 `, [id],
         )
+
+        await db.query(`DELETE FROM weapon_weapon_class WHERE weapon_id = $1`,[id]);
+
+        await db.query(`DELETE FROM weapon_weapon_traits WHERE weapon_id = $1`,[id]);
 
         return res.status(200).send({ message: 'aptitude deleted' })
         
