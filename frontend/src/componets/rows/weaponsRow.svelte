@@ -1,8 +1,10 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
+    import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
     import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
+    import WeaponTraitList from "../lists/weaponLists/weaponTraitList.svelte";
 
     export let weapon
     export let deleteWeapon
@@ -53,25 +55,27 @@
 
             modalSelectCallback.set(null);
         });
-        openModal(CategoryList);
+        openModal(AvailabilityList);
 
     }
 
-    function selectWeaponClass(){
-        modalSelectCallback.set((WeaponClass) => {
+function selectMultibleFromModal(list, component){
+    modalSelectCallback.set((selectedElement) => {
 
-            const present = editableWeapon.classes.includes(WeaponClass);
+        const index = list.findIndex(item => item.id === selectedElement.id);
 
-            if(present){
-                editableWeapon.classes = editableWeapon.filter(presentClass => presentClass !== WeaponClass)
-            } else {
-                editableWeapon.classes = [...editableWeapon.classes, WeaponClass ]  
-            }
+        if (index >= 0) {
+            list.splice(index, 1);       
+        } else {
+            list.push(selectedElement);    
+        }
+        editableWeapon = { ...editableWeapon };
 
-            modalSelectCallback.set(null);
-        });
-        openModal(WeaponClassList);
-    }
+        modalSelectCallback.set(null);
+    });
+
+    openModal(component);
+}
 
 
 </script>
@@ -140,7 +144,7 @@
     </div>
 
 
-    <button on:click={selectWeaponClass}>select class</button>
+    <button on:click={()=> selectMultibleFromModal(editableWeapon.classes, WeaponClassList)}>select class</button>
 
     <div class="cell-box">
       <div class="label">Class</div>
@@ -158,7 +162,7 @@
       </div>
     </div>
 
-    <button on:click={selectWeaponClass}>select class</button>
+    <button on:click={()=> selectMultibleFromModal(editableWeapon.traits, WeaponTraitList)}>select Weapon Trait</button>
 
     <div class="cell-box">
       <div class="label">Traits</div>

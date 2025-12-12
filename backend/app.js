@@ -11,6 +11,8 @@ import apptitudesRouter from './routers/apptitudes/apptitudesRouter.js'
 import weaponRouter from './routers/weapons/weaponsRouter.js'
 import categoryRouter from './routers/general/categoryRoutes.js'
 import availabilityRouter from './routers/general/availabilityRouter.js'
+import weaponClassRouter from './routers/weapons/weaponClassRouter.js'
+import weaponTraitRouter from './routers/weapons/weaponTraitRouter.js'
 
 const app = express()
 
@@ -43,11 +45,16 @@ app.use(skillsRoutes)
 
 app.use(apptitudesRouter)
 
+//weapons
 app.use(weaponRouter)
 
 app.use(categoryRouter)
 
 app.use(availabilityRouter)
+
+app.use(weaponClassRouter)
+
+app.use(weaponTraitRouter)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))
