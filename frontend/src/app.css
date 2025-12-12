@@ -140,6 +140,8 @@ button:focus-visible {
 
 .row {
     display: flex;
+    gap: 8px;
+    padding: 10px 15px;
     align-items: center;
     justify-content: space-between;
     background-color: #1b1b1b; 
@@ -157,7 +159,19 @@ button:focus-visible {
     background-color: #2a2a2a;
 }
 
-.name {
+.cell-box {
+  background-color: #1b1b1b;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 8px;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #e0e0e0;
+}
+
+.label {
     display: flex;
     align-items: center;
     position: relative; 
@@ -166,8 +180,7 @@ button:focus-visible {
     color: #ffb86c; 
 }
 
-
-.description-btn {
+.tag {
     background: none;
     border: none;
     padding: 0 4px;

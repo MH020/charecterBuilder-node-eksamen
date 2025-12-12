@@ -7,7 +7,7 @@ const router = Router()
 
 
 
-router.get("/api/skills", isAdmin, async (req,res) => {
+router.get("/api/skills", async (req,res) => {
     try {
         const result = await db.query('SELECT * FROM skill WHERE is_custom = false')
         const secoundResult = await db.query('SELECT * FROM aptitude')
