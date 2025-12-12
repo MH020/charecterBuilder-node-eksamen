@@ -16,6 +16,9 @@
     function startEditing(){
         isEditing = true;
         editableWeapon = structuredClone(weapon);
+        //need to stop lists from being null or things break
+        editableWeapon.classes ||= [];
+        editableWeapon.traits ||= [];
 
     }
 
@@ -60,7 +63,9 @@
     }
 
 function selectMultibleFromModal(list, component){
+
     modalSelectCallback.set((selectedElement) => {
+        console.log(selectedElement)
 
         const index = list.findIndex(item => item.id === selectedElement.id);
 
@@ -70,6 +75,7 @@ function selectMultibleFromModal(list, component){
             list.push(selectedElement);    
         }
         editableWeapon = { ...editableWeapon };
+        console.log(editableWeapon)
 
         modalSelectCallback.set(null);
     });
