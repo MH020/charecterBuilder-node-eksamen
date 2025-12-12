@@ -24,21 +24,42 @@ router.get("/api/weapons", async (req, res) => {
                 'name', availability.name
             ) AS availability,
 
-            json_agg(
-                jsonb_build_object(
-                    'id', weapon_class.id,
-                    'name', weapon_class.name,
-                    'description', weapon_class.description
+            (
+                SELECT json_agg(
+                    jsonb_build_object(
+                        'id', weapon_class.id,
+                        'name', weapon_class.name,
+                        'description', weapon_class.description
+                    )
                 )
-            ) AS classes
+                FROM weapon_weapon_class 
+                JOIN weapon_class 
+                    ON weapon_class.id = weapon_weapon_class.weapon_class_id
+                WHERE weapon_weapon_class.weapon_id = weapon.id
+            ) AS classes,
+
+            (
+                SELECT json_agg(
+                    jsonb_build_object(
+                        'id', weapon_trait.id,
+                        'name', weapon_trait.name,
+                        'description', weapon_trait.description
+                    )
+                )
+                FROM weapon_weapon_traits 
+                JOIN weapon_trait 
+                    ON weapon_trait.id = weapon_weapon_traits.weapon_trait_id
+                WHERE weapon_weapon_traits.weapon_id = weapon.id
+            ) AS traits
 
         FROM weapon
         JOIN category ON weapon.category_id = category.id
         JOIN availability ON weapon.availability_id = availability.id
-        JOIN weapon_weapon_class wwc ON wwc.weapon_id = weapon.id
-        JOIN weapon_class ON weapon_class.id = wwc.weapon_class_id
 
-        GROUP BY weapon.id, category.id, availability.id
+        GROUP BY 
+            weapon.id,
+            category.id,
+            availability.id;
     `);
 
         const weapons = result.rows;
