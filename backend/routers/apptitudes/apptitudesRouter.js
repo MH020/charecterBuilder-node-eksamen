@@ -27,8 +27,6 @@ router.post("/api/aptitudes", async (req,res) => {
         return res.status(400).send({ message: 'missing fields' })
         }
 
-        const is_custom = req.session.user?.role === "ADMIN" || false
-
             const result = await db.query(
             `INSERT INTO aptitude ("name") VALUES ($1) RETURNING *`,
             [name]
