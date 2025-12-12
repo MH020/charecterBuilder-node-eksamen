@@ -57,10 +57,9 @@
     }
 
     function setMainApptitude() {
-        console.log(ApptitudesList)
         modalSelectCallback.set((selectedAptitude) => {
         editableMain = selectedAptitude;
-        console.log("selected apptitude", selectedAptitude)
+
         modalSelectCallback.set(null);
         });
         openModal(ApptitudesList);
@@ -69,7 +68,7 @@
     function setSecoundaryApptitude() {
         modalSelectCallback.set((selectedAptitude) => {
         editableSecondary = selectedAptitude;
-        console.log(selectedAptitude)
+
         modalSelectCallback.set(null);
         });
         openModal(ApptitudesList);

@@ -1,8 +1,8 @@
 <script>
     import { onMount } from 'svelte';
-    import WeaponsRow from '../rows/weaponsRow.svelte';
-    import { fetchDelete, fetchGet } from '../../../util/fetchUtil';
-    import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
+    import WeaponsRow from '../../rows/weaponsRow.svelte';
+    import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
+    import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
 
 
     let weapons = [];

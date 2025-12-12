@@ -17,7 +17,7 @@
   import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
   import ApptitudesList from "./componets/lists/ApptitudesList.svelte";
   import BaseModal from "./componets/modal/BaseModal.svelte";
-  import WeaponsList from "./componets/lists/weaponsList.svelte";
+  import WeaponsList from "./componets/lists/weaponLists/weaponsList.svelte";
 
   let user = null;
   let loading = true
