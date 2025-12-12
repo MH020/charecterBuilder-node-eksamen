@@ -2,6 +2,7 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
+    import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
 
     export let weapon
     export let deleteWeapon
@@ -48,16 +49,28 @@
 
     function selectAvailability(){
         modalSelectCallback.set((availability) => {
-        editableWeapon.availability = availability;
+            editableWeapon.availability = availability;
 
-        modalSelectCallback.set(null);
+            modalSelectCallback.set(null);
         });
         openModal(CategoryList);
 
     }
 
     function selectWeaponClass(){
-        
+        modalSelectCallback.set((WeaponClass) => {
+
+            const present = editableWeapon.classes.includes(WeaponClass);
+
+            if(present){
+                editableWeapon.classes = editableWeapon.filter(presentClass => presentClass !== WeaponClass)
+            } else {
+                editableWeapon.classes = [...editableWeapon.classes, WeaponClass ]  
+            }
+
+            modalSelectCallback.set(null);
+        });
+        openModal(WeaponClassList);
     }
 
 
