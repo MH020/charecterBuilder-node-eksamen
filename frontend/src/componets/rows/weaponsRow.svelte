@@ -1,7 +1,7 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
-    import CategoryList from "../lists/categoryList.svelte";
+    import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
     export let weapon
     export let deleteWeapon
@@ -47,6 +47,12 @@
     }
 
     function selectAvailability(){
+        modalSelectCallback.set((availability) => {
+        editableWeapon.availability = availability;
+
+        modalSelectCallback.set(null);
+        });
+        openModal(CategoryList);
 
     }
 

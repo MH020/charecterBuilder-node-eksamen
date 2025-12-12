@@ -1,8 +1,8 @@
 <script>
     import { onMount } from 'svelte';
-    import { fetchDelete, fetchGet } from '../../../util/fetchUtil';
-    import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
-    import CategoryRow from '../rows/CategoryRow.svelte';
+    import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
+    import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
+    import CategoryRow from '../../rows/CategoryRow.svelte';
 
     let categoryies = [];
     let sortType = "all"; 
@@ -50,7 +50,7 @@
         sort by... {sortType === "all" ? "A -> Z" : "Z -> A"}
     </button>
     <button on:click={createCategory}>
-        new weapon 
+        new category 
     </button>
 </div>
 
