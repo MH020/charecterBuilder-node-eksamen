@@ -9,6 +9,9 @@ import authRouthes from './routers/users/authRoutes.js'
 import skillsRoutes from './routers/skill/skillsRouter.js'
 import apptitudesRouter from './routers/apptitudes/apptitudesRouter.js'
 import weaponRouter from './routers/weapons/weaponsRouter.js'
+import categoryRouter from './routers/general/categoryRoutes.js'
+import availabilityRouter from './routers/general/availabilityRouter.js'
+
 const app = express()
 
 app.use(express.json())
@@ -41,6 +44,10 @@ app.use(skillsRoutes)
 app.use(apptitudesRouter)
 
 app.use(weaponRouter)
+
+app.use(categoryRouter)
+
+app.use(availabilityRouter)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))

@@ -4,21 +4,18 @@
     import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
     import CategoryRow from '../rows/CategoryRow.svelte';
 
-    export let data = null
     let categoryies = [];
     let sortType = "all"; 
     let sortedWeapons= [];
 
-    if(!data){
-        onMount(async () => {
-            const response = await fetchGet("/api/Category")
-            if (response.status === 200) {
+ 
+    onMount(async () => {
+        const response = await fetchGet("/api/Category")
+        if (response.status === 200) {
                 categoryies = response.data
-            } 
-        });
-    } else {
-        categoryies = data
-    }
+        } 
+    });
+
 
 
     function createCategory(){
