@@ -44,7 +44,6 @@
         modalSelectCallback.set(null);
         });
         openModal(CategoryList);
-
     }
 
     function selectAvailability(){

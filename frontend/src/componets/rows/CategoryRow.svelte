@@ -1,6 +1,6 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
-    import { modalSelectCallback, openModal } from "../../store/modalStore";
+    import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
     import CategoryList from "../lists/categoryList.svelte";
 
     export let category
@@ -77,8 +77,12 @@
     </div>
 
     <div class="buttons">
-        <button on:click={() => startEditing()}>Edit</button>
-    <button on:click={() => deleteCategory()}>Delete </button>
+        {#if !$modalSelectCallback}
+            <button on:click={() => startEditing()}>Edit</button>
+            <button on:click={() => deleteCategory()}>Delete </button>
+        {:else}
+            <button on:click={() => {$modalSelectCallback(category); closeModal();}}> select</button>
+        {/if}
     </div>
   {/if}
 </div>

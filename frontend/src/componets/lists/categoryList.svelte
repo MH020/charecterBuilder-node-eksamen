@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { fetchDelete, fetchGet } from '../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../util/ToastrUtil';
+    import CategoryRow from '../rows/CategoryRow.svelte';
 
     export let data = null
     let categoryies = [];
@@ -58,8 +59,8 @@
 
 <div>
     {#each categoryies as category (category.id)}
-        <WeaponsRow category={category} 
-        deleteWeapon={() => deleteCategory(category)}
+        <CategoryRow category={category} 
+        deleteCategory={() => deleteCategory(category)}
         isEditing={category.isNew}/>
     {/each}
 </div>
