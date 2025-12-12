@@ -1,7 +1,7 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
-    import CategoryList from "../lists/CategoryList.svelte";
+    import CategoryList from "../lists/categoryList.svelte";
 
     export let weapon
     export let deleteWeapon
