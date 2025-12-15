@@ -45,7 +45,7 @@ app.use(skillsRoutes)
 
 app.use(apptitudesRouter)
 
-//weapons
+// weapons
 app.use(weaponRouter)
 
 app.use(categoryRouter)

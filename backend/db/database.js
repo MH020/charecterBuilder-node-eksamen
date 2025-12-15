@@ -4,19 +4,15 @@ import auth from './../util/encrypter.js'
 import fs from 'fs'
 import path from 'path'
 
-
 const seedMode = process.argv.includes('seed')
 const reset = process.argv.includes('reset')
 
-
-async function database() {
-
-
+async function database () {
   if (seedMode) {
-    const dbfile = fs.readFileSync("./db/schema.sql").toString()
+    const dbfile = fs.readFileSync('./db/schema.sql').toString()
     try {
-    await db.query(dbfile)
-    //await db.query(seedFile)
+      await db.query(dbfile)
+      // await db.query(seedFile)
       console.log('Seed data loaded successfully!')
     } catch (err) {
       console.error('Error loading seed data:', err)
@@ -24,18 +20,17 @@ async function database() {
   }
 
   if (reset) {
-    if (process.argv.includes('prod')){
-      console.log("you are about to reset the prod database please only do that manueally or use migrations")
+    if (process.argv.includes('prod')) {
+      console.log('you are about to reset the prod database please only do that manueally or use migrations')
       return
     }
-    const dbfile = fs.readFileSync("./db/schema.sql").toString()
+    const dbfile = fs.readFileSync('./db/schema.sql').toString()
     try {
-    await db.query('DROP SCHEMA public CASCADE;')
+      await db.query('DROP SCHEMA public CASCADE;')
 
-    await db.query('  CREATE SCHEMA public;')
+      await db.query('  CREATE SCHEMA public;')
 
-    await db.query(dbfile)
-
+      await db.query(dbfile)
 
       console.log('database reset and data reloaded')
     } catch (err) {

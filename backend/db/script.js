@@ -6,14 +6,14 @@ const dbProdUrl = process.env.DB_URI_PROD
 const prod = process.argv.includes('prod')
 const dev = process.argv.includes('dev')
 
-function connectToDev() {
+function connectToDev () {
   if (!dbDevUrl) {
-    console.error("No dev connection string")
+    console.error('No dev connection string')
     return
   }
 
   const child = spawn('psql', [dbDevUrl], {
-    stdio: 'inherit'  
+    stdio: 'inherit'
   })
 
   child.on('exit', (code) => {
@@ -21,15 +21,14 @@ function connectToDev() {
   })
 }
 
-
-function connectToProd() {
+function connectToProd () {
   if (!dbDevUrl) {
-    console.error("No dev connection string")
+    console.error('No dev connection string')
     return
   }
 
   const child = spawn('psql', [dbProdUrl], {
-    stdio: 'inherit'  
+    stdio: 'inherit'
   })
 
   child.on('exit', (code) => {
@@ -37,8 +36,8 @@ function connectToProd() {
   })
 }
 
-if(dev){
-    connectToDev()
+if (dev) {
+  connectToDev()
 } else {
-    connectToProd()
+  connectToProd()
 }

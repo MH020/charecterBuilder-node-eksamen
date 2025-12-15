@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: '../.env' });
+import dotenv from 'dotenv'
+dotenv.config({ path: '../.env' })
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
@@ -36,4 +36,4 @@ export default {
     migrations: { tableName: 'knex_migrations' }
   }
 
-};
+}

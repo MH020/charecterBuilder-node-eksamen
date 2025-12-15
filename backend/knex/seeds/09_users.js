@@ -3,13 +3,12 @@ import 'dotenv/config'
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-import auth from '../../util/encrypter.js'  
+import auth from '../../util/encrypter.js'
 
-export async function seed(knex) {
-  await knex('user').del();
+export async function seed (knex) {
+  await knex('user').del()
 
-  const hashedPassword = await auth.encryptPassword(process.env.ADMIN_PASSWORD);
-
+  const hashedPassword = await auth.encryptPassword(process.env.ADMIN_PASSWORD)
 
   const [admin] = await knex('user')
     .insert({
@@ -20,7 +19,7 @@ export async function seed(knex) {
       verified: true,
       role: 'OWNER'
     })
-    .returning('*'); 
+    .returning('*')
 
-  console.log('Admin user created:', admin);
+  console.log('Admin user created:', admin)
 }

@@ -5,7 +5,7 @@ import sendMail from '../../util/nodeMailer.js'
 import crypto from 'crypto'
 import { buildSingupEmail } from '../../util/emailPageBuilder.js'
 import { rateLimit } from 'express-rate-limit'
-import {isLoggedIn } from '../../middleware/auth.js'
+import { isLoggedIn } from '../../middleware/auth.js'
 
 const router = Router()
 
@@ -17,7 +17,6 @@ const authLimiter = rateLimit({
 })
 
 router.use(authLimiter)
-
 
 router.get('/api/users/id', isLoggedIn, async (req, res) => {
   try {
@@ -52,7 +51,6 @@ router.post('/api/login', async (req, res) => {
   }
   return res.status(200).send({ message: 'login successful' })
 })
-
 
 router.post('/api/users', async (req, res) => {
   try {

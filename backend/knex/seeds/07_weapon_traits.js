@@ -1,10 +1,10 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Deletes ALL existing entries
-  await knex('weapon_trait').del();
+  await knex('weapon_trait').del()
 
   // Inserts seed entries
   await knex('weapon_trait').insert([
@@ -58,5 +58,5 @@ export async function seed(knex) {
       description: 'A finely made or modified weapon; bonus determined by the GM.',
       is_custom: true
     }
-  ]);
+  ])
 }
