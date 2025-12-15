@@ -108,6 +108,7 @@ router.post("/api/weapons", async (req,res) => {
 router.put("/api/weapons/:id", async (req, res) => {
     try {
         const id = req.params.id;
+        console.log(id)
         const {type, name, range, hands, rof, damage, pen, clip, reload, wt, category, availability, classes, traits} = req.body;
 
 
@@ -127,11 +128,11 @@ router.put("/api/weapons/:id", async (req, res) => {
         await db.query(`DELETE FROM weapon_weapon_traits WHERE weapon_id = $1`,[id]);
 
         for (const weaponClass of classes){
-            await db.query(`INSERT INTO weapon_weapon_class (weapon_class_id, weapon_id) VALUES ($1, $2)`,[weaponClass.id, createdWeapon.id ])
+            await db.query(`INSERT INTO weapon_weapon_class (weapon_class_id, weapon_id) VALUES ($1, $2)`,[weaponClass.id, updatedWeapon.id ])
         }
 
         for (const trait of traits){
-            await db.query(`INSERT INTO weapon_weapon_traits (weapon_trait_id, weapon_id) VALUES ($1, $2)`,[trait.id, createdWeapon.id ])
+            await db.query(`INSERT INTO weapon_weapon_traits (weapon_trait_id, weapon_id) VALUES ($1, $2)`,[trait.id, updatedWeapon.id ])
         }
 
         return res.status(200).send({ message: 'aptitude updated' })

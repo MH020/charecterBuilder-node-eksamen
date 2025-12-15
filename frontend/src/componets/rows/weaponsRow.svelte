@@ -7,40 +7,52 @@
     import WeaponTraitList from "../lists/weaponLists/weaponTraitList.svelte";
 
     export let weapon
-    export let deleteWeapon
-    export let isEditing;
-    let editableWeapon = {};
+    export let onSave;     
+    export let onDelete;   
+
+    let editableWeapon = structuredClone(weapon);
+    let isEditing = weapon.isNew;
     let classTooltip = [];
     let traitTooltip = [];
 
     function startEditing(){
         isEditing = true;
-        editableWeapon = structuredClone(weapon);
         //need to stop lists from being null or things break
         editableWeapon.classes ||= [];
         editableWeapon.traits ||= [];
 
     }
 
-    async function saveEdit(){
-        const updated = {...editableWeapon };
+    async function saveEdit() {
+        let updated;
 
-        if(weapon.isNew){
-            const response = await fetchPost("/api/skills", updated)
-            console.log("created?",response)
-            if(response.status === 201){
-                weapon = response.created
+        if (weapon.isNew) {
+            const response = await fetchPost("/api/weapons", editableWeapon);
+            if (response.status === 201) {
+                updated = response.created;
             }
-
         } else {
-            fetchUpdate("/api/skills",updated);
+            await fetchUpdate("/api/weapons", editableWeapon);
+            updated = editableWeapon;
         }
-        isEditing = false
+
+        onSave(updated);   
+        isEditing = false;
     }
 
     function cancelEdit() {
         isEditing = false;
-        editableWeapon = structuredClone(weapon);
+
+        if (weapon.isNew) {
+
+            onDelete(weapon.id, true); 
+        } else {
+            editableWeapon = structuredClone(weapon);
+        }
+    }
+
+      function deleteRow() {
+        onDelete(weapon.id);  
     }
 
     function selectCategory(){
@@ -279,8 +291,8 @@ function selectMultibleFromModal(list, component){
     </div>
 
     <div class="buttons">
-        <button on:click={() => startEditing()}>Edit</button>
-    <button on:click={() => deleteWeapon()}>Delete </button>
+        <button on:click={startEditing}>Edit</button>
+    <button on:click={deleteRow}>Delete </button>
     </div>
   {/if}
 </div>

@@ -1,5 +1,6 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
+    import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
     export let weaponTrait;
     export let onSave;     
@@ -86,9 +87,13 @@
         </div>
         {/if}
 
-        <div class="buttons">
-        <button on:click={startEditing}>Edit</button>
-        <button on:click={deleteRow}>Delete</button>
-        </div>
+    <div class="buttons">
+        {#if !$modalSelectCallback}
+            <button on:click={() => startEditing}>Edit</button>
+            <button on:click={() => deleteRow}>Delete </button>
+        {:else}
+            <button on:click={() => {$modalSelectCallback(weaponTrait); closeModal();}}> select</button>
+        {/if}
+    </div>
   {/if}
 </div>

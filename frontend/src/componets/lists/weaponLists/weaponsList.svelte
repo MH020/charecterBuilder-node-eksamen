@@ -3,17 +3,16 @@
     import WeaponsRow from '../../rows/weaponsRow.svelte';
     import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
+    import { deleteItem, saveItem } from '../../../../util/ListUtil';
 
 
     let weapons = [];
     let sortType = "all"; 
-    let sortedWeapons= [];
 
     onMount(async () => {
         const response = await fetchGet("/api/weapons")
         if (response.status === 200) {
             weapons = response.data
-            console.log(response.data)
         } 
     });
 
@@ -40,12 +39,17 @@
         console.log(weapons)
     }
 
-    async function deleteWeapon(weapon){
-        const response = await fetchDelete("/api/weapons", weapon.id)
-        toastrDisplayHTTPCode(response.status, response.message)
-        if (response.status === 200){
-            weapons = weapons.filter(weapon => weapon.id !== weapon.id)
+    async function deleteWeapon(id, isNew = false) {
+        if(isNew){
+
+            weapons = weapons.filter(weaponTrait => weaponTrait.id !== id);
+            return;
         }
+        weapons = await deleteItem(id,"/api/weapon/traits",weapons);
+    }
+
+    function saveWeapon(updated) {
+        weapons = saveItem(updated, weapons);
     }
 
     //sorting needed 
@@ -66,9 +70,10 @@
 
 <div>
     {#each weapons as weapon (weapon.id)}
-        <WeaponsRow weapon={weapon} 
-        deleteWeapon={() => deleteWeapon(weapon)}
-        isEditing={weapon.isNew}/>
+        <WeaponsRow {weapon} 
+        onSave={saveWeapon}
+        onDelete={deleteWeapon}
+        />
     {/each}
 </div>
 

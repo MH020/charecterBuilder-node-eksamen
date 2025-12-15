@@ -43,6 +43,7 @@ export async function fetchPost (endpoint, body) {
 
 export async function fetchUpdate(endpoint, row) {
       try {
+        console.log(row.id)
           const response = await fetch(BASE_URL + endpoint + `/${row.id}`, 
               {
                   method: "PUT",
