@@ -1,7 +1,9 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchGet } from '../../../../util/fetchUtil';
-    import {deleteItem, saveItem} from '../../../.deleteEntitymport WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
+    import { deleteEntity, saveEntity } from '../../../../util/ListUtil';
+    import WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
+
 
 
     let weaponTraits = [];
@@ -34,11 +36,11 @@
             weaponTraits = weaponTraits.filter(weaponTrait => weaponTrait.id !== id);
             return;
         }
-        weaponTraits = await deleteItem(id,"/api/weapon/traits",weaponTraits);
+        weaponTraits = await deleteEntity(id,"/api/weapon/traits",weaponTraits);
     }
 
     function saveWeaponTrait(updated) {
-        weaponTraits = saveItem(updated, weaponTraits);
+        weaponTraits = saveEntity(updated, weaponTraits);
     }deleteEntity
     //sorting needed 
 

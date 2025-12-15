@@ -13,7 +13,7 @@ import categoryRouter from './routers/general/categoryRoutes.js'
 import availabilityRouter from './routers/general/availabilityRouter.js'
 import weaponClassRouter from './routers/weapons/weaponClassRouter.js'
 import weaponTraitRouter from './routers/weapons/weaponTraitRouter.js'
-
+import itemsRouter from './routers/items/ItemsRouiters.js'
 const app = express()
 
 app.use(express.json())
@@ -48,13 +48,17 @@ app.use(apptitudesRouter)
 // weapons
 app.use(weaponRouter)
 
-app.use(categoryRouter)
-
-app.use(availabilityRouter)
-
 app.use(weaponClassRouter)
 
 app.use(weaponTraitRouter)
+
+//items 
+
+app.use(itemsRouter)
+
+app.use(categoryRouter)
+
+app.use(availabilityRouter)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))

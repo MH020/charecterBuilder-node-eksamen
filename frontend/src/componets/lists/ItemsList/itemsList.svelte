@@ -1,8 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
-    import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
-    import AvailabilityRow from '../../rows/availabilityRow.svelte';
+    import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity, saveEntity } from '../../../../util/ListUtil';
     import ItemsRow from '../../rows/ItemsRow.svelte';
 
@@ -13,6 +11,7 @@
         const response = await fetchGet("/api/items");
         if (response.status === 200) {
             items = response.data;
+            console.log(items)
         }
     });
 
@@ -30,7 +29,10 @@
     function createItem() {
         const newItem = {
             id: null,  
-            name: "",        
+            name: "",  
+            description: "",
+            category: null,
+            availability: null,
             isNew: true
 
         };
@@ -66,7 +68,7 @@
 
 
 {#each items as item (item.id)}
-        <ItemsRow item={weaponTrait}
+        <ItemsRow {item}
         onSave={saveWeaponTrait}
         onDelete={deleteItem}
     />

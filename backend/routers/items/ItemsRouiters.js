@@ -6,7 +6,22 @@ const router = Router()
 
 router.get('/api/items', async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM item')
+    const result = await db.query(`
+      SELECT item.id, item.name, item.description, item.is_custom,
+        json_build_object(
+          'id', category.id,
+          'name', category.name
+        ) AS category,
+
+        json_build_object(
+          'id', availability.id,
+          'name', availability.name
+        ) AS availability
+
+      FROM item
+      LEFT JOIN category ON item.category_id = category.id
+      LEFT JOIN availability ON item.availability_id = availability.id
+    `);
     const items = result.rows
     return res.status(200).send(items)
   } catch (error) {

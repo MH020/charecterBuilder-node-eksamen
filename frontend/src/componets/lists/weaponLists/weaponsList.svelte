@@ -15,24 +15,25 @@
         } 
     });
 
-    function createWeapon(){
+    function createWeapon() {
         const newWeapon = {
-            weapon_class: null, 
-            id: null,         
-            type: "", 
-            category: null, 
-            name: "", 
-            hands: "", 
-            rof: "",
-            damage: "", 
-            pen: "", 
-            clip: "",
-            reload: "", 
-            wt: "", 
-            availability: null, 
-            projectile: null, 
-            is_custom: true,
-            isNew: true
+        id: null,
+        type: "",
+        category: {},       
+        name: "",
+        hands: "",
+        rof: "",
+        damage: "",
+        pen: "",
+        clip: "",
+        reload: "",
+        wt: "",
+        availability: {},   
+        projectile: null,
+        classes: [],        
+        traits: [],         
+        is_custom: true,
+        isNew: true
         };
         weapons = [...weapons, newWeapon];
         console.log(weapons)

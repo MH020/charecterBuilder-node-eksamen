@@ -267,8 +267,10 @@ CREATE TABLE IF NOT EXISTS item (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     category_id INTEGER NOT NULL,
+    availability_id INTEGER NOT NULL,
     is_custom BOOLEAN DEFAULT FALSE,
-    CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES category(id)
+    CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES category(id),
+    CONSTRAINT fk_i_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id)
 );
 
 CREATE TABLE IF NOT EXISTS craftsmanship (

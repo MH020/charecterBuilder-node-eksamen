@@ -1,5 +1,6 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
+    import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
     export let availability;
     export let onSave;     
@@ -48,6 +49,7 @@
     function deleteRow() {
         onDelete(availability.id);  
     }
+
 </script>
 
 
@@ -69,8 +71,12 @@
     </div>
 
     <div class="buttons">
-      <button on:click={startEditing}>Edit</button>
-      <button on:click={deleteRow}>Delete</button>
+        {#if !$modalSelectCallback}
+            <button on:click={() => startEditing}>Edit</button>
+            <button on:click={() => deleteRow}>Delete </button>
+        {:else}
+            <button on:click={() => {$modalSelectCallback(availability); closeModal();}}> select</button>
+        {/if}
     </div>
   {/if}
 </div>

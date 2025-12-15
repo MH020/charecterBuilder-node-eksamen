@@ -2,6 +2,8 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { selectSingleFromModal } from "../../../util/ListUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
+    import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
+    import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
     export let item;
     export let onSave;
@@ -12,7 +14,7 @@
     let showTooltip;
 
     $: if (!isEditing) {
-        editableItem = structuredClone(editableItem);
+        editableItem = structuredClone(item);
     }
 
     function startEditing() {
@@ -56,33 +58,47 @@
 
 <div class="row">
     {#if isEditing}
+            <div class="cell-box">
+                <div class="label">Category</div>
+                <button
+                    on:click={() =>
+                        selectSingleFromModal(editableItem,"category",CategoryList,)
+                    }
+                >
+                    {editableItem.category.name}
+                </button>
+            </div>
         <div class="cell-box">
             <div class="label">Name</div>
             <input bind:value={editableItem.name} />
         </div>
 
-        <textarea bind:value={editableItem.description} rows="3" cols="30"
-        ></textarea>
+        <textarea bind:value={editableItem.description} rows="3" cols="30"></textarea>
 
         <div class="cell-box">
-            <div class="label">Category</div>
-            <button
-                on:click={() =>
-                    selectSingleFromModal(
-                        editableItem,
-                        "category",
-                        editableItem,
-                    )}
-            >
-                {item.category.name}
-            </button>
+                <div class="label">Availability</div>
+                <button
+                    on:click={() =>
+                        selectSingleFromModal(editableItem,"availability",AvailabilityList,)
+                    }
+                >
+                    {editableItem.availability.name} 
+                </button>
         </div>
+
+
 
         <div class="buttons">
             <button on:click={saveEdit}>Save</button>
             <button on:click={cancelEdit}>Cancel</button>
         </div>
     {:else}
+
+    <div class="cell-box">
+      <div class="label">category:</div>
+      <div>{item.category?.name || "----"}</div>
+    </div>
+
         <div class="cell-box">
             <div class="label">Name</div>
             <div>{item.name || "----"}</div>
@@ -97,6 +113,11 @@
             description
         </button>
 
+    <div class="cell-box">
+      <div class="label">Availability</div>
+      <div>{item.availability?.name || "----"}</div>
+    </div>
+
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {item.description}
@@ -105,8 +126,8 @@
 
         <div class="buttons">
             {#if !$modalSelectCallback}
-                <button on:click={() => startEditing}>Edit</button>
-                <button on:click={() => deleteRow}>Delete </button>
+                <button on:click={startEditing}>Edit</button>
+                <button on:click={deleteRow}>Delete </button>
             {:else}
                 <button
                     on:click={() => {

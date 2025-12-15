@@ -21,8 +21,6 @@
 
   function startEditing() {
     isEditing = true;
-    //need to stop lists from being null or things break
-    editableWeapon.traits ||= [];
   }
 
   async function saveEdit() {
@@ -65,7 +63,7 @@
         on:click={() =>
           selectSingleFromModal(editableWeapon, "category", CategoryList)}
       >
-        {editableWeapon.category.name}
+        {editableWeapon.category.name || "category"}
       </button>
     </div>
 
@@ -118,13 +116,10 @@
       <div class="label">availability</div>
       <button
         on:click={() =>
-          selectSingleFromModal(
-            editableWeapon,
-            "availability",
-            AvailabilityList,
-          )}
+          selectSingleFromModal(editableWeapon,"availability",AvailabilityList,
+)}
       >
-        {editableWeapon.availability.name}
+        {editableWeapon.availability.name || "Availability"}
       </button>
     </div>
 
@@ -293,7 +288,7 @@
 
     <div class="cell-box">
       <div class="label">Availability</div>
-      <div>{weapon.availability?.name || "----"}</div>
+      <div>{weapon.availability.name || "----"}</div>
     </div>
 
     <div class="buttons">
