@@ -33,7 +33,6 @@ function toastrDisplayHTTPCode (code, message) {
   } else {
     toastr.error(message, `Status ${code}`)
   }
-
 }
 
 export default toastrDisplayHTTPCode

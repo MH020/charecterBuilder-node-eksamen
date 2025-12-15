@@ -1,22 +1,22 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store'
 
 export const modalStore = writable({
-    show: false,
-    Component: null
+  show: false,
+  Component: null
 })
 
 export function openModal(Component) {
-    modalStore.set({
-        show: true,
-        Component
-    });
+  modalStore.set({
+    show: true,
+    Component
+  })
 }
 
 export function closeModal() {
-    modalStore.set({
-        show: false,
-        Component: null
-    });
+  modalStore.set({
+    show: false,
+    Component: null
+  })
 }
 
-export const modalSelectCallback = writable(null);
+export const modalSelectCallback = writable(null)
