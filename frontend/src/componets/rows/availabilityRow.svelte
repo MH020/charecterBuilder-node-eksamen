@@ -1,34 +1,33 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
-    import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
-    import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
-    export let availability
-    export let deleteCategory
-    export let isEditing;
+    export let availability;
+    export let onSave;     
+    export let onDelete;   
 
-    let editableAvailability = {};
+    let isEditing = availability.isNew;
+    let editableAvailability
 
-    function startEditing(){
+    function startEditing() {
         isEditing = true;
         editableAvailability = structuredClone(availability);
-
     }
 
-    async function saveEdit(){
-        const updated = {...editableAvailability };
+    async function saveEdit() {
+        let updated;
 
-        if(availability.isNew){
-            const response = await fetchPost("/api/availability", updated)
-            console.log("created?",response)
-            if(response.status === 201){
-                availability = response.created
+        if (availability.isNew) {
+            const response = await fetchPost("/api/availability", editableAvailability);
+            if (response.status === 201) {
+                updated = response.created;
             }
-
         } else {
-            fetchUpdate("/api/availability",updated);
+            await fetchUpdate("/api/availability", editableAvailability);
+            updated = editableAvailability;
         }
-        isEditing = false
+
+        onSave(updated);   
+        isEditing = false;
     }
 
     function cancelEdit() {
@@ -36,8 +35,11 @@
         editableAvailability = structuredClone(availability);
     }
 
-
+    function deleteRow() {
+        onDelete(availability.id);  
+    }
 </script>
+
 
 <div class="row">
   {#if isEditing}
@@ -47,24 +49,18 @@
     </div>
 
     <div class="buttons">
-        <button on:click={saveEdit}>Save</button>
-        
-        <button on:click={cancelEdit}>Cancel</button>
+      <button on:click={saveEdit}>Save</button>
+      <button on:click={cancelEdit}>Cancel</button>
     </div>
   {:else}
     <div class="cell-box">
       <div class="label">Name</div>
       <div>{availability.name || "----"}</div>
     </div>
+
     <div class="buttons">
-        {#if !$modalSelectCallback}
-            <button on:click={() => startEditing()}>Edit</button>
-            <button on:click={() => deleteCategory()}>Delete </button>
-        {:else}
-            <button on:click={() => {$modalSelectCallback(availability); closeModal();}}> select</button>
-        {/if}
+      <button on:click={startEditing}>Edit</button>
+      <button on:click={deleteRow}>Delete</button>
     </div>
   {/if}
 </div>
-
-

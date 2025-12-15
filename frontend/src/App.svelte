@@ -18,6 +18,7 @@
   import ApptitudesList from "./componets/lists/ApptitudesList.svelte";
   import BaseModal from "./componets/modal/BaseModal.svelte";
   import WeaponsList from "./componets/lists/weaponLists/weaponsList.svelte";
+    import AvailabilityList from "./componets/lists/ItemsList/availabilityList.svelte";
 
   let user = null;
   let loading = true
@@ -76,6 +77,7 @@
         <Route path="/skills"><SkillsList /></Route>
         <Route path="/aptitudes"><ApptitudesList /></Route>
         <Route path="/weapons"><WeaponsList /></Route>
+        <Route path="/Availability"><AvailabilityList /></Route>
       </NotLoggedinLayout>
     {/if}
   {/if}
