@@ -6,7 +6,6 @@
 
     let weaponTraits = [];
     let sortType = "all"; 
-    let sortedTraits= [];
 
  
     onMount(async () => {
@@ -29,11 +28,11 @@
         weaponTraits = [...weaponTraits, newWeaponTrait];
     }
 
-    async function deleteWeaponTrait(weaponTrait){
-        const response = await fetchDelete("/api/category", weaponTrait.id)
+    async function deleteWeaponTrait(id){
+        const response = await fetchDelete("/api/weapon/traits", id)
         toastrDisplayHTTPCode(response.status, response.message)
         if (response.status === 200){
-            weaponTraits = weaponTraits.filter(wc => wc.id !== weaponTrait.id)
+            weaponTraits = weaponTraits.filter(weaponTrait => weaponTrait.id !== id)
         }
     }
 

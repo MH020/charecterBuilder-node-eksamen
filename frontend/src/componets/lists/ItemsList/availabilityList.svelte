@@ -49,6 +49,8 @@
             availability.id === updated.id ? updated : availability
         );
     }
+
+    
 </script>
 
 <div class="button-panel">
