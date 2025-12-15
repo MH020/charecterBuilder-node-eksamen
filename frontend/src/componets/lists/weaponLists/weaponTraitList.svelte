@@ -1,8 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchGet } from '../../../../util/fetchUtil';
-    import {deleteItem, saveItem} from '../../../../util/ListUtil.js';
-    import WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
+    import {deleteItem, saveItem} from '../../../.deleteEntitymport WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
 
 
     let weaponTraits = [];
@@ -40,7 +39,7 @@
 
     function saveWeaponTrait(updated) {
         weaponTraits = saveItem(updated, weaponTraits);
-    }
+    }deleteEntity
     //sorting needed 
 
     function toggleSort() {

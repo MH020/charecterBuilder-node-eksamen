@@ -5,14 +5,14 @@ export const modalStore = writable({
   Component: null
 })
 
-export function openModal(Component) {
+export function openModal (Component) {
   modalStore.set({
     show: true,
     Component
   })
 }
 
-export function closeModal() {
+export function closeModal () {
   modalStore.set({
     show: false,
     Component: null

@@ -3,8 +3,7 @@
     import WeaponsRow from '../../rows/weaponsRow.svelte';
     import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
-    import { deleteItem, saveItem } from '../../../../util/ListUtil';
-
+    import { deleteEntity, saveEntity,  } from '../../../../util/ListUtil';
 
     let weapons = [];
     let sortType = "all"; 
@@ -45,18 +44,18 @@
             weapons = weapons.filter(weaponTrait => weaponTrait.id !== id);
             return;
         }
-        weapons = await deleteItem(id,"/api/weapon/traits",weapons);
+        weapons = await deleteEntity(id,"/api/weapon/traits",weapons);
     }
 
     function saveWeapon(updated) {
-        weapons = saveItem(updated, weapons);
+        weapons = saveEntity(updated, weapons);
     }
-
+deleteEntity
     //sorting needed 
 
     function toggleSort() {
 
-    }
+    }saveEntity
 </script>
 
 <div class="button-panel">
