@@ -53,6 +53,25 @@
   function deleteRow() {
     onDelete(weapon.id);
   }
+
+
+      function selectCategory(){
+        modalSelectCallback.set((category) => {
+        editableWeapon.category = category;
+
+        modalSelectCallback.set(null);
+        });
+        openModal(CategoryList);
+    }
+
+    function selectAvailability(){
+        modalSelectCallback.set((availability) => {
+            editableWeapon.availability = availability;
+
+            modalSelectCallback.set(null);
+        });
+        openModal(AvailabilityList);
+    }
 </script>
 
 <div class="row">
@@ -60,8 +79,7 @@
     <div class="cell-box">
       <div class="label">Category</div>
       <button
-        on:click={() =>
-          selectSingleFromModal(editableWeapon, "category", CategoryList)}
+        on:click={selectCategory}
       >
         {editableWeapon.category.name || "category"}
       </button>
@@ -115,9 +133,7 @@
     <div class="cell-box">
       <div class="label">availability</div>
       <button
-        on:click={() =>
-          selectSingleFromModal(editableWeapon,"availability",AvailabilityList,
-)}
+        on:click={selectAvailability}
       >
         {editableWeapon.availability.name || "Availability"}
       </button>
@@ -170,7 +186,7 @@
 
           editableWeapon = {
             ...editableWeapon,
-            classes: exists
+            traits: exists
               ? list.filter((trait) => trait.id !== selected.id)
               : [...list, selected],
           };
