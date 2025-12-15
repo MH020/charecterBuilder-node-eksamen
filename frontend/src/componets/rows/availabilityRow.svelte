@@ -6,11 +6,15 @@
     export let onDelete;   
 
     let isEditing = availability.isNew;
-    let editableAvailability
+    let editableAvailability = structuredClone(availability);
+
+
+      $: if (!isEditing) {
+      editableAvailability = structuredClone(editableAvailability);
+    }
 
     function startEditing() {
         isEditing = true;
-        editableAvailability = structuredClone(availability);
     }
 
     async function saveEdit() {
@@ -32,7 +36,13 @@
 
     function cancelEdit() {
         isEditing = false;
-        editableAvailability = structuredClone(availability);
+
+        if (availability.isNew) {
+
+            onDelete(availability.id, true); 
+        } else {
+            editableAvailability = structuredClone(availability);
+        }
     }
 
     function deleteRow() {

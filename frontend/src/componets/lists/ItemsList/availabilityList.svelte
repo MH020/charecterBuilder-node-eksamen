@@ -28,7 +28,7 @@
     function createAvailability() {
         const newAvailability = {
             id: null,  
-            name: "null",        
+            name: "",        
             isNew: true
 
         };

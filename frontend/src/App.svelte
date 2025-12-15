@@ -19,6 +19,8 @@
   import BaseModal from "./componets/modal/BaseModal.svelte";
   import WeaponsList from "./componets/lists/weaponLists/weaponsList.svelte";
     import AvailabilityList from "./componets/lists/ItemsList/availabilityList.svelte";
+    import CategoryList from "./componets/lists/ItemsList/categoryList.svelte";
+    import WeaponTraitList from "./componets/lists/weaponLists/weaponTraitList.svelte";
 
   let user = null;
   let loading = true
@@ -72,12 +74,19 @@
 
                 <!-- Admin pages -->
         <Route path="/admin_page"><AdminPage /></Route>
+
         <Route path="/users"><UsersList /></Route>
         <Route path="/charactersheets"><CharectersheetsList /></Route>
         <Route path="/skills"><SkillsList /></Route>
         <Route path="/aptitudes"><ApptitudesList /></Route>
+
         <Route path="/weapons"><WeaponsList /></Route>
-        <Route path="/Availability"><AvailabilityList /></Route>
+        <Route path="/weapons/traits"><WeaponTraitList /></Route>
+        <Route path="/weapons/class"><WeaponTraitList /></Route>
+
+
+         <Route path="/category"><CategoryList /></Route>
+        <Route path="/availability"><AvailabilityList /></Route>
       </NotLoggedinLayout>
     {/if}
   {/if}

@@ -1,8 +1,9 @@
 <script>
     import { onMount } from 'svelte';
-    import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
-    import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
-    import WeaponClassRow from '../../rows/weaponClassRow.svelte';
+    import { fetchGet } from '../../../../util/fetchUtil';
+    import {deleteItem, saveItem} from '../../../../util/ListUtil.js';
+    import WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
+
 
     let weaponTraits = [];
     let sortType = "all"; 
@@ -20,7 +21,7 @@
     function createWeaponTraits(){
         const newWeaponTrait = {
             id: null,  
-            name: "null",        
+            name: "",        
             description: "", 
             isNew: true
 
@@ -28,14 +29,18 @@
         weaponTraits = [...weaponTraits, newWeaponTrait];
     }
 
-    async function deleteWeaponTrait(id){
-        const response = await fetchDelete("/api/weapon/traits", id)
-        toastrDisplayHTTPCode(response.status, response.message)
-        if (response.status === 200){
-            weaponTraits = weaponTraits.filter(weaponTrait => weaponTrait.id !== id)
+    async function deleteWeaponTrait(id, isNew = false) {
+        if(isNew){
+
+            weaponTraits = weaponTraits.filter(weaponTrait => weaponTrait.id !== id);
+            return;
         }
+        weaponTraits = await deleteItem(id,"/api/weapon/traits",weaponTraits);
     }
 
+    function saveWeaponTrait(updated) {
+        weaponTraits = saveItem(updated, weaponTraits);
+    }
     //sorting needed 
 
     function toggleSort() {
@@ -52,13 +57,14 @@
     </button>
 </div>
 
-<div>
-    {#each weaponTraits as weaponClass (weaponClass.id)}
-        <WeaponClassRow weaponClass={weaponClass} 
-        deleteWeaponClass={() => deleteWeaponTrait(weaponClass)}
-        isEditing={weaponClass.isNew}/>
-    {/each}
-</div>
+
+{#each weaponTraits as weaponTrait (weaponTrait.id)}
+        <WeaponTraitsRow {weaponTrait}
+        onSave={saveWeaponTrait}
+        onDelete={deleteWeaponTrait}
+    />
+{/each}
+
 
 
 

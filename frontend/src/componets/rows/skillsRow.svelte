@@ -80,21 +80,21 @@
     <div class="row-name">
         {#if isEditing}
             <input bind:value={editableName} />   
-        {:else}     
-        <span class="name">{skill.name || "----"}</span>
-        {/if}
-        {#if isEditing}
 
-        <textarea bind:value={editableDescription} rows="3" cols="30"></textarea>
+            <span class="name">{skill.name || "----"}</span>
+
+            <textarea bind:value={editableDescription} rows="3" cols="30"></textarea>
         {:else}
-        <button
-            class="description-btn"
-            on:mouseenter={() => showTooltip = true}
-            on:mouseleave={() => showTooltip = false}
-            aria-describedby="tooltip-description"
-        >
-            description
-        </button>
+            <span class="name">{skill.name || "----"}</span>
+
+            <button
+                class="description-btn"
+                on:mouseenter={() => showTooltip = true}
+                on:mouseleave={() => showTooltip = false}
+                aria-describedby="tooltip-description"
+            >
+                description
+            </button>
         {/if}
         {#if showTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
