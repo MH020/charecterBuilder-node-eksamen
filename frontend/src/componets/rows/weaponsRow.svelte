@@ -1,10 +1,7 @@
 <script>
   import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
-  import {
-    selectMultibleFromModal,
-    selectSingleFromModal,
-  } from "../../../util/ListUtil";
-  import { modalSelectCallback, openModal } from "../../store/modalStore";
+  import { selectMultibleFromModal } from "../../../util/ListUtil";
+  import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
   import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
   import CategoryList from "../lists/ItemsList/categoryList.svelte";
   import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
@@ -14,8 +11,8 @@
   export let onSave;
   export let onDelete;
 
-  let editableWeapon = structuredClone(weapon);
   let isEditing = weapon.isNew;
+  let editableWeapon = structuredClone(weapon);
   let classTooltip = [];
   let traitTooltip = [];
 
@@ -29,7 +26,9 @@
     if (weapon.isNew) {
       const response = await fetchPost("/api/weapons", editableWeapon);
       if (response.status === 201) {
-        updated = response.created;
+        updated = editableWeapon;
+        updated.id = response.created.id;
+        console.log(updated);
       }
     } else {
       await fetchUpdate("/api/weapons", editableWeapon);
@@ -54,33 +53,30 @@
     onDelete(weapon.id);
   }
 
+  function selectCategory() {
+    modalSelectCallback.set((category) => {
+      editableWeapon.category = category;
 
-      function selectCategory(){
-        modalSelectCallback.set((category) => {
-        editableWeapon.category = category;
+      modalSelectCallback.set(null);
+    });
+    openModal(CategoryList);
+  }
 
-        modalSelectCallback.set(null);
-        });
-        openModal(CategoryList);
-    }
+  function selectAvailability() {
+    modalSelectCallback.set((availability) => {
+      editableWeapon.availability = availability;
 
-    function selectAvailability(){
-        modalSelectCallback.set((availability) => {
-            editableWeapon.availability = availability;
-
-            modalSelectCallback.set(null);
-        });
-        openModal(AvailabilityList);
-    }
+      modalSelectCallback.set(null);
+    });
+    openModal(AvailabilityList);
+  }
 </script>
 
 <div class="row">
   {#if isEditing}
     <div class="cell-box">
       <div class="label">Category</div>
-      <button
-        on:click={selectCategory}
-      >
+      <button on:click={selectCategory}>
         {editableWeapon.category.name || "category"}
       </button>
     </div>
@@ -132,9 +128,7 @@
 
     <div class="cell-box">
       <div class="label">availability</div>
-      <button
-        on:click={selectAvailability}
-      >
+      <button on:click={selectAvailability}>
         {editableWeapon.availability.name || "Availability"}
       </button>
     </div>

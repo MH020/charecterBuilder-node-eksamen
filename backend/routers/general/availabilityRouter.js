@@ -28,7 +28,7 @@ router.post('/api/availability', async (req, res) => {
       [name]
     )
     const createdAvailability = result.rows[0]
-    return res.status(201).send({ message: 'availability created sucessfully', created: createdAptitude })
+    return res.status(201).send({ message: 'availability created sucessfully', created: createdAvailability })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

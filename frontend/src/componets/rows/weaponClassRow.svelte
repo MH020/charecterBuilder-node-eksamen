@@ -1,41 +1,50 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
-    import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
-    import CategoryList from "../lists/ItemsList/categoryList.svelte";
+    import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let weaponClass
-    export let deleteWeaponClass
-    export let isEditing;
+    export let weaponClass;
+    export let onSave;     
+    export let onDelete;   
 
-    let editableCategory = {};
+    let isEditing = weaponClass.isNew;
+    let editableCategory = structuredClone(weaponClass);
 
-    function startEditing(){
+
+    function startEditing() {
         isEditing = true;
-        editableCategory = structuredClone(weaponClass);
-
     }
 
-    async function saveEdit(){
-        const updated = {...editableCategory };
+    async function saveEdit() {
+        let updated;
 
-        if(weaponClass.isNew){
-            const response = await fetchPost("/api/weapon/classes", updated)
-            console.log("created?",response)
-            if(response.status === 201){
-                weaponClass = response.created
+        if (weaponClass.isNew) {
+            const response = await fetchPost("/api/weapon/classes", editableCategory);
+            if (response.status === 201) {
+                updated = response.created;
             }
-
         } else {
-            fetchUpdate("/api/weapon/classes",updated);
+            await fetchUpdate("/weapon/classes", editableCategory);
+            updated = editableCategory;
         }
-        isEditing = false
+
+        onSave(updated);   
+        isEditing = false;
     }
 
     function cancelEdit() {
         isEditing = false;
-        editableCategory = structuredClone(weaponClass);
+
+        if (weaponClass.isNew) {
+
+            onDelete(weaponClass.id, true); 
+        } else {
+            editableCategory = structuredClone(weaponClass);
+        }
     }
 
+    function deleteRow() {
+        onDelete(weaponClass.id);  
+    }
 
 </script>
 
@@ -68,8 +77,8 @@
 
     <div class="buttons">
         {#if !$modalSelectCallback}
-            <button on:click={() => startEditing()}>Edit</button>
-            <button on:click={() => deleteWeaponClass()}>Delete </button>
+            <button on:click={startEditing}>Edit</button>
+            <button on:click={deleteRow}>Delete </button>
         {:else}
             <button on:click={() => {$modalSelectCallback(weaponClass); closeModal();}}> select</button>
         {/if}

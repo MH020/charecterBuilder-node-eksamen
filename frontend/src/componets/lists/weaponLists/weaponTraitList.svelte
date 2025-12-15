@@ -39,9 +39,23 @@
         weaponTraits = await deleteEntity(id,"/api/weapon/traits",weaponTraits);
     }
 
-    function saveWeaponTrait(updated) {
-        weaponTraits = saveEntity(updated, weaponTraits);
-    }deleteEntity
+    function updateWeaponTrait(updated) {
+        weaponTraits = weaponTraits.map((weaponTrait) => {
+
+            if (weaponTrait.isNew) {
+                return {...updated, isNew: false};
+            }
+
+            if (weaponTrait.id === updated.id) {
+                return {...weaponTrait,...updated};
+            }
+
+
+            return weaponTrait;
+        });
+    }
+
+    
     //sorting needed 
 
     function toggleSort() {
@@ -61,7 +75,7 @@
 
 {#each weaponTraits as weaponTrait (weaponTrait.id)}
         <WeaponTraitsRow {weaponTrait}
-        onSave={saveWeaponTrait}
+        onSave={updateWeaponTrait}
         onDelete={deleteWeaponTrait}
     />
 {/each}

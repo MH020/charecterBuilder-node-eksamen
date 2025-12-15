@@ -1,9 +1,8 @@
 <script>
     import { onMount } from 'svelte';
     import WeaponsRow from '../../rows/weaponsRow.svelte';
-    import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
-    import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
-    import { deleteEntity, saveEntity,  } from '../../../../util/ListUtil';
+    import { fetchGet } from '../../../../util/fetchUtil';
+    import { deleteEntity} from '../../../../util/ListUtil';
 
     let weapons = [];
     let sortType = "all"; 
@@ -48,15 +47,25 @@
         weapons = await deleteEntity(id,"/api/weapon/traits",weapons);
     }
 
-    function saveWeapon(updated) {
-        weapons = saveEntity(updated, weapons);
+        function updateWeapons(updated) {
+        weapons = weapons.map((weapon) => {
+            if (weapon.isNew) {
+                return { ...updated, isNew: false };
+            }
+
+            if (weapon.id === updated.id) {
+                return { ...weapon, ...updated };
+            }
+
+            return weapon;
+        });
     }
-deleteEntity
+
     //sorting needed 
 
     function toggleSort() {
 
-    }saveEntity
+    }
 </script>
 
 <div class="button-panel">
@@ -71,7 +80,7 @@ deleteEntity
 <div>
     {#each weapons as weapon (weapon.id)}
         <WeaponsRow {weapon} 
-        onSave={saveWeapon}
+        onSave={updateWeapons}
         onDelete={deleteWeapon}
         />
     {/each}

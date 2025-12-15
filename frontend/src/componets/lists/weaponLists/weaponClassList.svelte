@@ -1,12 +1,12 @@
 <script>
     import { onMount } from 'svelte';
-    import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
-    import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
+    import { fetchGet } from '../../../../util/fetchUtil';
     import WeaponClassRow from '../../rows/weaponClassRow.svelte';
+    import { deleteEntity } from '../../../../util/ListUtil';
 
     let weaponClasses = [];
     let sortType = "all"; 
-    let sortedClasses= [];
+
 
  
     onMount(async () => {
@@ -30,12 +30,28 @@
         weaponClasses = [...weaponClasses, newWeaponClass];
     }
 
-    async function deleteWeaponClass(weaponClass){
-        const response = await fetchDelete("/api/category", weaponClass.id)
-        toastrDisplayHTTPCode(response.status, response.message)
-        if (response.status === 200){
-            weaponClasses = weaponClasses.filter(wc => wc.id !== weaponClass.id)
+    async function deleteWeaponClass(id, isNew = false) {
+        if(isNew){
+
+            weaponClasses = weaponClasses.filter(weaponClass => weaponClass.id !== id);
+            return;
         }
+        
+        weaponClasses = await deleteEntity(id,"/api/items",weaponClasses);
+    }
+
+        function updateWeaponClasses(updated) {
+        weaponClasses = weaponClasses.map((wc) => {
+            if (wc.isNew) {
+                return { ...updated, isNew: false };
+            }
+
+            if (wc.id === updated.id) {
+                return { ...wc, ...updated };
+            }
+
+            return wc;
+        });
     }
 
     //sorting needed 
@@ -56,9 +72,10 @@
 
 <div>
     {#each weaponClasses as weaponClass (weaponClass.id)}
-        <WeaponClassRow weaponClass={weaponClass} 
-        deleteWeaponClass={() => deleteWeaponClass(weaponClass)}
-        isEditing={weaponClass.isNew}/>
+        <WeaponClassRow {weaponClass} 
+        onSave={updateWeaponClasses}
+        onDelete={deleteWeaponClass}
+        />
     {/each}
 </div>
 

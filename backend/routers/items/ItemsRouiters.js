@@ -32,16 +32,19 @@ router.get('/api/items', async (req, res) => {
 
 router.post('/api/items', async (req, res) => {
   try {
-    const { name, description, category_id } = req.body
+    const { name, description, category, availability } = req.body
 
-    if (!name || !description || !description || !category_id) {
+    if (!name || !description || !category || !availability) {
+
       return res.status(400).send({ message: 'missing fields' })
     }
-    const is_custom = req.session.user?.role === 'ADMIN' || false
+    const is_custom = req.session.user?.role === 'ADMIN' 
+
+    console.log("here?")
 
     const result = await db.query(
-      'INSERT INTO aptitude ("name", description, category_id, is_custom) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, description, category_id, is_custom]
+      'INSERT INTO item ("name", description, category_id, availability_id, is_custom) VALUES ($1, $2, $3, $4 ,$5) RETURNING *',
+      [name, description, category.id,availability.id, is_custom]
     )
     const createdItem = result.rows[0]
     return res.status(201).send({ message: 'item created sucessfully', created: createdItem })
@@ -60,6 +63,21 @@ router.put('/api/items/:id', async (req, res) => {
       [name, description, category_id, id])
 
     return res.status(200).send({ message: 'item updated' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/items/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+
+
+    await db.query(
+      'DELETE FROM item where id = $1 ', [id]
+    )
+    return res.status(200).send({ message: 'weapon class deleted' })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

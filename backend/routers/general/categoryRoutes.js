@@ -24,7 +24,7 @@ router.post('/api/category', async (req, res) => {
     }
 
     const result = await db.query(
-      'INSERT INTO aptitude ("name", description, category_type) VALUES ($1, $2, $3) RETURNING *',
+      'INSERT INTO category ("name", description, category_type) VALUES ($1, $2, $3) RETURNING *',
       [name, description, category_type]
     )
     const createdCategory = result.rows[0]

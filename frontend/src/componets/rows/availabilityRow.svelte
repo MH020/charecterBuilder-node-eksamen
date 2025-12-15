@@ -10,10 +10,6 @@
     let editableAvailability = structuredClone(availability);
 
 
-      $: if (!isEditing) {
-      editableAvailability = structuredClone(editableAvailability);
-    }
-
     function startEditing() {
         isEditing = true;
     }
@@ -72,8 +68,8 @@
 
     <div class="buttons">
         {#if !$modalSelectCallback}
-            <button on:click={() => startEditing}>Edit</button>
-            <button on:click={() => deleteRow}>Delete </button>
+            <button on:click={ startEditing}>Edit</button>
+            <button on:click={deleteRow}>Delete </button>
         {:else}
             <button on:click={() => {$modalSelectCallback(availability); closeModal();}}> select</button>
         {/if}

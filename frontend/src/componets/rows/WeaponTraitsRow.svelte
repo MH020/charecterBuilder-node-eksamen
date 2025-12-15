@@ -3,8 +3,8 @@
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
     export let weaponTrait;
-    export let onSave;     
-    export let onDelete;   
+    export let onDelete;  
+    export let onSave 
 
     let editableWeaponTrait = structuredClone(weaponTrait);
     let isEditing = weaponTrait.isNew;
@@ -24,14 +24,13 @@
         if (weaponTrait.isNew) {
             const response = await fetchPost("/api/weapon/traits", editableWeaponTrait);
             if (response.status === 201) {
-                updated = response.created;
+                updated = response.created
             }
         } else {
             await fetchUpdate("/api/weapon/traits", editableWeaponTrait);
-            updated = editableWeaponTrait;
-        }
-
-        onSave(updated);   
+            updated = editableWeaponTrait
+        }  
+        onSave(updated)
         isEditing = false;
     }
 
@@ -89,8 +88,8 @@
 
     <div class="buttons">
         {#if !$modalSelectCallback}
-            <button on:click={() => startEditing}>Edit</button>
-            <button on:click={() => deleteRow}>Delete </button>
+            <button on:click={startEditing}>Edit</button>
+            <button on:click={deleteRow}>Delete </button>
         {:else}
             <button on:click={() => {$modalSelectCallback(weaponTrait); closeModal();}}> select</button>
         {/if}

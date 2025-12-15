@@ -44,10 +44,20 @@
         }
     }
 
-    function saveAvailability(updated) {
-        availabilityies = availabilityies.map(availability =>
-            availability.id === updated.id ? updated : availability
-        );
+        function updateAvailability(updated) {
+        availabilityies = availabilityies.map((availability) => {
+
+            if (availability.isNew) {
+                return {...updated, isNew: false};
+            }
+
+            if (availability.id === updated.id) {
+                return {...availability,...updated};
+            }
+
+
+            return availability;
+        });
     }
 
     
@@ -66,7 +76,7 @@
 {#each sortedAvailabilityies as availability (availability.id)}
     <AvailabilityRow
         {availability}
-        onSave={saveAvailability}
+        onSave={updateAvailability}
         onDelete={deleteAvailability}
     />
 {/each}

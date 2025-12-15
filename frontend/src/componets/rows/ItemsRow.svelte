@@ -1,21 +1,17 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
-    import { selectSingleFromModal } from "../../../util/ListUtil";
-    import { closeModal, modalSelectCallback } from "../../store/modalStore";
+    import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
     export let item;
-    export let onSave;
-    export let onDelete;
+    export let onSave;     
+    export let onDelete;   
 
-    let editableItem = structuredClone(item);
     let isEditing = item.isNew;
-    let showTooltip;
+    let editableItem = structuredClone(item);
+    let showTooltip
 
-    $: if (!isEditing) {
-        editableItem = structuredClone(item);
-    }
 
     function startEditing() {
         isEditing = true;
@@ -25,19 +21,18 @@
         let updated;
 
         if (item.isNew) {
-            const response = await fetchPost(
-                "/api/weapon/traits",
-                editableItem,
-            );
+            const response = await fetchPost("/api/items", editableItem);
             if (response.status === 201) {
-                updated = response.created;
+                updated = editableItem
+                updated.id = response.created.id;
+                console.log(updated)
             }
         } else {
-            await fetchUpdate("/api/weapon/traits", editableItem);
+            await fetchUpdate("/api/items", editableItem);
             updated = editableItem;
         }
 
-        onSave(updated);
+        onSave(updated);   
         isEditing = false;
     }
 
@@ -45,14 +40,33 @@
         isEditing = false;
 
         if (item.isNew) {
-            onDelete(item.id, true);
+
+            onDelete(item.id, true); 
         } else {
             editableItem = structuredClone(item);
         }
     }
 
     function deleteRow() {
-        onDelete(item.id);
+        onDelete(item.id);  
+    }
+
+          function selectCategory(){
+        modalSelectCallback.set((category) => {
+        editableItem.category = category;
+
+        modalSelectCallback.set(null);
+        });
+        openModal(CategoryList);
+    }
+
+    function selectAvailability(){
+        modalSelectCallback.set((availability) => {
+            editableItem.availability = availability;
+
+            modalSelectCallback.set(null);
+        });
+        openModal(AvailabilityList);
     }
 </script>
 
@@ -61,11 +75,9 @@
             <div class="cell-box">
                 <div class="label">Category</div>
                 <button
-                    on:click={() =>
-                        selectSingleFromModal(editableItem,"category",CategoryList,)
-                    }
+                    on:click={selectCategory}
                 >
-                    {editableItem.category.name}
+                    {editableItem.category.name || "category"}
                 </button>
             </div>
         <div class="cell-box">
@@ -78,11 +90,9 @@
         <div class="cell-box">
                 <div class="label">Availability</div>
                 <button
-                    on:click={() =>
-                        selectSingleFromModal(editableItem,"availability",AvailabilityList,)
-                    }
+                    on:click={selectAvailability}
                 >
-                    {editableItem.availability.name} 
+                    {editableItem.availability.name || "Availability"} 
                 </button>
         </div>
 
