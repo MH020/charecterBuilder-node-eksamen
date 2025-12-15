@@ -31,8 +31,8 @@
             id: null,  
             name: "",  
             description: "",
-            category: null,
-            availability: null,
+            category: {},
+            availability: {},
             isNew: true
 
         };
