@@ -70,14 +70,20 @@
         openModal(CategoryList); //raceList
     }
 
-    function createBonus() {
-        modalSelectCallback.set((bonus) => {
-            editableLineage.required_race = bonus;
+function createBonus() {
+    modalSelectCallback.set((bonus) => {
+        const list = editableLineage.bonuses || [];
 
-            modalSelectCallback.set(null);
-        });
-        openModal(CategoryList); //raceList
-    }
+        const exists = list.some(b => b.id === bonus.id);
+
+        editableLineage = {
+            ...editableLineage,bonuses: exists ? list.filter(b => b.id !== bonus.id) : [...list, bonus]
+        };
+
+        modalSelectCallback.set(null);
+    });
+    openModal(LineageBonusCard); 
+}
 </script>
 
 <div class="row">
@@ -87,13 +93,10 @@
             <input bind:value={editableLineage.name} />
         </div>
 
-        <textarea bind:value={editableLineage.description} rows="3" cols="30"
-        ></textarea>
+        <textarea bind:value={editableLineage.description} rows="3" cols="30"></textarea>
 
-        <div class="cell-box">
-            <div class="label">range</div>
-            <input bind:value={editableLineage.defining_features} />
-        </div>
+        <textarea bind:value={editableLineage.defining_features} rows="3" cols="30"></textarea>
+
 
         <div class="cell-box">
             <div class="label">required race</div>
@@ -102,26 +105,15 @@
             </button>
         </div>
 
-        <button
-            on:click={() =>
-                selectMultibleFromModal(LineageBonusCard, (selected) => {
-                    const list = editableLineage.bonuses || [];
-
-                    const exists = list.some((b) => b.id === selected.id);
-
-                    editableLineage = {
-                        ...editableLineage,
-                        bonuses: exists
-                            ? list.filter((bonus) => bonus.id !== selected.id)
-                            : [...list, selected],
-                    };
-                })}
-        >
-            select class
-        </button>
+        <div class="cell-box">
+            <div class="label"> create characteristic bonus</div>
+            <button on:click={createBonus}>
+                {"add bonus"}
+            </button>
+        </div>
 
         <div class="cell-box">
-            <div class="label">Class</div>
+            <div class="label">bonus</div>
             <div class="tags">
                 {#each editableLineage.bonuses as bonus, index}
                     <button
@@ -191,8 +183,6 @@
         description
       </button>
 
-      
-
       {#if showTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
           {lineage.description || "No description"}
@@ -212,7 +202,7 @@
 
       {#if featureShowTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
-          {lineage.defining_features || "No description"}
+          {lineage.defining_features || "No defining features"}
         </div>
       {/if}
 
@@ -223,21 +213,10 @@
 
 
         <div class="cell-box">
-            <div class="label">Class</div>
+            <div class="label">characteristic bonus</div>
             <div class="tags">
-                {#each lineage.bonuses as bonus, index}
-                    <button
-                        class="tag"
-                        on:mouseenter={() => (classTooltip[index] = true)}
-                        on:mouseleave={() => (classTooltip[index] = false)}
-                    >
-                        {bonus.name || "----"}
-                        {#if classTooltip[index]}
-                            <div class="tooltip">
-                                {bonus.bonus }
-                            </div>
-                        {/if}
-                    </button>
+                {#each lineage.bonuses as bonus}
+                <p> {bonus.characteristic_name} +({bonus.bonus})</p>
                 {/each}
             </div>
         </div>
@@ -245,11 +224,11 @@
 
 
         <div class="cell-box">
-            <div class="label">Traits</div>
+            <div class="label">aptitudes</div>
             <div class="tags">
                 {#each lineage.aptitudes as aptitude, index}
                     <div>
-                        {aptitude.name || "----"}
+                        {aptitude.aptitude_name || "----"}
                     </div>
                 {/each}
             </div>
