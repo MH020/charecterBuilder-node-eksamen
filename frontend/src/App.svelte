@@ -22,6 +22,7 @@
     import CategoryList from "./componets/lists/ItemsList/categoryList.svelte";
     import WeaponTraitList from "./componets/lists/weaponLists/weaponTraitList.svelte";
     import ItemsList from "./componets/lists/ItemsList/itemsList.svelte";
+    import ArmorList from "./componets/lists/armorLists/armorList.svelte";
 
   let user = null;
   let loading = true
@@ -88,6 +89,11 @@
         <Route path="/items"><ItemsList /></Route>
         <Route path="/category"><CategoryList /></Route>
         <Route path="/availability"><AvailabilityList /></Route>
+
+        <Route path="/armor"><ArmorList /></Route>
+
+
+
       </NotLoggedinLayout>
     {/if}
   {/if}
