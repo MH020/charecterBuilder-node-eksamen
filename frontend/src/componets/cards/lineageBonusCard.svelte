@@ -3,12 +3,12 @@
     import { closeModal,modalSelectCallback } from "../../store/modalStore";
     import { fetchGet } from "../../../util/fetchUtil";
 
-    export let lineageBonus;
+    export let lineageBonus = {};
     let options = [];
     let selectedOption = null;
 
     onMount(async () => {
-        const response = await fetchGet("/api/lineage");
+        const response = await fetchGet("/api/characteristic");
         if (response.status === 200) {
             options = response.data;
         }
@@ -31,8 +31,8 @@
     <p>Selected ID: {selectedOption ? selectedOption.name : 'None'}</p>
 
     <div class="cell-box">
-        <div class="label">description</div>
-        <input bind:value={lineageBonus.bonus} />
+        <div class="label">bonus</div>
+        <input bind:value={lineageBonus.bonus } />
     </div>
 
     <div class="buttons">
