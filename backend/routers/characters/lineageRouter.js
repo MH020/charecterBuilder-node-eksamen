@@ -81,7 +81,7 @@ router.post('/api/lineage', async (req, res) => {
 
         for (const apptitude of aptitudes) {
             await db.query('INSERT INTO lineage_aptitude (lineage_id, aptitude_id) VALUES ($1, $2)',
-                [ createdLineage.id, apptitude.id ])
+                [createdLineage.id, apptitude.id])
         }
         return res.status(201).send({ message: 'lineage created sucessfully', created: createdLineage })
     } catch (error) {
@@ -92,11 +92,28 @@ router.post('/api/lineage', async (req, res) => {
 
 router.put('/api/lineage/:id', async (req, res) => {
     try {
+        const { id } = req.params
         const { name, description, defining_features, race } = req.body
 
         await db.query(`UPDATE lineage SET name = $1, description =$2, defining_features = $3, required_race_id=$4
                         WHERE id = $5`,
-            [name, description, defining_features, race.id])
+            [name, description, defining_features, race.id, id])
+
+
+        await db.query('DELETE FROM lineage_characteristic_bonus WHERE lineage_id = $1', [id])
+
+        await db.query('DELETE FROM lineage_aptitude WHERE lineage_id = $1', [id])
+
+
+        for (const bonus of bonuses) {
+            await db.query('INSERT INTO lineage_characteristic_bonus (lineage_id, characteristic_id, bonus, is_custom) VALUES ($1, $2, $3, $4)',
+                [createdLineage.id, bonus.characteristic_id, bonus.bonus, is_custom])
+        }
+
+        for (const apptitude of aptitudes) {
+            await db.query('INSERT INTO lineage_aptitude (lineage_id, aptitude_id) VALUES ($1, $2)',
+                [createdLineage.id, apptitude.id])
+        }
 
         return res.status(200).send({ message: 'armor updated' })
     } catch (error) {
@@ -105,13 +122,16 @@ router.put('/api/lineage/:id', async (req, res) => {
     }
 })
 
-router.delete('/api/armor/:id', async (req, res) => {
+router.delete('/api/lineage/:id', async (req, res) => {
     try {
         const { id } = req.params
         console.log('skillid?', id)
 
-        await db.query('DELETE FROM armor where id = $1 ', [id]
-        )
+        await db.query('DELETE FROM lineage_characteristic_bonus WHERE lineage_id = $1', [id])
+
+        await db.query('DELETE FROM lineage_aptitude WHERE lineage_id = $1', [id])
+
+        await db.query('DELETE FROM lineage where id = $1 ', [id])
 
         return res.status(200).send({ message: 'armor deleted' })
     } catch (error) {
