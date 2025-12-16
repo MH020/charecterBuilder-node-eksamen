@@ -127,10 +127,14 @@
             <div>{armor.name || "----"}</div>
         </div>
 
-        <div class="cell-box">
-            <div class="label">Description</div>
-            <div>{armor.description || "----"}</div>
-        </div>
+        <button
+            class="description-btn"
+            on:mouseenter={() => (showTooltip = true)}
+            on:mouseleave={() => (showTooltip = false)}
+            aria-describedby="tooltip-description"
+        >
+            description
+        </button>
 
         <div class="cell-box">
             <div class="label">Head AP</div>
@@ -166,19 +170,11 @@
             <div class="label">Left leg AP</div>
             <div>{armor.left_leg_ap || "----"}</div>
         </div>
-        weight
+
         <div class="cell-box">
             <div class="label">weight</div>
             <div>{armor.wt || "----"}</div>
         </div>
-        <button
-            class="description-btn"
-            on:mouseenter={() => (showTooltip = true)}
-            on:mouseleave={() => (showTooltip = false)}
-            aria-describedby="tooltip-description"
-        >
-            description
-        </button>
 
         <div class="cell-box">
             <div class="label">Availability</div>
