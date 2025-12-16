@@ -282,6 +282,7 @@ CREATE TABLE IF NOT EXISTS item (
 CREATE TABLE IF NOT EXISTS craftsmanship (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     hit_modifier INTEGER,
     damage_modifier INTEGER,
     wt_modifier INTEGER,

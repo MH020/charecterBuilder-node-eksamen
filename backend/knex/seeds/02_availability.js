@@ -9,6 +9,7 @@ export async function seed (knex) {
   await knex('weapon_upgrade').del()
   await knex('weapon').del()
   await knex('item').del()
+    await knex('armor').del()
   await knex('availability').del()
 
   await knex('availability').insert([

@@ -15,6 +15,7 @@ import weaponClassRouter from './routers/weapons/weaponClassRouter.js'
 import weaponTraitRouter from './routers/weapons/weaponTraitRouter.js'
 import itemsRouter from './routers/items/ItemsRouiters.js'
 import armorRouter from './routers/armor/armorRoutes.js'
+import craftsmanshipRouter from './routers/items/craftmanshipRouter.js'
 const app = express()
 
 app.use(express.json())
@@ -62,6 +63,8 @@ app.use(itemsRouter)
 app.use(categoryRouter)
 
 app.use(availabilityRouter)
+
+app.use(craftsmanshipRouter)
 
 // armor 
 

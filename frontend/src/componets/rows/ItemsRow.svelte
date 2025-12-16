@@ -1,17 +1,20 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
-    import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
+    import {
+        closeModal,
+        modalSelectCallback,
+        openModal,
+    } from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
     export let item;
-    export let onSave;     
-    export let onDelete;   
+    export let onSave;
+    export let onDelete;
 
     let isEditing = item.isNew;
     let editableItem = structuredClone(item);
-    let showTooltip
-
+    let showTooltip;
 
     function startEditing() {
         isEditing = true;
@@ -23,16 +26,16 @@
         if (item.isNew) {
             const response = await fetchPost("/api/items", editableItem);
             if (response.status === 201) {
-                updated = editableItem
+                updated = editableItem;
                 updated.id = response.created.id;
-                console.log(updated)
+                console.log(updated);
             }
         } else {
             await fetchUpdate("/api/items", editableItem);
             updated = editableItem;
         }
 
-        onSave(updated);   
+        onSave(updated);
         isEditing = false;
     }
 
@@ -40,27 +43,26 @@
         isEditing = false;
 
         if (item.isNew) {
-
-            onDelete(item.id, true); 
+            onDelete(item.id, true);
         } else {
             editableItem = structuredClone(item);
         }
     }
 
     function deleteRow() {
-        onDelete(item.id);  
+        onDelete(item.id);
     }
 
-          function selectCategory(){
+    function selectCategory() {
         modalSelectCallback.set((category) => {
-        editableItem.category = category;
+            editableItem.category = category;
 
-        modalSelectCallback.set(null);
+            modalSelectCallback.set(null);
         });
         openModal(CategoryList);
     }
 
-    function selectAvailability(){
+    function selectAvailability() {
         modalSelectCallback.set((availability) => {
             editableItem.availability = availability;
 
@@ -72,42 +74,36 @@
 
 <div class="row">
     {#if isEditing}
-            <div class="cell-box">
-                <div class="label">Category</div>
-                <button
-                    on:click={selectCategory}
-                >
-                    {editableItem.category.name || "category"}
-                </button>
-            </div>
+        <div class="cell-box">
+            <div class="label">Category</div>
+            <button on:click={selectCategory}>
+                {editableItem.category.name || "category"}
+            </button>
+        </div>
         <div class="cell-box">
             <div class="label">Name</div>
             <input bind:value={editableItem.name} />
         </div>
 
-        <textarea bind:value={editableItem.description} rows="3" cols="30"></textarea>
+        <textarea bind:value={editableItem.description} rows="3" cols="30"
+        ></textarea>
 
         <div class="cell-box">
-                <div class="label">Availability</div>
-                <button
-                    on:click={selectAvailability}
-                >
-                    {editableItem.availability.name || "Availability"} 
-                </button>
+            <div class="label">Availability</div>
+            <button on:click={selectAvailability}>
+                {editableItem.availability.name || "Availability"}
+            </button>
         </div>
-
-
 
         <div class="buttons">
             <button on:click={saveEdit}>Save</button>
             <button on:click={cancelEdit}>Cancel</button>
         </div>
     {:else}
-
-    <div class="cell-box">
-      <div class="label">category:</div>
-      <div>{item.category?.name || "----"}</div>
-    </div>
+        <div class="cell-box">
+            <div class="label">category:</div>
+            <div>{item.category?.name || "----"}</div>
+        </div>
 
         <div class="cell-box">
             <div class="label">Name</div>
@@ -123,16 +119,16 @@
             description
         </button>
 
-    <div class="cell-box">
-      <div class="label">Availability</div>
-      <div>{item.availability?.name || "----"}</div>
-    </div>
-
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {item.description}
             </div>
         {/if}
+
+        <div class="cell-box">
+            <div class="label">Availability</div>
+            <div>{item.availability?.name || "----"}</div>
+        </div>
 
         <div class="buttons">
             {#if !$modalSelectCallback}

@@ -23,6 +23,7 @@
     import WeaponTraitList from "./componets/lists/weaponLists/weaponTraitList.svelte";
     import ItemsList from "./componets/lists/ItemsList/itemsList.svelte";
     import ArmorList from "./componets/lists/armorLists/armorList.svelte";
+    import CraftmanshipList from "./componets/lists/ItemsList/craftmanshipList.svelte";
 
   let user = null;
   let loading = true
@@ -89,7 +90,9 @@
         <Route path="/items"><ItemsList /></Route>
         <Route path="/category"><CategoryList /></Route>
         <Route path="/availability"><AvailabilityList /></Route>
+        <Route path="/craftsmanship"><CraftmanshipList /></Route>
 
+        
         <Route path="/armor"><ArmorList /></Route>
 
 
