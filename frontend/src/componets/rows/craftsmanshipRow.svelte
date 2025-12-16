@@ -52,8 +52,6 @@
         onDelete(craftmanship.id);
     }
 </script>
-
-@ -0,0 +1,222 @@
 <div class="row">
     {#if isEditing}
         <div class="cell-box">
