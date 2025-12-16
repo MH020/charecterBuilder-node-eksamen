@@ -72,21 +72,28 @@
 
 function createBonus() {
     modalSelectCallback.set((bonus) => {
-        console.log(bonus)
+        console.log(bonus);
+
         const list = editableLineage.bonuses || [];
 
-        const exists = list.some(b => b.id === bonus.id);
+        const exists = list.some(
+            b => b.characteristic_id === bonus.characteristic_id
+        );
 
         editableLineage = {
             ...editableLineage,
-            bonuses: exists ? list.filter(b => b.id !== bonus.id) : [...list, bonus]
+            bonuses: exists
+                ? list.filter(
+                    b => b.characteristic_id !== bonus.characteristic_id
+                  )
+                : [...list, bonus],
         };
 
         modalSelectCallback.set(null);
-        console.log(editableLineage)
+        console.log(editableLineage.bonuses);
     });
 
-    openModal(LineageBonusCard); 
+    openModal(LineageBonusCard);
 }
 </script>
 
