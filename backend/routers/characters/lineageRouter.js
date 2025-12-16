@@ -24,7 +24,7 @@ router.get('/api/lineage', async (req, res) => {
         const baseLineages = result.rows
 
         async function getLineageBonuses(id){
-        const result = await pool.query(`
+        const result = await db.query(`
             SELECT ccb.characteristic_id, c.name AS characteristic_name, ccb.bonus, ccb.is_custom
             FROM lineage_characteristic_bonus ccb
             JOIN characteristic c ON ccb.characteristic_id = c.id
@@ -33,8 +33,8 @@ router.get('/api/lineage', async (req, res) => {
         return result.rows;
         };
 
-        async function getLineageAptitudes(Id) {
-        const result = await pool.query(`
+        async function getLineageAptitudes(id) {
+        const result = await db.query(`
             SELECT la.aptitude_id, a.name AS aptitude_name
             FROM lineage_aptitude la
             JOIN aptitude a ON la.aptitude_id = a.id
