@@ -73,8 +73,6 @@
 
     //sorting needed
 </script>
-
-@ -0,0 +1,90 @@
 <div class="button-panel">
     <button on:click={toggleSort}>
         sort by... {sortType === "all" ? "A -> Z" : "Z -> A"}
