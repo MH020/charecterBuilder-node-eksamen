@@ -14,6 +14,7 @@ import availabilityRouter from './routers/general/availabilityRouter.js'
 import weaponClassRouter from './routers/weapons/weaponClassRouter.js'
 import weaponTraitRouter from './routers/weapons/weaponTraitRouter.js'
 import itemsRouter from './routers/items/ItemsRouiters.js'
+import armorRouter from './routers/armor/armorRoutes.js'
 const app = express()
 
 app.use(express.json())
@@ -39,9 +40,11 @@ const generalLimiter = rateLimit({
 
 app.use(generalLimiter)
 
-app.use(authRouthes)
+//skills
 
 app.use(skillsRoutes)
+
+//apptitudes
 
 app.use(apptitudesRouter)
 
@@ -59,6 +62,15 @@ app.use(itemsRouter)
 app.use(categoryRouter)
 
 app.use(availabilityRouter)
+
+// armor 
+
+app.use(armorRouter)
+
+
+//aouth
+
+app.use(authRouthes)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))
