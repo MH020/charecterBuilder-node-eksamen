@@ -8,7 +8,7 @@
     let selectedOption = null;
 
     onMount(async () => {
-        const response = await fetchGet("/api/characteristic");
+        const response = await fetchGet("/api/characteristics");
         if (response.status === 200) {
             options = response.data;
         }
