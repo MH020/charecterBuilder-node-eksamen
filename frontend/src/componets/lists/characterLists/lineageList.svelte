@@ -3,6 +3,7 @@
     import WeaponsRow from '../../rows/weaponsRow.svelte';
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity} from '../../../../util/ListUtil';
+    import LineageRow from '../../rows/lineageRow.svelte';
 
     let lineages = [];
     let sortType = "all"; 
@@ -71,7 +72,7 @@
 
 <div>
     {#each lineages as lineage (lineage.id)}
-        <WeaponsRow {lineage} 
+        <LineageRow {lineage} 
         onSave={updateLineages}
         onDelete={deleteLineage}
         />
