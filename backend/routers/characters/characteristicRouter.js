@@ -27,38 +27,38 @@ router.post('/api/characteristics', async (req, res) => {
       'INSERT INTO characteristic ("name", description) VALUES ($1, $2) RETURNING *',
       [name, description]
     )
-    const createdAptitude = result.rows[0]
-    return res.status(201).send({ message: 'Aptitude created sucessfully', created: createdAptitude })
+    const createdCharacteristic = result.rows[0]
+    return res.status(201).send({ message: 'characteristic created sucessfully', created: createdCharacteristic })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.put('/api/aptitudes/:id', async (req, res) => {
+router.put('/api/characteristics/:id', async (req, res) => {
   try {
     const id = req.params.id
-    const { name } = req.body
+    const { name, description } = req.body
 
-    await db.query('UPDATE aptitude SET name = $1 WHERE id = $2', [name, id])
+    await db.query('UPDATE characteristic SET name = $1, description =$2  WHERE id = $3', [name, description, id])
 
-    return res.status(200).send({ message: 'aptitude updated' })
+    return res.status(200).send({ message: 'characteristic updated' })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.delete('/api/aptitudes/:id', async (req, res) => {
+router.delete('/api/characteristics/:id', async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)
 
     await db.query(
-      'DELETE FROM aptitude where id = $1 ', [id]
+      'DELETE FROM characteristic where id = $1 ', [id]
     )
 
-    return res.status(200).send({ message: 'aptitude deleted' })
+    return res.status(200).send({ message: 'characteristic deleted' })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
