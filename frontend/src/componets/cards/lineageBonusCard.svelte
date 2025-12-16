@@ -25,7 +25,7 @@
     <select bind:value={selectedOption}>
     <option value="" disabled selected>Select an characteristic</option>
     {#each options as option}
-        <option value={option.id}>{option.name}</option>
+        <option value={option}>{option.name}</option>
     {/each}
     </select>
     <p>Selected ID: {selectedOption ? selectedOption.name : 'None'}</p>
