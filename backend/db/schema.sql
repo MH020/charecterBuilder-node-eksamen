@@ -195,6 +195,12 @@ CREATE TABLE IF NOT EXISTS weapon_quality (
     "description" TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS item_quality (
+    id SERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS category (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
