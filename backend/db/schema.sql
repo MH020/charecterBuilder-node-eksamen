@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS race (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    trait TEXT,
     size_id INTEGER NOT NULL,
     wounds INTEGER NOT NULL,
     base_statline_id INTEGER,
@@ -57,8 +56,8 @@ CREATE TABLE IF NOT EXISTS race (
 
 CREATE TABLE IF NOT EXISTS lineage (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
     defining_features TEXT,
     required_race_id INT,
     is_custom BOOLEAN DEFAULT FALSE,
