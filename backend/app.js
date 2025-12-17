@@ -18,7 +18,7 @@ import armorRouter from './routers/armor/armorRoutes.js'
 import craftsmanshipRouter from './routers/items/craftmanshipRouter.js'
 import lineageRouter from './routers/characters/lineageRouter.js'
 import characteristicsRouter from './routers/characters/characteristicRouter.js'
-
+import raceRouter from './routers/characters/racesRouter.js'
 const app = express()
 
 app.use(express.json())
@@ -79,6 +79,8 @@ app.use(armorRouter)
 app.use(lineageRouter)
 
 app.use(characteristicsRouter)
+
+app.use(raceRouter)
 //aouth
 
 app.use(authRouthes)
