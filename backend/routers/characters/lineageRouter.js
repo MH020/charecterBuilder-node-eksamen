@@ -59,7 +59,7 @@ router.get('/api/lineage', async (req, res) => {
 
 router.post('/api/lineage', async (req, res) => {
     try {
-        const { name, description, defining_features, race, aptitudes, bonuses } = req.body
+        const { name, description, defining_features, required_race, bonuses, aptitudes} = req.body
 
         if (!name) {
             return res.status(400).send({ message: 'missing fields' })
@@ -70,18 +70,18 @@ router.post('/api/lineage', async (req, res) => {
         const result = await db.query(
             `INSERT INTO lineage ("name", description, defining_features, required_race_id, is_custom) 
             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [name, description, defining_features, race.id, is_custom]
+            [name, description, defining_features, required_race.id, is_custom]
         )
         const createdLineage = result.rows[0];
 
         for (const bonus of bonuses) {
             await db.query('INSERT INTO lineage_characteristic_bonus (lineage_id, characteristic_id, bonus, is_custom) VALUES ($1, $2, $3, $4)',
-                [createdLineage.id, bonus.characteristic_id, bonus.bonus, is_custom])
+                [id, bonus.characteristic_id, bonus.bonus, is_custom])
         }
 
         for (const apptitude of aptitudes) {
             await db.query('INSERT INTO lineage_aptitude (lineage_id, aptitude_id) VALUES ($1, $2)',
-                [createdLineage.id, apptitude.id])
+                [id, apptitude.aptitude_id])
         }
         return res.status(201).send({ message: 'lineage created sucessfully', created: createdLineage })
     } catch (error) {
@@ -93,11 +93,11 @@ router.post('/api/lineage', async (req, res) => {
 router.put('/api/lineage/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { name, description, defining_features, race } = req.body
+        const { name, description, defining_features, required_race, bonuses, aptitudes, is_custom} = req.body
 
         await db.query(`UPDATE lineage SET name = $1, description =$2, defining_features = $3, required_race_id=$4
                         WHERE id = $5`,
-            [name, description, defining_features, race.id, id])
+            [name, description, defining_features, required_race.id, id])
 
 
         await db.query('DELETE FROM lineage_characteristic_bonus WHERE lineage_id = $1', [id])
@@ -107,12 +107,12 @@ router.put('/api/lineage/:id', async (req, res) => {
 
         for (const bonus of bonuses) {
             await db.query('INSERT INTO lineage_characteristic_bonus (lineage_id, characteristic_id, bonus, is_custom) VALUES ($1, $2, $3, $4)',
-                [createdLineage.id, bonus.characteristic_id, bonus.bonus, is_custom])
+                [id, bonus.characteristic_id, bonus.bonus, is_custom])
         }
 
         for (const apptitude of aptitudes) {
             await db.query('INSERT INTO lineage_aptitude (lineage_id, aptitude_id) VALUES ($1, $2)',
-                [createdLineage.id, apptitude.id])
+                [id, apptitude.aptitude_id])
         }
 
         return res.status(200).send({ message: 'armor updated' })
