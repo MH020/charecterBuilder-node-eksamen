@@ -88,7 +88,7 @@
     <button on:click={toggleSort}>
         Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
     </button>
-    <button on:click={createRace}> new statline </button>
+    <button on:click={createRace}> new race ? </button>
 </div>
 
 <div>
