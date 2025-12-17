@@ -72,7 +72,7 @@ router.put('/api/races/statlines/:id', async (req, res) => {
         return res.status(500).send({ message: 'server error', error: error.message })
     }
 })
-//needs to check if race has statline before delete 
+//needs to check if race has statline before delete   
 router.delete('/api/races/statlines/:id', async (req, res) => {
     try {
         const { id } = req.params
