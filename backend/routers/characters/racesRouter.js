@@ -5,8 +5,8 @@ import db from '../../db/connection.js'
 const router = Router()
 
 router.get('/api/races', async (req, res) => {
-    try {
-        const result = await db.query(`
+  try {
+    const result = await db.query(`
             SELECT race.id, race.name, race.description, race.wounds, race.is_custom,
 
             json_build_object(
@@ -52,75 +52,71 @@ router.get('/api/races', async (req, res) => {
             ON race.max_statline_id = max_statline.id
             LEFT JOIN size
             ON race.size_id = size.id;
-        `);
+        `)
 
+    const races = result.rows
 
-
-        const races = result.rows
-
-        return res.status(200).send(races)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send(races)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.post('/api/races', async (req, res) => {
-    try {
-        const { name, description, wounds, base_statline, max_statline, size } = req.body
-    
+  try {
+    const { name, description, wounds, base_statline, max_statline, size } = req.body
 
-        if (!name || description ||  wounds || base_statline || max_statline || size) {
-            return res.status(400).send({ message: 'missing fields' })
-        }
+    if (!name || description || wounds || base_statline || max_statline || size) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
 
-        const is_custom = req.session.user?.role === 'ADMIN' 
+    const is_custom = req.session.user?.role === 'ADMIN'
 
-        const result = await db.query(
+    const result = await db.query(
             `INSERT INTO race 
             ("name", description, size_id, wounds, base_statline_id, max_statline_id, is_custom) 
             VALUES ($1, $2, $3, $4, $5, $6, $7 RETURNING *)`,
             [name, description, size.id, wounds, base_statline.id, max_statline.id, is_custom]
-        );
-        const createdRace = result.rows[0];
+    )
+    const createdRace = result.rows[0]
 
-
-        return res.status(201).send({ message: 'race created sucessfully', created: createdRace })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(201).send({ message: 'race created sucessfully', created: createdRace })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.put('/api/races/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const { name, description, wounds, base_statline, max_statline, size } = req.body
+  try {
+    const { id } = req.params
+    const { name, description, wounds, base_statline, max_statline, size } = req.body
 
-        await db.query(`UPDATE race SET name = $1, description =$2, size_id = $3, wounds=$4, 
+    await db.query(`UPDATE race SET name = $1, description =$2, size_id = $3, wounds=$4, 
                         base_statline_id = $5, max_statline_id = $6
                         WHERE id = $7`,
-            [name, description, size.id, wounds, base_statline.id, max_statline.id, id])
+    [name, description, size.id, wounds, base_statline.id, max_statline.id, id])
 
-        return res.status(200).send({ message: 'race updated' })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send({ message: 'race updated' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.delete('/api/races/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        console.log('skillid?', id)
+  try {
+    const { id } = req.params
+    console.log('skillid?', id)
 
-        await db.query('DELETE FROM race where id = $1 ', [id])
+    await db.query('DELETE FROM race where id = $1 ', [id])
 
-        return res.status(200).send({ message: 'race deleted' })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send({ message: 'race deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 export default router
