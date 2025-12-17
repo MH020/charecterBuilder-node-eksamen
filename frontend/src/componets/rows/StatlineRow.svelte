@@ -18,14 +18,14 @@
 
         if (statline.isNew) {
             const response = await fetchPost(
-                "/api/aptitudes",
+                "/api/races/statlines",
                 editableStatline,
             );
             if (response.status === 201) {
                 updated = response.created;
             }
         } else {
-            await fetchUpdate("/api/aptitudes", editableStatline);
+            await fetchUpdate("/api/races/statlines", editableStatline);
             updated = editableStatline;
         }
 
