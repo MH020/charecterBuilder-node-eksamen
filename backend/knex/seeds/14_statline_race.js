@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
-  await knex('statline_race').del();
+export async function seed (knex) {
+  await knex('statline_race').del()
 
   await knex('statline_race').insert([
     // ===== HUMAN =====
@@ -61,5 +61,5 @@ export async function seed(knex) {
       fellowship: 30,
       is_custom: false
     }
-  ]);
+  ])
 }
