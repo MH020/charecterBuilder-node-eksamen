@@ -20,6 +20,8 @@ import lineageRouter from './routers/characters/lineageRouter.js'
 import characteristicsRouter from './routers/characters/characteristicRouter.js'
 import raceRouter from './routers/characters/racesRouter.js'
 import statlineRouter from './routers/characters/statlineRaceRouter.js'
+import sizeROuter from './routers/characters/sizeRouter.js'
+
 const app = express()
 
 app.use(express.json())
@@ -81,6 +83,8 @@ app.use(lineageRouter)
 app.use(characteristicsRouter)
 
 app.use(raceRouter)
+
+app.use(sizeROuter)
 
 app.use(statlineRouter)
 // aouth
