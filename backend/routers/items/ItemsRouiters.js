@@ -21,7 +21,7 @@ router.get('/api/items', async (req, res) => {
       FROM item
       LEFT JOIN category ON item.category_id = category.id
       LEFT JOIN availability ON item.availability_id = availability.id
-    `);
+    `)
     const items = result.rows
     return res.status(200).send(items)
   } catch (error) {
@@ -35,16 +35,15 @@ router.post('/api/items', async (req, res) => {
     const { name, description, category, availability } = req.body
 
     if (!name || !description || !category || !availability) {
-
       return res.status(400).send({ message: 'missing fields' })
     }
-    const is_custom = req.session.user?.role === 'ADMIN' 
+    const is_custom = req.session.user?.role === 'ADMIN'
 
-    console.log("here?")
+    console.log('here?')
 
     const result = await db.query(
       'INSERT INTO item ("name", description, category_id, availability_id, is_custom) VALUES ($1, $2, $3, $4 ,$5) RETURNING *',
-      [name, description, category.id,availability.id, is_custom]
+      [name, description, category.id, availability.id, is_custom]
     )
     const createdItem = result.rows[0]
     return res.status(201).send({ message: 'item created sucessfully', created: createdItem })
@@ -72,7 +71,6 @@ router.put('/api/items/:id', async (req, res) => {
 router.delete('/api/items/:id', async (req, res) => {
   try {
     const { id } = req.params
-
 
     await db.query(
       'DELETE FROM item where id = $1 ', [id]
