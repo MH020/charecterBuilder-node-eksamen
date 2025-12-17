@@ -59,36 +59,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
-    background: #f9f9f9;
+    background-color: #1b1b1b;
     padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ddd;
-    width: 100%;
-    max-width: 400px;
-    font-family: "Arial", sans-serif;
-  }
-
-  .stat-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0.5rem;
-    background: #fff;
-    border-radius: 0.25rem;
-    border: 1px solid #ccc;
-  }
-
-  .stat-cell .label {
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-    text-transform: capitalize;
-  }
-
-  .stat-cell .value {
-    font-size: 1.1rem;
-    color: #333;
+    border-radius: 8px;
+    border: 1px solid #333;
+    color: var(--color-text);
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.7);
   }
 
   .statline-card .name {
@@ -97,5 +74,31 @@
     font-size: 1.2rem;
     text-align: center;
     margin-bottom: 0.5rem;
+    color: var(--color-accent);
+    text-shadow: 0 0 4px #664;
+  }
+
+  .stat-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 4px;
+  }
+
+  .stat-cell .label {
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    color: #ffb86c;
+    text-transform: capitalize;
+  }
+
+  .stat-cell .value {
+    font-size: 1rem;
+    color: var(--color-text);
   }
 </style>
