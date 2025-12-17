@@ -2,28 +2,28 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
-  await knex('race').del();
+export async function seed (knex) {
+  await knex('race').del()
 
   // ---- Resolve Sizes ----
-  const mediumSize = await knex('size').where({ name: 'Medium' }).first();
-  const largeSize = await knex('size').where({ name: 'Large' }).first();
+  const mediumSize = await knex('size').where({ name: 'Medium' }).first()
+  const largeSize = await knex('size').where({ name: 'Large' }).first()
 
   // ---- Resolve Human Statlines ----
   const humanStatlines = await knex('statline_race')
     .where({ name: 'Human' })
-    .orderBy('weapon_skill', 'asc');
+    .orderBy('weapon_skill', 'asc')
 
-  const humanMin = humanStatlines[0];
-  const humanMax = humanStatlines[1];
+  const humanMin = humanStatlines[0]
+  const humanMax = humanStatlines[1]
 
   // ---- Resolve Astartes Statlines ----
   const astartesStatlines = await knex('statline_race')
     .where({ name: 'Adeptus Astartes' })
-    .orderBy('weapon_skill', 'asc');
+    .orderBy('weapon_skill', 'asc')
 
-  const astartesMin = astartesStatlines[0];
-  const astartesMax = astartesStatlines[1];
+  const astartesMin = astartesStatlines[0]
+  const astartesMax = astartesStatlines[1]
 
   // ---- Insert Races ----
   await knex('race').insert([
@@ -45,5 +45,5 @@ export async function seed(knex) {
       max_statline_id: astartesMax.id,
       is_custom: false
     }
-  ]);
+  ])
 }
