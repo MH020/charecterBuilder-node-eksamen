@@ -68,18 +68,20 @@ router.get('/api/races', async (req, res) => {
 router.post('/api/races', async (req, res) => {
     try {
         const { name, description, wounds, base_statline, max_statline, size } = req.body
+    
 
-        if (!name) {
+        if (!name || description ||  wounds || base_statline || max_statline || size) {
             return res.status(400).send({ message: 'missing fields' })
         }
 
-        const is_custom = req.session.user?.role === 'ADMIN'
+        const is_custom = req.session.user?.role === 'ADMIN' 
 
         const result = await db.query(
-            `INSERT INTO race ("name", description, size_id, wounds, base_statline_id, max_statline_id, is_custom) 
-            VALUES ($1, $2, $3, $4, $5 $6, $7) RETURNING *`,
+            `INSERT INTO race 
+            ("name", description, size_id, wounds, base_statline_id, max_statline_id, is_custom) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7 RETURNING *)`,
             [name, description, size.id, wounds, base_statline.id, max_statline.id, is_custom]
-        )
+        );
         const createdRace = result.rows[0];
 
 
@@ -98,7 +100,7 @@ router.put('/api/races/:id', async (req, res) => {
         await db.query(`UPDATE race SET name = $1, description =$2, size_id = $3, wounds=$4, 
                         base_statline_id = $5, max_statline_id = $6
                         WHERE id = $7`,
-            [name, description, size.id, wounds, base_statline.id, max_statline.id])
+            [name, description, size.id, wounds, base_statline.id, max_statline.id, id])
 
         return res.status(200).send({ message: 'race updated' })
     } catch (error) {
