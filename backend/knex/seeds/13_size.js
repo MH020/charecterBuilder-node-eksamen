@@ -2,9 +2,9 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Deletes ALL existing entries
-  await knex('size').del();
+  await knex('size').del()
 
   // Inserts seed entries (IDs auto-generated)
   await knex('size').insert([
@@ -32,5 +32,5 @@ export async function seed(knex) {
       name: 'Gargantuan',
       score: 10
     }
-  ]);
+  ])
 }
