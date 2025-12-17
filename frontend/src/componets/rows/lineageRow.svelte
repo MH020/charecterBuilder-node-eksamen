@@ -8,10 +8,7 @@
     } from "../../store/modalStore";
     import LineageBonusCard from "../cards/lineageBonusCard.svelte";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
-    import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
-    import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
-    import WeaponTraitList from "../lists/weaponLists/weaponTraitList.svelte";
 
     export let lineage;
     export let onSave;
@@ -21,8 +18,8 @@
     let editableLineage = structuredClone(lineage);
     let classTooltip = [];
     let traitTooltip = [];
-    let showTooltip; 
-    let featureShowTooltip
+    let showTooltip;
+    let featureShowTooltip;
 
     function startEditing() {
         isEditing = true;
@@ -70,31 +67,32 @@
         openModal(CategoryList); //raceList
     }
 
-function createBonus() {
-    modalSelectCallback.set((bonus) => {
-        console.log(bonus);
+    function createBonus() {
+        modalSelectCallback.set((bonus) => {
+            console.log(bonus);
 
-        const list = editableLineage.bonuses || [];
+            const list = editableLineage.bonuses || [];
 
-        const exists = list.some(
-            b => b.characteristic_id === bonus.characteristic_id
-        );
+            const exists = list.some(
+                (b) => b.characteristic_id === bonus.characteristic_id,
+            );
 
-        editableLineage = {
-            ...editableLineage,
-            bonuses: exists
-                ? list.filter(
-                    b => b.characteristic_id !== bonus.characteristic_id
-                  )
-                : [...list, bonus],
-        };
+            editableLineage = {
+                ...editableLineage,
+                bonuses: exists
+                    ? list.filter(
+                          (b) =>
+                              b.characteristic_id !== bonus.characteristic_id,
+                      )
+                    : [...list, bonus],
+            };
 
-        modalSelectCallback.set(null);
-        console.log(editableLineage.bonuses);
-    });
+            modalSelectCallback.set(null);
+            console.log(editableLineage.bonuses);
+        });
 
-    openModal(LineageBonusCard);
-}
+        openModal(LineageBonusCard);
+    }
 </script>
 
 <div class="row">
@@ -104,10 +102,14 @@ function createBonus() {
             <input bind:value={editableLineage.name} />
         </div>
 
-        <textarea bind:value={editableLineage.description} rows="3" cols="30"></textarea>
+        <textarea bind:value={editableLineage.description} rows="3" cols="30"
+        ></textarea>
 
-        <textarea bind:value={editableLineage.defining_features} rows="3" cols="30"></textarea>
-
+        <textarea
+            bind:value={editableLineage.defining_features}
+            rows="3"
+            cols="30"
+        ></textarea>
 
         <div class="cell-box">
             <div class="label">required race</div>
@@ -117,7 +119,7 @@ function createBonus() {
         </div>
 
         <div class="cell-box">
-            <div class="label"> create characteristic bonus</div>
+            <div class="label">create characteristic bonus</div>
             <button on:click={createBonus}>
                 {"add bonus"}
             </button>
@@ -126,14 +128,8 @@ function createBonus() {
         <div class="cell-box">
             <div class="label">bonus</div>
             <div class="tags">
-                {#each editableLineage.bonuses as bonus, index}
-                    <button
-                        class="tag"
-                        on:mouseenter={() => (classTooltip[index] = true)}
-                        on:mouseleave={() => (classTooltip[index] = false)}
-                    >
-                        {bonus.name || "----"}
-                    </button>
+                {#each editableLineage.bonuses as bonus}
+                    <p>{bonus.characteristic_name} +({bonus.bonus})</p>
                 {/each}
             </div>
         </div>
@@ -142,33 +138,34 @@ function createBonus() {
             on:click={() =>
                 selectMultibleFromModal(ApptitudesList, (selected) => {
                     const list = editableLineage.aptitudes || [];
+                    const newApptitude = {
+                        aptitude_id: selected.id,
+                        aptitude_name: selected.name,
+                    };
 
                     const exists = list.some(
-                        (aptitude) => aptitude.id === selected.id,
+                        (aptitude) => aptitude.aptitude_id === newApptitude.aptitude_id,
                     );
 
                     editableLineage = {
                         ...editableLineage,
                         aptitudes: exists
-                            ? list.filter((aptitude) => aptitude.id !== selected.id)
-                            : [...list, selected],
+                            ? list.filter(
+                                  (aptitude) => aptitude.aptitude_id !== newApptitude.aptitude_id
+                              )
+                            : [...list, newApptitude],
                     };
+                    console.log(editableLineage);
                 })}
         >
-            select trait
+            select apptitudes
         </button>
 
         <div class="cell-box">
             <div class="label">aptitudes</div>
             <div class="tags">
                 {#each editableLineage.aptitudes as aptitude, index}
-                    <button
-                        class="tag"
-                        on:mouseenter={() => (traitTooltip[index] = true)}
-                        on:mouseleave={() => (traitTooltip[index] = false)}
-                    >
-                        {aptitude.name || "----"}
-                    </button>
+                    <div>{aptitude.aptitude_name || "----"}</div>
                 {/each}
             </div>
         </div>
@@ -179,68 +176,60 @@ function createBonus() {
             <button on:click={cancelEdit}>Cancel</button>
         </div>
     {:else}
-
         <div class="cell-box">
             <div class="label">Name</div>
             <div>{lineage.name || "----"}</div>
         </div>
 
         <button
-        class="description-btn"
-        on:mouseenter={() => showTooltip = true}
-        on:mouseleave={() => showTooltip = false}
-        aria-describedby="tooltip-description"
-      >
-        description
-      </button>
+            class="description-btn"
+            on:mouseenter={() => (showTooltip = true)}
+            on:mouseleave={() => (showTooltip = false)}
+            aria-describedby="tooltip-description"
+        >
+            description
+        </button>
 
-      {#if showTooltip}
-        <div id="tooltip-description" role="tooltip" class="tooltip">
-          {lineage.description || "No description"}
-        </div>
-      {/if}
+        {#if showTooltip}
+            <div id="tooltip-description" role="tooltip" class="tooltip">
+                {lineage.description || "No description"}
+            </div>
+        {/if}
 
         <button
-        class="description-btn"
-        on:mouseenter={() => featureShowTooltip = true}
-        on:mouseleave={() => featureShowTooltip = false}
-        aria-describedby="tooltip-description"
-      >
-        defining_features
-      </button>
+            class="description-btn"
+            on:mouseenter={() => (featureShowTooltip = true)}
+            on:mouseleave={() => (featureShowTooltip = false)}
+            aria-describedby="tooltip-description"
+        >
+            defining_features
+        </button>
 
-      
+        {#if featureShowTooltip}
+            <div id="tooltip-description" role="tooltip" class="tooltip">
+                {lineage.defining_features || "No defining features"}
+            </div>
+        {/if}
 
-      {#if featureShowTooltip}
-        <div id="tooltip-description" role="tooltip" class="tooltip">
-          {lineage.defining_features || "No defining features"}
-        </div>
-      {/if}
-
-              <div class="cell-box">
+        <div class="cell-box">
             <div class="label">required race</div>
             <div>{lineage.required_race.name || "----"}</div>
         </div>
-
 
         <div class="cell-box">
             <div class="label">characteristic bonus</div>
             <div class="tags">
                 {#each lineage.bonuses as bonus}
-                <p> {bonus.characteristic_name} +({bonus.bonus})</p>
+                    <div>{bonus.characteristic_name} +({bonus.bonus})</div>
                 {/each}
             </div>
         </div>
-
-
 
         <div class="cell-box">
             <div class="label">aptitudes</div>
             <div class="tags">
                 {#each lineage.aptitudes as aptitude, index}
-                    <div>
-                        {aptitude.aptitude_name || "----"}
-                    </div>
+                    <div>{aptitude.aptitude_name || "----"}</div>
                 {/each}
             </div>
         </div>
