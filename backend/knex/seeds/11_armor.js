@@ -2,15 +2,15 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Clear existing armor
-  await knex('armor').del();
+  await knex('armor').del()
 
-  const [Common] = await knex('availability').where({ name: 'Common' });
-  const [Uncommon] = await knex('availability').where({ name: 'Uncommon' });
-  const [Rare] = await knex('availability').where({ name: 'Rare' });
-  const [Very_Rare] = await knex('availability').where({ name: 'Very Rare' });
-  const [Legendary] = await knex('availability').where({ name: 'Legendary' });
+  const [Common] = await knex('availability').where({ name: 'Common' })
+  const [Uncommon] = await knex('availability').where({ name: 'Uncommon' })
+  const [Rare] = await knex('availability').where({ name: 'Rare' })
+  const [Very_Rare] = await knex('availability').where({ name: 'Very Rare' })
+  const [Legendary] = await knex('availability').where({ name: 'Legendary' })
 
   await knex('armor').insert([
     {
@@ -143,5 +143,5 @@ export async function seed(knex) {
       availability_id: Legendary.id,
       is_custom: false
     }
-  ]);
+  ])
 }
