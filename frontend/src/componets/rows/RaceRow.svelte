@@ -19,9 +19,13 @@
   async function saveEdit() {
     let updated;
     console.log(endpoint)
+          console.log(editableRace)
     if (editableRace.isNew) {
       const response = await fetchPost(endpoint, editableRace);
-      if (response.status === 201) updated = response.created;
+        if (response.status === 201){
+            updated = editableRace;
+            updated.id = response.created.id
+        }
     } else {
       await fetchUpdate(endpoint, editableRace);
       updated = editableRace;
@@ -41,13 +45,22 @@
     onDelete(editableRace.id);
   }
 
-  function selectStatline(key) {
+  function selectStatline(statline) {
     modalSelectCallback.set((selectedStatline) => {
-      editableRace = { ...editableRace, [key]: selectedStatline };
+      editableRace = { ...editableRace, [statline]: selectedStatline };
       modalSelectCallback.set(null);
     });
     openModal(StatlinesList);
   }
+
+    function selectSize() {
+        modalSelectCallback.set((size) => {
+            editableRace.size = size;
+
+            modalSelectCallback.set(null);
+        });
+        openModal(); 
+    }
 </script>
 
 
