@@ -10,7 +10,7 @@
     let sortedStatlines = [];
 
     onMount(async () => {
-        const response = await fetchGet("/api/aptitudes");
+        const response = await fetchGet("/api/races/statlines");
         console.log(response);
         if (response.status === 200) {
             Statlines = response.data;
@@ -94,7 +94,7 @@
     <button on:click={toggleSort}>
         Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
     </button>
-    <button on:click={createStatline}> new Apptitude </button>
+    <button on:click={createStatline}> new statline </button>
 </div>
 
 <div>
