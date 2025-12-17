@@ -26,6 +26,7 @@
   import CraftmanshipList from "./componets/lists/ItemsList/craftmanshipList.svelte";
   import LineageList from "./componets/lists/characterLists/lineageList.svelte";
     import StatlinesList from "./componets/lists/characterLists/StatlinesList.svelte";
+    import RaceList from "./componets/lists/characterLists/RaceList.svelte";
 
   let user = null;
   let loading = true;
@@ -84,7 +85,8 @@
         <Route path="/lineage"><LineageList /></Route>
 
         <!-- races -->
-        <Route path="/race/statlines"><StatlinesList /></Route>
+        <Route path="/races"><RaceList /></Route>
+        <Route path="/races/statlines"><StatlinesList /></Route>
 
 
         <Route path="/weapons"><WeaponsList /></Route>
