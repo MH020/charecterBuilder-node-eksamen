@@ -17,44 +17,43 @@ router.get('/api/sizes', async (req, res) => {
   }
 })
 
-router.post('/api/aptitudes', async (req, res) => {
+router.post('/api/sizes', async (req, res) => {
   try {
-    const { name } = req.body
+    const { name, score } = req.body
 
-    if (!name) {
+    if (!name || !score) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
     const result = await db.query(
-      'INSERT INTO aptitude ("name") VALUES ($1) RETURNING *',
-      [name]
+      'INSERT INTO size ("name", score) VALUES ($1, $2) RETURNING *',
+      [name, score]
     )
-    const createdAptitude = result.rows[0]
-    return res.status(201).send({ message: 'Aptitude created sucessfully', created: createdAptitude })
+    const createdSize = result.rows[0]
+    return res.status(201).send({ message: 'size created sucessfully', created: createdSize })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.put('/api/aptitudes/:id', async (req, res) => {
+router.put('/api/size/:id', async (req, res) => {
   try {
     const id = req.params.id
     const { name } = req.body
 
-    await db.query('UPDATE aptitude SET name = $1 WHERE id = $2', [name, id])
+    await db.query('UPDATE size SET name = $1, score = $2 WHERE id = $3', [name, score, id])
 
-    return res.status(200).send({ message: 'aptitude updated' })
+    return res.status(200).send({ message: 'size updated' })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.delete('/api/aptitudes/:id', async (req, res) => {
+router.delete('/api/size/:id', async (req, res) => {
   try {
     const { id } = req.params
-    console.log('skillid?', id)
 
     await db.query(
       'DELETE FROM aptitude where id = $1 ', [id]
