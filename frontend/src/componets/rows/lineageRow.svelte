@@ -102,8 +102,7 @@
             <input bind:value={editableLineage.name} />
         </div>
 
-        <textarea bind:value={editableLineage.description} rows="3" cols="30"
-        ></textarea>
+        <textarea bind:value={editableLineage.description} rows="3" cols="30"></textarea>
 
         <textarea
             bind:value={editableLineage.defining_features}
