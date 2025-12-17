@@ -45,11 +45,11 @@ const generalLimiter = rateLimit({
 
 app.use(generalLimiter)
 
-//skills
+// skills
 
 app.use(skillsRoutes)
 
-//apptitudes
+// apptitudes
 
 app.use(apptitudesRouter)
 
@@ -60,7 +60,7 @@ app.use(weaponClassRouter)
 
 app.use(weaponTraitRouter)
 
-//items 
+// items
 
 app.use(itemsRouter)
 
@@ -70,12 +70,11 @@ app.use(availabilityRouter)
 
 app.use(craftsmanshipRouter)
 
-// armor 
+// armor
 
 app.use(armorRouter)
 
-
-//character
+// character
 
 app.use(lineageRouter)
 
@@ -84,7 +83,7 @@ app.use(characteristicsRouter)
 app.use(raceRouter)
 
 app.use(statlineRouter)
-//aouth
+// aouth
 
 app.use(authRouthes)
 
