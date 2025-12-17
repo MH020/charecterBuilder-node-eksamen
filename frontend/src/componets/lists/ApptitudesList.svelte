@@ -35,7 +35,7 @@
         }
         apptitudesList = await deleteEntity(
             id,
-            "/api/weapon/traits",
+            "/api/apptitudes",
             apptitudesList,
         );
     }
