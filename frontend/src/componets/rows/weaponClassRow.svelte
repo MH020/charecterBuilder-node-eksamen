@@ -80,7 +80,7 @@
             <button on:click={startEditing}>Edit</button>
             <button on:click={deleteRow}>Delete </button>
         {:else}
-            <button on:click={() => {$modalSelectCallback(weaponClass); closeModal();}}> select</button>
+            <button on:click={() => {$modalSelectCallback(weaponClass); closeModal()}}> select</button>
         {/if}
     </div>
   {/if}
