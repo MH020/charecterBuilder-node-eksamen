@@ -4,7 +4,7 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/race', async (req, res) => {
+router.get('/api/races', async (req, res) => {
     try {
         const result = await db.query(`
             SELECT race.id, race.name, race.description, race.wounds, race.is_custom,
@@ -65,7 +65,7 @@ router.get('/api/race', async (req, res) => {
     }
 })
 
-router.post('/api/race', async (req, res) => {
+router.post('/api/races', async (req, res) => {
     try {
         const { name, description, wounds, base_statline, max_statline, size } = req.body
 
@@ -80,36 +80,25 @@ router.post('/api/race', async (req, res) => {
             VALUES ($1, $2, $3, $4, $5 $6, $7) RETURNING *`,
             [name, description, size.id, wounds, base_statline.id, max_statline.id, is_custom]
         )
-        const createdLineage = result.rows[0];
+        const createdRace = result.rows[0];
 
 
-        return res.status(201).send({ message: 'lineage created sucessfully', created: createdLineage })
+        return res.status(201).send({ message: 'race created sucessfully', created: createdRace })
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
     }
 })
 
-router.put('/api/race/:id', async (req, res) => {
+router.put('/api/races/:id', async (req, res) => {
     try {
         const { id } = req.params
         const { name, description, wounds, base_statline, max_statline, size } = req.body
 
-        await db.query(`UPDATE lineage SET name = $1, description =$2, size_id = $3, wounds=$4, 
+        await db.query(`UPDATE race SET name = $1, description =$2, size_id = $3, wounds=$4, 
                         base_statline_id = $5, max_statline_id = $6
                         WHERE id = $7`,
             [name, description, size.id, wounds, base_statline.id, max_statline.id])
-
-
-        for (const bonus of bonuses) {
-            await db.query('INSERT INTO lineage_characteristic_bonus (lineage_id, characteristic_id, bonus, is_custom) VALUES ($1, $2, $3, $4)',
-                [id, bonus.characteristic_id, bonus.bonus, is_custom])
-        }
-
-        for (const apptitude of aptitudes) {
-            await db.query('INSERT INTO lineage_aptitude (lineage_id, aptitude_id) VALUES ($1, $2)',
-                [id, apptitude.aptitude_id])
-        }
 
         return res.status(200).send({ message: 'race updated' })
     } catch (error) {
@@ -118,7 +107,7 @@ router.put('/api/race/:id', async (req, res) => {
     }
 })
 
-router.delete('/api/race/:id', async (req, res) => {
+router.delete('/api/races/:id', async (req, res) => {
     try {
         const { id } = req.params
         console.log('skillid?', id)
