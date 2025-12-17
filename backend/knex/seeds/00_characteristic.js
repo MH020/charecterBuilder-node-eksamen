@@ -2,20 +2,20 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Deletes ALL existing entries
   await knex('weapon_weapon_traits').del()
   await knex('weapon_weapon_class').del()
   await knex('lineage_characteristic_bonus').del()
-    await knex('lineage_aptitude').del()
+  await knex('lineage_aptitude').del()
   await knex('weapon_upgrade').del()
   await knex('weapon').del()
   await knex('item').del()
   await knex('armor').del()
   await knex('availability').del()
-  await knex('characteristic').del();
-  await knex('lineage').del();
-  await knex('race').del();
+  await knex('characteristic').del()
+  await knex('lineage').del()
+  await knex('race').del()
 
   // Inserts seed entries (IDs auto-generated)
   await knex('characteristic').insert([
@@ -51,5 +51,5 @@ export async function seed(knex) {
       name: 'Save',
       description: 'The armor save a model uses to resist incoming damage.'
     }
-  ]);
+  ])
 }
