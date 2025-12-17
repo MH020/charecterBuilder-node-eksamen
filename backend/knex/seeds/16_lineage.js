@@ -2,12 +2,12 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
-  await knex('lineage').del();
+export async function seed (knex) {
+  await knex('lineage').del()
 
   // ---- Resolve Races ----
-  const human = await knex('race').where({ name: 'Human' }).first();
-  const astartes = await knex('race').where({ name: 'Adeptus Astartes' }).first();
+  const human = await knex('race').where({ name: 'Human' }).first()
+  const astartes = await knex('race').where({ name: 'Adeptus Astartes' }).first()
 
   // ---- Insert Lineages ----
   await knex('lineage').insert([
@@ -56,5 +56,5 @@ export async function seed(knex) {
       required_race_id: astartes.id,
       is_custom: false
     }
-  ]);
+  ])
 }
