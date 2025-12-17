@@ -1,11 +1,11 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Deletes ALL existing entries
-  await knex('craftsmanship').del();
-  
+  await knex('craftsmanship').del()
+
   await knex('craftsmanship').insert([
     {
       id: 1,
@@ -127,5 +127,5 @@ export async function seed(knex) {
       ap_modifier: 1,
       category: 'armor'
     }
-  ]);
+  ])
 };
