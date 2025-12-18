@@ -88,9 +88,9 @@
 </div>
 
 <div>
-    {#each sortedSizes as race (race.id)}
+    {#each sortedSizes as size (size.id)}
         <RaceRow
-            race={race}
+            race={size}
             onSave={updateStatlines}
             onDelete={deleteRace}
             endpoint={endpoint}
