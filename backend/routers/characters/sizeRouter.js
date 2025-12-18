@@ -37,10 +37,10 @@ router.post('/api/sizes', async (req, res) => {
   }
 })
 
-router.put('/api/size/:id', async (req, res) => {
+router.put('/api/sizes/:id', async (req, res) => {
   try {
     const id = req.params.id
-    const { name } = req.body
+    const { name, score } = req.body
 
     await db.query('UPDATE size SET name = $1, score = $2 WHERE id = $3', [name, score, id])
 
@@ -51,7 +51,7 @@ router.put('/api/size/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/size/:id', async (req, res) => {
+router.delete('/api/sizes/:id', async (req, res) => {
   try {
     const { id } = req.params
 
