@@ -1,24 +1,23 @@
 import { Server } from 'socket.io'
+import { isPartOfCampaign } from '../../middleware/auth.js'
+import { sessionMiddleware } from '../../app.js'
 
 const io = new Server(server)
 
-const combatLog = []
+io.engine.use(sessionMiddleware);
+
+io.use(isPartOfCampaign)
+
 
 io.on('connection', (socket) => {
-  console.log('A socket connected', socket.id)
 
-  socket.emit('combat-log-history', combatLog)
+  socket.join(`campaign:${socket.campaignId}`);
 
-  socket.on('combat-event', (data) => {
-    const logEntry = {
-      ...data,
-      timestamp: new Date().toISOString()
-    }
+  socket.on('log:entry', (entry) => {
 
-    combatLog.push(logEntry)
-
-    io.emit('new-combat-log', logEntry)
-  })
+    io.to(`campaign:${socket.campaignId}`).emit('log:entry', 
+      {...entry, userId: socket.userId});
+  });
 
   socket.on('disconnect', () => {
     console.log('Socket disconnected', socket.id)
