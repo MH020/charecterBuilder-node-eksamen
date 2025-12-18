@@ -4,7 +4,7 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/races/statlines', async (req, res) => {
+router.get('/api/statlines', async (req, res) => {
   try {
     const result = await db.query(`
             SELECT id, name, weapon_skill, ballistic_skill, strength, toughness, agility, intelligence, perception, willpower, fellowship, is_custom
@@ -19,7 +19,7 @@ router.get('/api/races/statlines', async (req, res) => {
   }
 })
 
-router.post('/api/races/statlines', async (req, res) => {
+router.post('/api/statlines', async (req, res) => {
   try {
     const {
       name, weapon_skill, ballistic_skill, strength, toughness, agility,
@@ -51,7 +51,7 @@ router.post('/api/races/statlines', async (req, res) => {
   }
 })
 
-router.put('/api/races/statlines/:id', async (req, res) => {
+router.put('/api/statlines/:id', async (req, res) => {
   try {
     const { id } = req.params
     const {
@@ -74,7 +74,7 @@ router.put('/api/races/statlines/:id', async (req, res) => {
   }
 })
 // needs to check if race has statline before delete
-router.delete('/api/races/statlines/:id', async (req, res) => {
+router.delete('/api/statlines/:id', async (req, res) => {
   try {
     const { id } = req.params
 
