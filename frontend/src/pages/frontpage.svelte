@@ -7,6 +7,7 @@
     import {lockBodyScroll, unlockBodyScroll} from "../../util/scrolling.js"
     import { onDestroy } from 'svelte';
 	import {modalStore, openModal, closeModal} from "../store/modalStore.js"
+    import CombatLogWindow from "../componets/windows/combatLogWindow.svelte";
 
 
 	function newCharecter() {
@@ -52,6 +53,8 @@
 		<button class="icon-button" on:click={Campaigns}>
 			<img alt="Campaigns" class="new-load-buttons" />
 		</button>
+
+		<CombatLogWindow />
 
 	</div>
 </div>
