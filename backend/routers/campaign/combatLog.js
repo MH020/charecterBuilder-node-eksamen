@@ -6,8 +6,10 @@ const io = new Server(server)
 
 io.engine.use(sessionMiddleware);
 
-io.use(isPartOfCampaign)
+//io.use(isPartOfCampaign)
 
+      socket.campaignId = 1;
+      socket.userId = 1;
 
 io.on('connection', (socket) => {
 
@@ -23,3 +25,5 @@ io.on('connection', (socket) => {
     console.log('Socket disconnected', socket.id)
   })
 })
+
+//http server why ?
