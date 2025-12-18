@@ -26,6 +26,7 @@
     "nodemailer": "^7.0.10",
     "nodemon": "^3.1.11",
     "pg": "^8.16.3",
+    "socket.io": "^4.8.1",
     "standard": "^17.1.2",
     "websocket": "^1.0.35"
   },
