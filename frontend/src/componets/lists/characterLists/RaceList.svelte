@@ -7,15 +7,17 @@
 
 
     let races = [];
+    let sizes = []; 
     let sortType = "all";
     let sortedRaces = [];
     const endpoint = "/api/races"
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
-        console.log(response);
-        if (response.status === 200) {
+        const sizeResponse = await fetchGet("/api/sizes")
+        if (response.status === 200 || sizeResponse.status === 200) {
             races = response.data;
+            sizes = sizeResponse.data; 
         }
     });
 
@@ -98,6 +100,7 @@
             onSave={updateStatlines}
             onDelete={deleteRace}
             endpoint={endpoint}
+            sizes = {sizes}
         />
     {/each}
 </div>
