@@ -12,9 +12,11 @@
     export let onSave;
     export let onDelete;
     export let endpoint;
+    export let sizes;
 
     let isEditing = race.isNew;
     let editableRace = structuredClone(race);
+    let selectedSize = null;
 
     function startEditing() {
         isEditing = true;
@@ -57,21 +59,29 @@
         openModal(StatlinesList);
     }
 
-    function selectSize() {
-        modalSelectCallback.set((size) => {
-            editableRace.size = size;
-
-            modalSelectCallback.set(null);
-        });
-        openModal();
+    $: if (selectedSize) {
+        race.size = selectedSize;
     }
 </script>
 
 <div class="row">
     {#if isEditing}
-        <div class="cell-box">
-            <div class="label">Name</div>
-            <input bind:value={editableRace.name} />
+        <div class="row-fields">
+
+            <div class="cell-box">
+                <div class="label">Name</div>
+                <input bind:value={editableRace.name} />
+            </div>
+
+            <div class="select-box">
+                <div class="label">size</div>
+                <select bind:value={selectedSize}>
+                    <option value="" disabled selected>Select an size</option>
+                    {#each sizes as size}
+                        <option value={size}>{size.name}</option>
+                    {/each}
+                </select>
+            </div>
         </div>
 
         <textarea bind:value={editableRace.description} rows="3" cols="30"
@@ -98,13 +108,6 @@
             </div>
         </div>
 
-        <div>
-            <button on:click={() => selectStatline("max_statline")}
-                >Select size</button
-            >
-            <StatlineCard statline={editableRace.size.name} />
-        </div>
-
         <div class="buttons">
             <button on:click={saveEdit}>Save</button>
             <button on:click={cancelEdit}>Cancel</button>
@@ -128,9 +131,16 @@
             {/if}
         </div>
 
-        <div class="cell-box">
-            <div class="label">Name</div>
-            <div>{race.name || "----"}</div>
+        <div class="row-fields">
+            <div class="cell-box">
+                <div class="label">Name</div>
+                <div>{race.name || "----"}</div>
+            </div>
+
+            <div class="cell-box">
+                <div class="label">Size</div>
+                <div>{race.size.name || "----"}</div>
+            </div>
         </div>
 
         <div class="cell-box">
@@ -162,6 +172,11 @@
         color: #e0e0e0;
         font-family: "Courier New", monospace;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .row-fields {
+        display: flex;
+        gap: 1rem;
     }
 
     .cell-box {
