@@ -4,12 +4,13 @@
     import { deleteEntity } from "../../../../util/ListUtil";
     import StatlineRow from "../../rows/StatlineRow.svelte";
     import RaceRow from "../../rows/RaceRow.svelte";
+    import SizeRow from "../../rows/SizeRow.svelte";
 
 
     let sizes = [];
     let sortType = "all";
     let sortedSizes = [];
-    const endpoint = "/api/size"
+    const endpoint = "/api/sizes"
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
@@ -89,8 +90,8 @@
 
 <div>
     {#each sortedSizes as size (size.id)}
-        <RaceRow
-            race={size}
+        <SizeRow
+            size={size}
             onSave={updateStatlines}
             onDelete={deleteRace}
             endpoint={endpoint}
