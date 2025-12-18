@@ -4,6 +4,9 @@ import path from 'path'
 import helmet from 'helmet'
 import { rateLimit } from 'express-rate-limit'
 import session from 'express-session'
+import { Server } from 'socket.io';
+import http from 'http';
+
 
 import authRouthes from './routers/users/authRoutes.js'
 import skillsRoutes from './routers/skill/skillsRouter.js'
@@ -22,6 +25,7 @@ import raceRouter from './routers/characters/racesRouter.js'
 import statlineRouter from './routers/characters/statlineRaceRouter.js'
 import sizeROuter from './routers/characters/sizeRouter.js'
 
+
 const app = express()
 
 app.use(express.json())
@@ -38,6 +42,42 @@ export const sessionMiddleware = session({
 });
 
 app.use(sessionMiddleware);
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: ["http://localhost:8080"],
+        credentials: true
+    }
+});
+
+//socket
+
+io.engine.use(sessionMiddleware);
+
+//io.use(isPartOfCampaign)
+
+
+
+io.on('connection', (socket) => {
+
+    socket.campaignId = 1;
+    socket.userId = 1;
+
+  socket.join(`campaign:${socket.campaignId}`);
+
+  socket.on('log:entry', (entry) => {
+    console.log(entry)
+    io.to(`campaign:${socket.campaignId}`).emit('log:entry', 
+      {...entry, userId: socket.userId});
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Socket disconnected', socket.id)
+  })
+})
+
 
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -102,6 +142,4 @@ app.all('/{*splat}', (req, res) => {
 })
 
 const PORT = 8080
-app.listen(PORT, () => {
-  console.log('Server is running on port:', PORT)
-})
+server.listen(PORT, () => console.log("Server is running on port", PORT));
