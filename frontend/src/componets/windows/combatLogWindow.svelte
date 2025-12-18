@@ -8,13 +8,14 @@
     let socket;
     let entries = []
     let logEntry
+    let logEntryMessage = '';
 
         onMount(() => {
         socket = io(BASE_URL, {
             withCredentials: true
         });
 
-        socket.on("combat:event", (event) => {
+        socket.on("log:entry", (event) => {
             entries = [...entries, event];
         })
     });
@@ -23,8 +24,18 @@
         socket?.disconnect();
     });
 
-    function SubmitEvent(){
-        const NewlogEntry = {id: entries.length + 1, message: ``}
+
+    function submitEvent() {
+        if (!logEntryMessage.trim()) return;
+
+        const newLogEntry = {
+            id: entries.length + 1,
+            message: logEntryMessage,
+            crit: false
+        };
+
+        socket.emit('log:entry', newLogEntry);
+        logEntryMessage = '';
     }
 
 </script>
@@ -36,6 +47,9 @@
         </div>
     {/each}
 </div>
+
+<input type="text" bind:value={logEntryMessage} placeholder="Type your message..." />
+<button on:click={submitEvent}>Send</button>
 
 
 <style>
