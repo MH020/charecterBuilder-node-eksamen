@@ -9,9 +9,9 @@ io.on('connection', (socket) => {
 
   socket.emit('combat-log-history', combatLog)
 
-  socket.on('combat-event', (event) => {
+  socket.on('combat-event', (data) => {
     const logEntry = {
-      ...event,
+      ...data,
       timestamp: new Date().toISOString()
     }
 
