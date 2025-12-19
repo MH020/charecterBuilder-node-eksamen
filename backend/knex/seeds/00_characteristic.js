@@ -17,7 +17,6 @@ export async function seed (knex) {
   await knex('lineage').del()
   await knex('race').del()
 
-  // Inserts seed entries (IDs auto-generated)
   await knex('characteristic').insert([
     {
       name: 'Weapon Skill',
