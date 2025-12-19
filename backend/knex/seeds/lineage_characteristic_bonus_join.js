@@ -23,9 +23,9 @@ export async function seed (knex) {
   const leadership = await knex('characteristic').where({ name: 'Leadership' }).first()
   const save = await knex('characteristic').where({ name: 'Save' }).first()
 
-  // ---- Insert Lineage Characteristic Bonuses ----
+
   await knex('lineage_characteristic_bonus').insert([
-    // ===== HUMAN LINEAGES =====
+
     {
       lineage_id: hiveWorlder.id,
       characteristic_id: weaponSkill.id,
@@ -52,7 +52,7 @@ export async function seed (knex) {
       bonus: 2
     },
 
-    // ===== ASTARTES LINEAGES =====
+ 
     {
       lineage_id: ultramarines.id,
       characteristic_id: weaponSkill.id,
