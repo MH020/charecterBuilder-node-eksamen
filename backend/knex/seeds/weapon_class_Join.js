@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 export async function seed (knex) {
-  // Clear join table
+
   await knex('weapon_weapon_class').del()
 
   const [melee] = await knex('weapon_class').where({ name: 'Melee' })
