@@ -6,7 +6,7 @@ export async function seed (knex) {
   // Deletes ALL existing entries
   await knex('size').del()
 
-  // Inserts seed entries (IDs auto-generated)
+
   await knex('size').insert([
     {
       name: 'Tiny',
