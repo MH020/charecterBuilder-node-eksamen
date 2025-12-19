@@ -6,7 +6,7 @@ export async function seed (knex) {
   await knex('statline_race').del()
 
   await knex('statline_race').insert([
-    // ===== HUMAN =====
+
     {
       name: 'Human',
       weapon_skill: 20,
@@ -34,7 +34,7 @@ export async function seed (knex) {
       is_custom: false
     },
 
-    // ===== ADEPTUS ASTARTES =====
+
     {
       name: 'Adeptus Astartes',
       weapon_skill: 30,
