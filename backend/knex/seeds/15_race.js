@@ -5,11 +5,10 @@
 export async function seed (knex) {
   await knex('race').del()
 
-  // ---- Resolve Sizes ----
+
   const mediumSize = await knex('size').where({ name: 'Medium' }).first()
   const largeSize = await knex('size').where({ name: 'Large' }).first()
 
-  // ---- Resolve Human Statlines ----
   const humanStatlines = await knex('statline_race')
     .where({ name: 'Human' })
     .orderBy('weapon_skill', 'asc')
@@ -17,7 +16,7 @@ export async function seed (knex) {
   const humanMin = humanStatlines[0]
   const humanMax = humanStatlines[1]
 
-  // ---- Resolve Astartes Statlines ----
+
   const astartesStatlines = await knex('statline_race')
     .where({ name: 'Adeptus Astartes' })
     .orderBy('weapon_skill', 'asc')
@@ -25,7 +24,7 @@ export async function seed (knex) {
   const astartesMin = astartesStatlines[0]
   const astartesMax = astartesStatlines[1]
 
-  // ---- Insert Races ----
+ 
   await knex('race').insert([
     {
       name: 'Human',
