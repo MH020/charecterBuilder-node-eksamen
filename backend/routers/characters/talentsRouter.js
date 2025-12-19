@@ -82,7 +82,7 @@ router.post('/api/talents', async (req, res) => {
         )
         const createdTalent = result.rows[0]
 
-        for(const apptitude of aptitudes ){
+        for (const apptitude of aptitudes) {
             await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [createdTalent.id, apptitude.id])
         }
 
@@ -101,14 +101,20 @@ router.put('/api/talents/:id', async (req, res) => {
             required_lineage, aptitudes
         } = req.body
 
-
         await db.query(`UPDATE statline_race SET
                         name = $1, description = $2, type = $3, prerequisite_talent_id = $4, required_race_id = $5,
                         lineage_id = $6, asi = $7 
                         WHERE id = $8`,
-            [name, weapon_skill, ballistic_skill, strength, toughness, agility,
-                intelligence, perception, willpower, fellowship, id
+            [name, description, type, asi, prerequisite_talent.id, required_race.id,
+                required_lineage.id, id
             ])
+
+
+        await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
+
+        for (const apptitude of aptitudes) {
+            await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [createdTalent.id, apptitude.id])
+        }
 
         return res.status(200).send({ message: 'statline updated' })
     } catch (error) {
@@ -116,12 +122,14 @@ router.put('/api/talents/:id', async (req, res) => {
         return res.status(500).send({ message: 'server error', error: error.message })
     }
 })
-// needs to check if race has statline before delete
+
 router.delete('/api/talents/:id', async (req, res) => {
     try {
         const { id } = req.params
 
-        await db.query('DELETE FROM statline_race where id = $1 ', [id])
+        await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
+
+        await db.query('DELETE FROM talent where id = $1 ', [id])
 
         return res.status(200).send({ message: 'statline race deleted' })
     } catch (error) {
