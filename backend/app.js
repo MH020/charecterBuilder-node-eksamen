@@ -24,7 +24,7 @@ import characteristicsRouter from './routers/characters/characteristicRouter.js'
 import raceRouter from './routers/characters/racesRouter.js'
 import statlineRouter from './routers/characters/statlineRaceRouter.js'
 import sizeROuter from './routers/characters/sizeRouter.js'
-
+import talentsRouter from './routers/characters/talentsRouter.js'
 
 const app = express()
 
@@ -129,8 +129,11 @@ app.use(raceRouter)
 app.use(sizeROuter)
 
 app.use(statlineRouter)
-// aouth
 
+app.use(talentsRouter)
+
+
+// aouth
 app.use(authRouthes)
 
 app.get('/{*splat}', (req, res) => {
