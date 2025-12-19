@@ -23,33 +23,33 @@ export async function seed (knex) {
 
 
   await knex('talent_aptitude').insert([
-    // Iron Will
+
     { talent_id: ironWill.id, aptitude_id: awareness.id },
     { talent_id: ironWill.id, aptitude_id: charisma.id },
 
-    // Battle-Hardened
+
     { talent_id: battleHardened.id, aptitude_id: strength.id },
 
     // Hive Survivor
     { talent_id: hiveSurvivor.id, aptitude_id: agility.id },
     { talent_id: hiveSurvivor.id, aptitude_id: awareness.id },
 
-    // Machine Empathy
+
     { talent_id: machineEmpathy.id, aptitude_id: intelligence.id },
 
-    // Transhuman Physiology
+
     { talent_id: transhumanPhysiology.id, aptitude_id: strength.id },
     { talent_id: transhumanPhysiology.id, aptitude_id: agility.id },
 
-    // Codex Discipline
+
     { talent_id: codexDiscipline.id, aptitude_id: intelligence.id },
     { talent_id: codexDiscipline.id, aptitude_id: awareness.id },
 
-    // Fenrisian Ferocity
+
     { talent_id: fenrisianFerocity.id, aptitude_id: strength.id },
     { talent_id: fenrisianFerocity.id, aptitude_id: agility.id },
 
-    // Red Thirst
+
     { talent_id: redThirst.id, aptitude_id: strength.id },
     { talent_id: redThirst.id, aptitude_id: charisma.id }
   ])
