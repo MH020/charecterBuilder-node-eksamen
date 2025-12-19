@@ -72,7 +72,7 @@ export async function seed (knex) {
       is_custom: false
     },
 
-    // ===== ASTARTES TALENTS =====
+
     {
       name: 'Transhuman Physiology',
       description: 'Your enhanced biology allows you to shrug off wounds that would kill lesser beings.',
