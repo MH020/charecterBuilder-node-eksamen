@@ -68,18 +68,25 @@ CREATE TABLE IF NOT EXISTS talent (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    type TEXT NOT NULL CHECK (type IN ('Half Talent', 'Full Talent', 'Class Feature Only', 'Expert Talent')),
+    "type" TEXT NOT NULL CHECK (type IN ('Half Talent', 'Full Talent', 'Class Feature Only', 'Expert Talent')),
     prerequisite_talent_id INTEGER,
-    constraint_aptitude_id INTEGER,
     required_race_id INTEGER,
     lineage_id INTEGER, 
     asi BOOLEAN DEFAULT FALSE,
     is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_t_prerequisite_talent_id FOREIGN KEY (prerequisite_talent_id) REFERENCES talent(id),
-    CONSTRAINT fk_t_constraint_aptitude_id FOREIGN KEY (constraint_aptitude_id) REFERENCES aptitude(id),
     CONSTRAINT fk_t_required_race_id FOREIGN KEY (required_race_id) REFERENCES race(id),
     CONSTRAINT fk_t_lineage_id FOREIGN KEY (lineage_id) REFERENCES lineage(id)
 );
+
+CREATE TABLE IF NOT EXISTS talent_aptitude (
+    talent_id INT NOT NULL,
+    aptitude_id INT NOT NULL,
+    PRIMARY KEY (talent_id, aptitude_id),
+    CONSTRAINT fk_ta_talent_id FOREIGN KEY (talent_id) REFERENCES talent(id),
+    CONSTRAINT fk_ta_aptitude FOREIGN KEY (aptitude_id) REFERENCES aptitude(id)
+);
+
 
 
 CREATE TABLE IF NOT EXISTS lineage_characteristic_bonus (
