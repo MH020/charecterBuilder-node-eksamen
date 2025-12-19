@@ -55,15 +55,19 @@ router.get('/api/talents', async (req, res) => {
     }
 })
 
-router.post('/api/statlines', async (req, res) => {
+router.post('/api/talents', async (req, res) => {
     try {
         const {
-            name, weapon_skill, ballistic_skill, strength, toughness, agility,
-            intelligence, perception, willpower, fellowship
+            name, description, type, asi, prerequisite_talent, required_race,
+            required_lineage, aptitudes
         } = req.body
 
         if (!name) {
             return res.status(400).send({ message: 'missing fields' })
+        }
+
+        if (type !== 'Half Talent' || 'Full Talent' || 'Class Feature Only' || 'Expert Talent') {
+            return res.status(400).send({ message: 'wrong type' })
         }
 
         const is_custom = req.session.user?.role === 'ADMIN'
