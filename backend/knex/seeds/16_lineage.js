@@ -5,13 +5,13 @@
 export async function seed (knex) {
   await knex('lineage').del()
 
-  // ---- Resolve Races ----
+
   const human = await knex('race').where({ name: 'Human' }).first()
   const astartes = await knex('race').where({ name: 'Adeptus Astartes' }).first()
 
-  // ---- Insert Lineages ----
+
   await knex('lineage').insert([
-    // ===== HUMAN LINEAGES =====
+
     {
       name: 'Imperial Worlder',
       description: 'Born on a typical Imperial world, accustomed to rigid hierarchy and discipline.',
@@ -34,7 +34,7 @@ export async function seed (knex) {
       is_custom: false
     },
 
-    // ===== ASTARTES LINEAGES =====
+
     {
       name: 'Ultramarines',
       description: 'Scions of Guilliman, exemplars of discipline and tactical flexibility.',
