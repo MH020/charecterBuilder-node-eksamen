@@ -73,36 +73,39 @@ router.post('/api/talents', async (req, res) => {
         const is_custom = req.session.user?.role === 'ADMIN'
 
         const result = await db.query(
-            `INSERT INTO statline_race (
-        name, weapon_skill, ballistic_skill, strength,toughness, agility, intelligence, perception,
-        willpower, fellowship, is_custom)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+            `INSERT INTO talent (name, description, type, prerequisite_talent_id, required_race_id, lineage_id, asi, is_custom)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
 
-            [name, weapon_skill, ballistic_skill, strength, toughness, agility,
-                intelligence, perception, willpower, fellowship, is_custom
+            [name, description, type, asi, prerequisite_talent.id, required_race.id,
+                required_lineage.id, is_custom
             ]
         )
-        const createdRace = result.rows[0]
+        const createdTalent = result.rows[0]
 
-        return res.status(201).send({ message: 'statline created sucessfully', created: createdRace })
+        for(const apptitude of aptitudes ){
+            await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [createdTalent.id, apptitude.id])
+        }
+
+        return res.status(201).send({ message: 'talent created sucessfully', created: createdTalent })
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
     }
 })
 
-router.put('/api/statlines/:id', async (req, res) => {
+router.put('/api/talents/:id', async (req, res) => {
     try {
         const { id } = req.params
         const {
-            name, weapon_skill, ballistic_skill, strength, toughness, agility,
-            intelligence, perception, willpower, fellowship
+            name, description, type, asi, prerequisite_talent, required_race,
+            required_lineage, aptitudes
         } = req.body
 
+
         await db.query(`UPDATE statline_race SET
-                        name = $1, weapon_skill = $2, ballistic_skill = $3, strength = $4, toughness = $5,
-                        agility = $6, intelligence = $7, perception = $8, willpower = $9, fellowship = $10 
-                        WHERE id = $11`,
+                        name = $1, description = $2, type = $3, prerequisite_talent_id = $4, required_race_id = $5,
+                        lineage_id = $6, asi = $7 
+                        WHERE id = $8`,
             [name, weapon_skill, ballistic_skill, strength, toughness, agility,
                 intelligence, perception, willpower, fellowship, id
             ])
@@ -114,7 +117,7 @@ router.put('/api/statlines/:id', async (req, res) => {
     }
 })
 // needs to check if race has statline before delete
-router.delete('/api/statlines/:id', async (req, res) => {
+router.delete('/api/talents/:id', async (req, res) => {
     try {
         const { id } = req.params
 
