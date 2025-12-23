@@ -2,13 +2,13 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let size;
+    export let rowItem;
     export let onSave;
     export let onDelete;
     export let endpoint;
 
-    let isEditing = size.isNew;
-    let editableSize = structuredClone(size);
+    let isEditing = rowItem.isNew;
+    let editableSize = structuredClone(rowItem);
 
     function startEditing() {
         isEditing = true;
@@ -17,7 +17,7 @@
     async function saveEdit() {
         let updated;
 
-        if (size.isNew) {
+        if (rowItem.isNew) {
             const response = await fetchPost(endpoint, editableSize);
             if (response.status === 201) {
                 updated = response.created;
@@ -34,15 +34,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (size.isNew) {
-            onDelete(size.id, true);
+        if (rowItem.isNew) {
+            onDelete(rowItem.id, true);
         } else {
-            editableSize = structuredClone(size);
+            editableSize = structuredClone(rowItem);
         }
     }
 
     function deleteRow() {
-        onDelete(size.id);
+        onDelete(rowItem.id);
     }
 </script>
 
@@ -66,12 +66,12 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{size.name || "----"}</div>
+            <div>{rowItem.name || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">score</div>
-            <div>{size.score || "----"}</div>
+            <div>{rowItem.score || "----"}</div>
         </div>
 
         <div class="buttons">
