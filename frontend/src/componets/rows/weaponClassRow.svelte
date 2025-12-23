@@ -2,12 +2,12 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let weaponClass;
+    export let rowItem;
     export let onSave;     
     export let onDelete;   
 
-    let isEditing = weaponClass.isNew;
-    let editableCategory = structuredClone(weaponClass);
+    let isEditing = rowItem.isNew;
+    let editableCategory = structuredClone(rowItem);
 
 
     function startEditing() {
@@ -17,7 +17,7 @@
     async function saveEdit() {
         let updated;
 
-        if (weaponClass.isNew) {
+        if (rowItem.isNew) {
             const response = await fetchPost("/api/weapon/classes", editableCategory);
             if (response.status === 201) {
                 updated = response.created;
@@ -34,16 +34,16 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (weaponClass.isNew) {
+        if (rowItem.isNew) {
 
-            onDelete(weaponClass.id, true); 
+            onDelete(rowItem.id, true); 
         } else {
-            editableCategory = structuredClone(weaponClass);
+            editableCategory = structuredClone(rowItem);
         }
     }
 
     function deleteRow() {
-        onDelete(weaponClass.id);  
+        onDelete(rowItem.id);  
     }
 
 </script>
@@ -67,12 +67,12 @@
   {:else}
     <div class="cell-box">
       <div class="label">Name</div>
-      <div>{weaponClass.name || "----"}</div>
+      <div>{rowItem.name || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">description</div>
-      <div>{weaponClass.description || "----"}</div>
+      <div>{rowItem.description || "----"}</div>
     </div>
 
     <div class="buttons">
@@ -80,7 +80,7 @@
             <button on:click={startEditing}>Edit</button>
             <button on:click={deleteRow}>Delete </button>
         {:else}
-            <button on:click={() => {$modalSelectCallback(weaponClass); closeModal()}}> select</button>
+            <button on:click={() => {$modalSelectCallback(rowItem); closeModal()}}> select</button>
         {/if}
     </div>
   {/if}
