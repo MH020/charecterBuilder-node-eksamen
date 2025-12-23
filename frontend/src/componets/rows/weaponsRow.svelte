@@ -7,12 +7,12 @@
   import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
   import WeaponTraitList from "../lists/weaponLists/weaponTraitList.svelte";
 
-  export let weapon;
+  export let rowItem;
   export let onSave;
   export let onDelete;
 
-  let isEditing = weapon.isNew;
-  let editableWeapon = structuredClone(weapon);
+  let isEditing = rowItem.isNew;
+  let editableWeapon = structuredClone(rowItem);
   let classTooltip = [];
   let traitTooltip = [];
 
@@ -23,7 +23,7 @@
   async function saveEdit() {
     let updated;
 
-    if (weapon.isNew) {
+    if (rowItem.isNew) {
       const response = await fetchPost("/api/weapons", editableWeapon);
       if (response.status === 201) {
         updated = editableWeapon;
@@ -42,15 +42,15 @@
   function cancelEdit() {
     isEditing = false;
 
-    if (weapon.isNew) {
-      onDelete(weapon.id, true);
+    if (rowItem.isNew) {
+      onDelete(rowItem.id, true);
     } else {
-      editableWeapon = structuredClone(weapon);
+      editableWeapon = structuredClone(rowItem);
     }
   }
 
   function deleteRow() {
-    onDelete(weapon.id);
+    onDelete(rowItem.id);
   }
 
   function selectCategory() {
@@ -217,18 +217,18 @@
   {:else}
     <div class="cell-box">
       <div class="label">category:</div>
-      <div>{weapon.category.name || "----"}</div>
+      <div>{rowItem.category.name || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">Name</div>
-      <div>{weapon.name || "----"}</div>
+      <div>{rowItem.name || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">Class</div>
       <div class="tags">
-        {#each weapon.classes as WeaponClass, index}
+        {#each rowItem.classes as WeaponClass, index}
           <button
             class="tag"
             on:mouseenter={() => (classTooltip[index] = true)}
@@ -245,36 +245,36 @@
       </div>
     </div>
 
-    {#if weapon.hands}
+    {#if rowItem.hands}
       <div class="cell-box">
         <div class="label">Hands</div>
-        <div>{weapon.hands || "----"}</div>
+        <div>{rowItem.hands || "----"}</div>
       </div>
     {/if}
     <div class="cell-box">
       <div class="label">Range</div>
-      <div>{weapon.range || "----"}</div>
+      <div>{rowItem.range || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">RoF</div>
-      <div>{weapon.rof || "----"}</div>
+      <div>{rowItem.rof || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">Damage</div>
-      <div>{weapon.damage || "----"}</div>
+      <div>{rowItem.damage || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">Pen</div>
-      <div>{weapon.pen || "----"}</div>
+      <div>{rowItem.pen || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">Traits</div>
       <div class="tags">
-        {#each weapon.traits as WeaponTrait, index}
+        {#each rowItem.traits as WeaponTrait, index}
           <button
             class="tag"
             on:mouseenter={() => (traitTooltip[index] = true)}
@@ -293,12 +293,12 @@
 
     <div class="cell-box">
       <div class="label">Wt. (kg)</div>
-      <div>{weapon.wt || "----"}</div>
+      <div>{rowItem.wt || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">Availability</div>
-      <div>{weapon.availability.name || "----"}</div>
+      <div>{rowItem.availability.name || "----"}</div>
     </div>
 
     <div class="buttons">
