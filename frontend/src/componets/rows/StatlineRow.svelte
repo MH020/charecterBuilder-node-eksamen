@@ -2,12 +2,13 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let statline;
+    export let rowItem;
     export let onSave;
     export let onDelete;
+    export let endpoint
 
-    let isEditing = statline.isNew;
-    let editableStatline = structuredClone(statline);
+    let isEditing = rowItem.isNew;
+    let editableStatline = structuredClone(rowItem);
 
     function startEditing() {
         isEditing = true;
@@ -15,17 +16,14 @@
 
     async function saveEdit() {
         let updated;
-
-        if (statline.isNew) {
-            const response = await fetchPost(
-                "/api/races/statlines",
-                editableStatline,
-            );
+        if (editableStatline.isNew) {
+            const response = await fetchPost(endpoint, editableStatline);
             if (response.status === 201) {
-                updated = response.created;
+                updated = editableStatline;
+                updated.id = response.created.id;
             }
         } else {
-            await fetchUpdate("/api/races/statlines", editableStatline);
+            await fetchUpdate(endpoint, editableStatline);
             updated = editableStatline;
         }
 
@@ -35,16 +33,12 @@
 
     function cancelEdit() {
         isEditing = false;
-
-        if (statline.isNew) {
-            onDelete(statline.id, true);
-        } else {
-            editableStatline = structuredClone(statline);
-        }
+        if (editableStatline.isNew) onDelete(editableStatline.id, true);
+        else editableStatline = structuredClone(rowItem);
     }
 
     function deleteRow() {
-        onDelete(statline.id);
+        onDelete(editableStatline.id);
     }
 </script>
 
@@ -107,52 +101,52 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{statline.name || "----"}</div>
+            <div>{rowItem.name || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">weapon_skill</div>
-            <div>{statline.weapon_skill || "----"}</div>
+            <div>{rowItem.weapon_skill || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">ballistic_skill</div>
-            <div>{statline.ballistic_skill || "----"}</div>
+            <div>{rowItem.ballistic_skill || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">strength</div>
-            <div>{statline.strength || "----"}</div>
+            <div>{rowItem.strength || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">toughness</div>
-            <div>{statline.toughness || "----"}</div>
+            <div>{rowItem.toughness || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">agility</div>
-            <div>{statline.agility || "----"}</div>
+            <div>{rowItem.agility || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">intelligence</div>
-            <div>{statline.intelligence || "----"}</div>
+            <div>{rowItem.intelligence || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">perception</div>
-            <div>{statline.perception || "----"}</div>
+            <div>{rowItem.perception || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">willpower</div>
-            <div>{statline.willpower || "----"}</div>
+            <div>{rowItem.willpower || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">fellowship</div>
-            <div>{statline.fellowship || "----"}</div>
+            <div>{rowItem.fellowship || "----"}</div>
         </div>
 
         <div class="buttons">
@@ -164,7 +158,7 @@
                 <button on:click={deleteRow}>Delete </button>
                 <button
                     on:click={() => {
-                        $modalSelectCallback(statline);
+                        $modalSelectCallback(rowItem);
                         closeModal();
                     }}
                 >
