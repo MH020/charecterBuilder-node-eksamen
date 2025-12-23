@@ -1,8 +1,7 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { selectMultibleFromModal } from "../../../util/ListUtil";
-    import { closeModal,modalSelectCallback } from "../../store/modalStore";
-
+    import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
     export let craftmanship;
     export let onSave;
@@ -52,6 +51,7 @@
         onDelete(craftmanship.id);
     }
 </script>
+
 <div class="row">
     {#if isEditing}
         <div class="cell-box">
@@ -59,7 +59,11 @@
             <input bind:value={editableCraftmanship.name} />
         </div>
 
-        <textarea bind:value={editableCraftmanship.description} rows="3" cols="30"></textarea>
+        <textarea
+            bind:value={editableCraftmanship.description}
+            rows="3"
+            cols="30"
+        ></textarea>
 
         <div class="cell-box">
             <div class="label">Category</div>
@@ -118,7 +122,7 @@
             <div>{craftmanship.name || "----"}</div>
         </div>
 
-                <button
+        <button
             class="description-btn"
             on:mouseenter={() => (showTooltip = true)}
             on:mouseleave={() => (showTooltip = false)}
