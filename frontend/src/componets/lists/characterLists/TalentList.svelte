@@ -28,6 +28,7 @@
             asi: false,
             prerequisite_talent: {},
             required_race: {},
+            required_lineage: {},
             aptitudes: [],
             isNew: true
         };
@@ -93,7 +94,7 @@
 </div>
 
 <div>
-    {#each sortedTalents as talent (talent.id)}
+    {#each sortedTalents as talent (talent.name)}
         <TalentRow
             talent={talent}
             onSave={updateTalents}
