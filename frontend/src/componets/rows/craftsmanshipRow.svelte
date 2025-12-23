@@ -3,12 +3,12 @@
     import { selectMultibleFromModal } from "../../../util/ListUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let craftmanship;
+    export let rowItem;
     export let onSave;
     export let onDelete;
 
-    let isEditing = craftmanship.isNew;
-    let editableCraftmanship = structuredClone(craftmanship);
+    let isEditing = rowItem.isNew;
+    let editableCraftmanship = structuredClone(rowItem);
     let showTooltip;
 
     function startEditing() {
@@ -18,7 +18,7 @@
     async function saveEdit() {
         let updated;
 
-        if (craftmanship.isNew) {
+        if (rowItem.isNew) {
             const response = await fetchPost(
                 "/api/craftsmanship",
                 editableCraftmanship,
@@ -40,15 +40,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (craftmanship.isNew) {
-            onDelete(craftmanship.id, true);
+        if (rowItem.isNew) {
+            onDelete(rowItem.id, true);
         } else {
-            editableCraftmanship = structuredClone(craftmanship);
+            editableCraftmanship = structuredClone(rowItem);
         }
     }
 
     function deleteRow() {
-        onDelete(craftmanship.id);
+        onDelete(rowItem.id);
     }
 </script>
 
@@ -114,12 +114,12 @@
     {:else}
         <div class="cell-box">
             <div class="label">Category</div>
-            <div>{craftmanship.category || "----"}</div>
+            <div>{rowItem.category || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{craftmanship.name || "----"}</div>
+            <div>{rowItem.name || "----"}</div>
         </div>
 
         <button
@@ -133,28 +133,28 @@
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {craftmanship.description}
+                {rowItem.description}
             </div>
         {/if}
 
         <div class="cell-box">
             <div class="label">Hit Mod</div>
-            <div>{craftmanship.hit_modifier ?? "—"}</div>
+            <div>{rowItem.hit_modifier ?? "—"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Damage Mod</div>
-            <div>{craftmanship.damage_modifier ?? "—"}</div>
+            <div>{rowItem.damage_modifier ?? "—"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">AP Mod</div>
-            <div>{craftmanship.ap_modifier ?? "—"}</div>
+            <div>{rowItem.ap_modifier ?? "—"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Weight Mod</div>
-            <div>{craftmanship.wt_modifier ?? "—"}</div>
+            <div>{rowItem.wt_modifier ?? "—"}</div>
         </div>
 
         <div class="buttons">
@@ -164,7 +164,7 @@
             {:else}
                 <button
                     on:click={() => {
-                        $modalSelectCallback(craftmanship);
+                        $modalSelectCallback(rowItem);
                         closeModal();
                     }}
                 >
