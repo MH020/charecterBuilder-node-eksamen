@@ -28,6 +28,7 @@
     import StatlinesList from "./componets/lists/characterLists/StatlinesList.svelte";
     import RaceList from "./componets/lists/characterLists/RaceList.svelte";
     import SizeList from "./componets/lists/characterLists/sizeList.svelte";
+    import TalentList from "./componets/lists/characterLists/TalentList.svelte";
 
   let user = null;
   let loading = true;
@@ -99,6 +100,9 @@
         <Route path="/category"><CategoryList /></Route>
         <Route path="/availability"><AvailabilityList /></Route>
         <Route path="/craftsmanship"><CraftmanshipList /></Route>
+
+        <Route path="/talents"><TalentList /></Route>
+
 
         <Route path="/armor"><ArmorList /></Route>
       </NotLoggedinLayout>
