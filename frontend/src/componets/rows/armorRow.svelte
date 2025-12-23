@@ -1,56 +1,18 @@
 <script>
-    import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import {
         closeModal,
         modalSelectCallback,
         openModal,
     } from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
+    import EditableRowSlot from "../util/EditableRowSlot.svelte";
 
     export let armor;
     export let onSave;
     export let onDelete;
     export let endpoint; 
-
-    let isEditing = armor.isNew;
+    let showTooltip
     let editableArmor = structuredClone(armor);
-    let showTooltip;
-
-    function startEditing() {
-        isEditing = true;
-    }
-
-    async function saveEdit() {
-        let updated;
-
-        if (armor.isNew) {
-            const response = await fetchPost("/api/items", editableArmor);
-            if (response.status === 201) {
-                updated = editableArmor;
-                updated.id = response.created.id;
-            }
-        } else {
-            await fetchUpdate("/api/items", editableArmor);
-            updated = editableArmor;
-        }
-
-        onSave(updated);
-        isEditing = false;
-    }
-
-    function cancelEdit() {
-        isEditing = false;
-
-        if (armor.isNew) {
-            onDelete(armor.id, true);
-        } else {
-            editableArmor = structuredClone(armor);
-        }
-    }
-
-    function deleteRow() {
-        onDelete(armor.id);
-    }
 
     function selectAvailability() {
         modalSelectCallback.set((availability) => {
@@ -60,8 +22,22 @@
         });
         openModal(AvailabilityList);
     }
+
 </script>
 
+
+<EditableRowSlot
+  item={armor}
+  endpoint={endpoint}
+  onSave={onSave}
+  onDelete={onDelete}
+  bind:editable={editableArmor}
+  let:isEditing
+  let:startEditing
+  let:save
+  let:cancel
+  let:remove
+>
 <div class="row">
     {#if isEditing}
     <div class="cell-box">
@@ -117,8 +93,8 @@
     </div>
 
     <div class="buttons">
-      <button on:click={saveEdit}>Save</button>
-      <button on:click={cancelEdit}>Cancel</button>
+      <button on:click={save}>Save</button>
+      <button on:click={cancel}>Cancel</button>
     </div>
 
     {:else}
@@ -190,7 +166,7 @@
         <div class="buttons">
             {#if !$modalSelectCallback}
                 <button on:click={startEditing}>Edit</button>
-                <button on:click={deleteRow}>Delete </button>
+                <button on:click={remove}>Delete </button>
             {:else}
                 <button
                     on:click={() => {
@@ -204,3 +180,4 @@
         </div>
     {/if}
 </div>
+</EditableRowSlot>
