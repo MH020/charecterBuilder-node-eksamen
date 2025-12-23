@@ -4,7 +4,7 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/armor', async (req, res) => {
+router.get('/api/armors', async (req, res) => {
   try {
     const result = await db.query(`
       SELECT armor.id, armor.name, armor.description, armor.head_ap, armor.body_ap, 
@@ -25,7 +25,7 @@ router.get('/api/armor', async (req, res) => {
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
-router.post('/api/armor', async (req, res) => {
+router.post('/api/armors', async (req, res) => {
   try {
     const {
       name, description, head_ap, body_ap,
@@ -51,7 +51,7 @@ router.post('/api/armor', async (req, res) => {
   }
 })
 
-router.put('/api/armor/:id', async (req, res) => {
+router.put('/api/armors/:id', async (req, res) => {
   try {
     const id = req.params.id
     const {
@@ -72,7 +72,7 @@ router.put('/api/armor/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/armor/:id', async (req, res) => {
+router.delete('/api/armors/:id', async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)
