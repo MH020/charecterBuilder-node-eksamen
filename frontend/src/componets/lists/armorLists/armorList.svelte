@@ -3,12 +3,14 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity } from '../../../../util/ListUtil';
     import ArmorRow from '../../rows/armorRow.svelte';
+    import ListUtil from '../../util/ListUtil.svelte';
 
     let armors = [];
     let sortType = "asc";
+    let endpoint = "/api/armors"
 
     onMount(async () => {
-        const response = await fetchGet("/api/armor");
+        const response = await fetchGet(endpoint);
         if (response.status === 200) {
             armors = response.data;
         }
@@ -25,7 +27,7 @@
             : b.name.localeCompare(a.name);
     });
 
-    function createItem() {
+    function createArmor() {
         const newArmor = {
             id: null,  
             name: "",  
@@ -44,48 +46,12 @@
         armors = [...armors, newArmor];
     }
 
-    async function deleteArmor(id, isNew = false) {
-        if(isNew){
-
-            armors = armors.filter(armor => armor.id !== id);
-            return;
-        }
-        
-        armors = await deleteEntity(id,"/api/items",armors);
-    }
-
-    function updateItems(updated) {
-        armors = armors.map((armor) => {
-            if (armor.isNew) {
-                return { ...updated, isNew: false };
-            }
-
-            if (armor.id === updated.id) {
-                return { ...armor, ...updated };
-            }
-
-            return armor;
-        });
-    }
-
-    //sorting needed 
-
-
 </script>
 
-<div class="button-panel">
-    <button on:click={toggleSort}>
-        sort by... {sortType === "all" ? "A -> Z" : "Z -> A"}
-    </button>
-    <button on:click={createItem}>
-        new Weapon trait
-    </button>
-</div>
+<ListUtil
+    bind:list={armors}
+    endpoint={endpoint}
+    createRow={createArmor}
+    RowComponent={ArmorRow}
+/>
 
-
-{#each armors as armor (armor.id)}
-        <ArmorRow {armor}
-        onSave={updateItems}
-        onDelete={deleteArmor}
-    />
-{/each}
