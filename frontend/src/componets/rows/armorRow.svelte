@@ -6,14 +6,13 @@
         openModal,
     } from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
-    import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
-    export let armor;
+    export let rowItem;
     export let onSave;
     export let onDelete;
 
-    let isEditing = armor.isNew;
-    let editableArmor = structuredClone(armor);
+    let isEditing = rowItem.isNew;
+    let editableArmor = structuredClone(rowItem);
     let showTooltip;
 
     function startEditing() {
@@ -23,7 +22,7 @@
     async function saveEdit() {
         let updated;
 
-        if (armor.isNew) {
+        if (rowItem.isNew) {
             const response = await fetchPost("/api/items", editableArmor);
             if (response.status === 201) {
                 updated = editableArmor;
@@ -41,15 +40,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (armor.isNew) {
-            onDelete(armor.id, true);
+        if (rowItem.isNew) {
+            onDelete(rowItem.id, true);
         } else {
-            editableArmor = structuredClone(armor);
+            editableArmor = structuredClone(rowItem);
         }
     }
 
     function deleteRow() {
-        onDelete(armor.id);
+        onDelete(rowItem.id);
     }
 
     function selectAvailability() {
@@ -124,7 +123,7 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{armor.name || "----"}</div>
+            <div>{rowItem.name || "----"}</div>
         </div>
 
         <button
@@ -138,52 +137,52 @@
 
         <div class="cell-box">
             <div class="label">Head AP</div>
-            <div>{armor.head_ap || "----"}</div>
+            <div>{rowItem.head_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Body AP</div>
-            <div>{armor.body_ap || "----"}</div>
+            <div>{rowItem.body_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Right arm AP</div>
-            <div>{armor.right_arm_ap || "----"}</div>
+            <div>{rowItem.right_arm_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Left arm AP</div>
-            <div>{armor.left_arm_ap || "----"}</div>
+            <div>{rowItem.left_arm_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Right leg AP</div>
-            <div>{armor.right_leg_ap || "----"}</div>
+            <div>{rowItem.right_leg_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Left leg AP</div>
-            <div>{armor.left_leg_ap || "----"}</div>
+            <div>{rowItem.left_leg_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Left leg AP</div>
-            <div>{armor.left_leg_ap || "----"}</div>
+            <div>{rowItem.left_leg_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">weight</div>
-            <div>{armor.wt || "----"}</div>
+            <div>{rowItem.wt || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Availability</div>
-            <div>{armor.availability?.name || "----"}</div>
+            <div>{rowItem.availability?.name || "----"}</div>
         </div>
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {armor.description}
+                {rowItem.description}
             </div>
         {/if}
 
@@ -194,7 +193,7 @@
             {:else}
                 <button
                     on:click={() => {
-                        $modalSelectCallback(armor);
+                        $modalSelectCallback(rowItem);
                         closeModal();
                     }}
                 >
