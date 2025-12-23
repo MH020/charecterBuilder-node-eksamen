@@ -6,7 +6,7 @@
         modalSelectCallback,
         openModal,
     } from "../../store/modalStore";
-    import LineageBonusCard from "../cards/lineageBonusCard.svelte";
+    import LineageBonusCard from "../cards/LineageBonusCard.svelte";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
@@ -234,8 +234,19 @@
         </div>
 
         <div class="buttons">
-            <button on:click={startEditing}>Edit</button>
-            <button on:click={deleteRow}>Delete </button>
+            {#if !$modalSelectCallback}
+                <button on:click={startEditing}>Edit</button>
+                <button on:click={deleteRow}>Delete </button>
+            {:else}
+                <button
+                    on:click={() => {
+                        $modalSelectCallback(lineage);
+                        closeModal();
+                    }}
+                >
+                    select</button
+                >
+            {/if}
         </div>
     {/if}
 </div>
