@@ -11,20 +11,10 @@
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
+        console.log(response)
         if (response.status === 200) {
             armors = response.data;
         }
-    });
-
-    function toggleSort() {
-        sortType = sortType === "asc" ? "desc" : "asc";
-    }
-
-    $: sortedArmors = [...armors].sort((a, b) => {
-        if (!a.name || !b.name) return 0;
-        return sortType === "asc"
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
     });
 
     function createArmor() {
