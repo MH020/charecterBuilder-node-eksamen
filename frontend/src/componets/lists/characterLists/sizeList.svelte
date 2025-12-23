@@ -5,6 +5,7 @@
     import StatlineRow from "../../rows/StatlineRow.svelte";
     import RaceRow from "../../rows/RaceRow.svelte";
     import SizeRow from "../../rows/SizeRow.svelte";
+    import ListUtil from "../../util/ListUtil.svelte";
 
 
     let sizes = [];
@@ -29,72 +30,13 @@
         };
         sizes = [...sizes, newSize];
     }
-
-    async function deleteRace(id, isNew = false) {
-        if (isNew) {
-            sizes = sizes.filter(
-                (race) => race.id !== id,
-            );
-            return;
-        }
-        sizes = await deleteEntity(id, endpoint, sizes);
-    }
-
-    $: if (sizes) {
-        sortedSizes = [...sizes].sort((a, b) => {
-            if (sortType === "all") {
-                if (a.name < b.name) {
-                    return 1;
-                }
-                if (a.name > b.name) {
-                    return -1;
-                }
-                return 0;
-            } else {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
-    }
-
-    function updateStatlines(updated) {
-        sizes = sizes.map((statline) => {
-            if (statline.isNew) {
-                return { ...updated, isNew: false };
-            }
-
-            if (statline.id === updated.id) {
-                return { ...statline, ...updated };
-            }
-
-            return statline;
-        });
-    }
-
-    function toggleSort() {
-        sortType = sortType === "all" ? "asc" : "all";
-    }
 </script>
 
-<div class="button-panel">
-    <button on:click={toggleSort}>
-        Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
-    </button>
-    <button on:click={createSize}> new race ? </button>
-</div>
+<ListUtil
+    bind:list={sizes}
+    endpoint={endpoint}
+    createRow={createSize}
+    RowComponent={SizeRow}
+/>
 
-<div>
-    {#each sortedSizes as size (size.id)}
-        <SizeRow
-            size={size}
-            onSave={updateStatlines}
-            onDelete={deleteRace}
-            endpoint={endpoint}
-        />
-    {/each}
-</div>
+
