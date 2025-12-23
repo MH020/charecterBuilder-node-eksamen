@@ -4,12 +4,13 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity} from '../../../../util/ListUtil';
     import LineageRow from '../../rows/lineageRow.svelte';
+    import ListUtil from '../../util/ListUtil.svelte';
 
     let lineages = [];
-    let sortType = "all"; 
+    let endpoint = "/api/lineage"
 
     onMount(async () => {
-        const response = await fetchGet("/api/lineage")
+        const response = await fetchGet(endpoint)
         if (response.status === 200) {
             lineages = response.data
         } 
@@ -30,54 +31,14 @@
 
         lineages = [...lineages, newLineage];
     }
-
-    async function deleteLineage(id, isNew = false) {
-        if(isNew){
-
-            lineages = lineages.filter(lineage => lineage.id !== id);
-            return;
-        }
-        lineages = await deleteEntity(id,"/api/lineage",lineages);
-    }
-
-        function updateLineages(updated) {
-        lineages = lineages.map((lineage) => {
-            if (lineage.isNew) {
-                return { ...updated, isNew: false };
-            }
-
-            if (lineage.id === updated.id) {
-                return { ...lineage, ...updated };
-            }
-
-            return lineage;
-        });
-    }
-
-    //sorting needed 
-
-    function toggleSort() {
-
-    }
 </script>
 
-<div class="button-panel">
-    <button on:click={toggleSort}>
-        sort by... {sortType === "all" ? "A -> Z" : "Z -> A"}
-    </button>
-    <button on:click={createLineage}>
-        new weapon 
-    </button>
-</div>
-
-<div>
-    {#each lineages as lineage (lineage.id)}
-        <LineageRow {lineage} 
-        onSave={updateLineages}
-        onDelete={deleteLineage}
-        />
-    {/each}
-</div>
+<ListUtil
+    bind:list={lineages}
+    endpoint={endpoint}
+    createRow={createLineage}
+    RowComponent={LineageRow}
+/>
 
 
 
