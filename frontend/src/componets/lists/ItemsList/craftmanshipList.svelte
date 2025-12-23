@@ -36,7 +36,16 @@
 
 <ListUtil
     bind:list={craftmanships}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createCraftmanship}
-    RowComponent={CraftsmanshipRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <CraftsmanshipRow
+        craftmanship={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>

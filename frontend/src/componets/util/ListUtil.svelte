@@ -1,80 +1,51 @@
 <script>
     import { deleteEntity } from "../../../util/ListUtil";
 
+    export let list = [];
+    export let endpoint;
+    export let createRow;
 
-    export let list = []; 
-    let sortType = "all";
-    let sortedList = [];
-    export let endpoint 
-    export let createRow
-    export let RowComponent
+    let sortDir = "desc";
 
-
-    async function deleteTalent(id, isNew = false) {
-        if (isNew) {
-            list = list.filter(
-                (item) => item.id !== id,
-            );
-            return;
-        }
-        list = await deleteEntity(id, endpoint, list);
-    }
-
-    $: if (list) {
-        sortedList = [...list].sort((a, b) => {
-            if (sortType === "all") {
-                if (a.name < b.name) {
-                    return 1;
-                }
-                if (a.name > b.name) {
-                    return -1;
-                }
-                return 0;
-            } else {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
-    }
-
-    function updateTalents(updated) {
-        list = list.map((item) => {
-            if (item.isNew) {
-                return { ...updated, isNew: false };
-            }
-
-            if (item.id === updated.id) {
-                return { ...item, ...updated };
-            }
-
-            return item;
-        });
-    }
+    $: sorted = [...list].sort((a, b) => {
+        if (!a.name || !b.name) return 0;
+        return sortDir === "asc"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+    });
 
     function toggleSort() {
-        sortType = sortType === "all" ? "asc" : "all";
+        sortDir = sortDir === "asc" ? "desc" : "asc";
+    }
+
+    async function onDelete(id, isNew) {
+        if (isNew) {
+            list = list.filter(item => item.id !== id);
+        } else {
+            list = await deleteEntity(id, endpoint, list);
+        }
+    }
+
+    function onSave(updated) {
+        list = list.map(item =>
+            item.isNew ? { ...updated, isNew: false }
+            : item.id === updated.id ? { ...item, ...updated }
+            : item
+        );
     }
 </script>
 
 <div class="button-panel">
     <button on:click={toggleSort}>
-        Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
+        Sort {sortDir === "asc" ? "A → Z" : "Z → A"}
     </button>
-    <button on:click={createRow}> new talent </button>
+    <button on:click={createRow}>New</button>
 </div>
 
-<div>
-    {#each sortedList as item (item.id)}
-        <RowComponent
-            rowItem={item}
-            onSave={updateTalents}
-            onDelete={deleteTalent}
-            endpoint={endpoint}
-        />
-    {/each}
-</div>
+{#each sorted as item (item.id ?? item)}
+    <slot
+        item={item}
+        onSave={onSave}
+        onDelete={onDelete}
+    />
+{/each}

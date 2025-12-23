@@ -6,6 +6,7 @@
     import RaceRow from "../../rows/RaceRow.svelte";
     import SizeRow from "../../rows/SizeRow.svelte";
     import ListUtil from "../../util/ListUtil.svelte";
+    import SkillsRow from "../../rows/skillsRow.svelte";
 
 
     let sizes = [];
@@ -34,9 +35,18 @@
 
 <ListUtil
     bind:list={sizes}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createSize}
-    RowComponent={SizeRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <SizeRow
+        size={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 
 

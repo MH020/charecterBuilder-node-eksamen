@@ -31,8 +31,17 @@
 
 <ListUtil
     bind:list={apptitudesList}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createApptitude}
-    RowComponent={ApptitudesRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <ApptitudesRow
+        apptitude={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 

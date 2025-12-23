@@ -2,13 +2,13 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let rowItem;
+    export let statline;
     export let onSave;
     export let onDelete;
     export let endpoint
 
-    let isEditing = rowItem.isNew;
-    let editableStatline = structuredClone(rowItem);
+    let isEditing = statline.isNew;
+    let editableStatline = structuredClone(statline);
 
     function startEditing() {
         isEditing = true;
@@ -34,7 +34,7 @@
     function cancelEdit() {
         isEditing = false;
         if (editableStatline.isNew) onDelete(editableStatline.id, true);
-        else editableStatline = structuredClone(rowItem);
+        else editableStatline = structuredClone(statline);
     }
 
     function deleteRow() {
@@ -101,52 +101,52 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{rowItem.name || "----"}</div>
+            <div>{statline.name || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">weapon_skill</div>
-            <div>{rowItem.weapon_skill || "----"}</div>
+            <div>{statline.weapon_skill || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">ballistic_skill</div>
-            <div>{rowItem.ballistic_skill || "----"}</div>
+            <div>{statline.ballistic_skill || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">strength</div>
-            <div>{rowItem.strength || "----"}</div>
+            <div>{statline.strength || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">toughness</div>
-            <div>{rowItem.toughness || "----"}</div>
+            <div>{statline.toughness || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">agility</div>
-            <div>{rowItem.agility || "----"}</div>
+            <div>{statline.agility || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">intelligence</div>
-            <div>{rowItem.intelligence || "----"}</div>
+            <div>{statline.intelligence || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">perception</div>
-            <div>{rowItem.perception || "----"}</div>
+            <div>{statline.perception || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">willpower</div>
-            <div>{rowItem.willpower || "----"}</div>
+            <div>{statline.willpower || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">fellowship</div>
-            <div>{rowItem.fellowship || "----"}</div>
+            <div>{statline.fellowship || "----"}</div>
         </div>
 
         <div class="buttons">
@@ -158,7 +158,7 @@
                 <button on:click={deleteRow}>Delete </button>
                 <button
                     on:click={() => {
-                        $modalSelectCallback(rowItem);
+                        $modalSelectCallback(statline);
                         closeModal();
                     }}
                 >

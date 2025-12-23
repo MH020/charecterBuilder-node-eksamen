@@ -38,8 +38,17 @@
 
 <ListUtil
     bind:list={Statlines}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createStatline}
-    RowComponent={StatlineRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <StatlineRow
+        statline={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 

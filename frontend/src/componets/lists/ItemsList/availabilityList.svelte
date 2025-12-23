@@ -38,7 +38,16 @@
 
 <ListUtil
     bind:list={availabilityies}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createAvailability}
-    RowComponent={AvailabilityRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <AvailabilityRow
+        availability={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>

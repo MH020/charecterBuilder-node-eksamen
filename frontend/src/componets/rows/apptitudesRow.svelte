@@ -2,12 +2,13 @@
   import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
   import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-  export let rowItem;
+  export let apptitude;
   export let onSave;
   export let onDelete;
+  export let endpoint; 
 
-  let isEditing = rowItem.isNew;
-  let editableApptitude = structuredClone(rowItem);
+  let isEditing = apptitude.isNew;
+  let editableApptitude = structuredClone(apptitude);
 
   function startEditing() {
     isEditing = true;
@@ -16,7 +17,7 @@
   async function saveEdit() {
     let updated;
 
-    if (rowItem.isNew) {
+    if (apptitude.isNew) {
       const response = await fetchPost("/api/aptitudes", editableApptitude);
       if (response.status === 201) {
         updated = response.created;
@@ -33,15 +34,15 @@
   function cancelEdit() {
     isEditing = false;
 
-    if (rowItem.isNew) {
-      onDelete(rowItem.id, true);
+    if (apptitude.isNew) {
+      onDelete(apptitude.id, true);
     } else {
-      editableApptitude = structuredClone(rowItem);
+      editableApptitude = structuredClone(apptitude);
     }
   }
 
   function deleteRow() {
-    onDelete(rowItem.id);
+    onDelete(apptitude.id);
   }
 </script>
 
@@ -60,7 +61,7 @@
   {:else}
     <div class="cell-box">
       <div class="label">Name</div>
-      <div>{rowItem.name || "----"}</div>
+      <div>{apptitude.name || "----"}</div>
     </div>
 
 
@@ -71,7 +72,7 @@
       {:else}
         <button
           on:click={() => {
-            $modalSelectCallback(rowItem);
+            $modalSelectCallback(apptitude);
             closeModal();
           }}
         >

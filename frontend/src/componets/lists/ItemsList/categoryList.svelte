@@ -30,7 +30,16 @@
 
 <ListUtil
     bind:list={categoryies}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createCategory}
-    RowComponent={CategoryRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <CategoryRow
+        category={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>

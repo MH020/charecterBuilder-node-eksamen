@@ -7,12 +7,13 @@
     } from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
 
-    export let rowItem;
+    export let armor;
     export let onSave;
     export let onDelete;
+    export let endpoint; 
 
-    let isEditing = rowItem.isNew;
-    let editableArmor = structuredClone(rowItem);
+    let isEditing = armor.isNew;
+    let editableArmor = structuredClone(armor);
     let showTooltip;
 
     function startEditing() {
@@ -22,7 +23,7 @@
     async function saveEdit() {
         let updated;
 
-        if (rowItem.isNew) {
+        if (armor.isNew) {
             const response = await fetchPost("/api/items", editableArmor);
             if (response.status === 201) {
                 updated = editableArmor;
@@ -40,15 +41,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (rowItem.isNew) {
-            onDelete(rowItem.id, true);
+        if (armor.isNew) {
+            onDelete(armor.id, true);
         } else {
-            editableArmor = structuredClone(rowItem);
+            editableArmor = structuredClone(armor);
         }
     }
 
     function deleteRow() {
-        onDelete(rowItem.id);
+        onDelete(armor.id);
     }
 
     function selectAvailability() {
@@ -123,7 +124,7 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{rowItem.name || "----"}</div>
+            <div>{armor.name || "----"}</div>
         </div>
 
         <button
@@ -137,52 +138,52 @@
 
         <div class="cell-box">
             <div class="label">Head AP</div>
-            <div>{rowItem.head_ap || "----"}</div>
+            <div>{armor.head_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Body AP</div>
-            <div>{rowItem.body_ap || "----"}</div>
+            <div>{armor.body_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Right arm AP</div>
-            <div>{rowItem.right_arm_ap || "----"}</div>
+            <div>{armor.right_arm_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Left arm AP</div>
-            <div>{rowItem.left_arm_ap || "----"}</div>
+            <div>{armor.left_arm_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Right leg AP</div>
-            <div>{rowItem.right_leg_ap || "----"}</div>
+            <div>{armor.right_leg_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Left leg AP</div>
-            <div>{rowItem.left_leg_ap || "----"}</div>
+            <div>{armor.left_leg_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Left leg AP</div>
-            <div>{rowItem.left_leg_ap || "----"}</div>
+            <div>{armor.left_leg_ap || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">weight</div>
-            <div>{rowItem.wt || "----"}</div>
+            <div>{armor.wt || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Availability</div>
-            <div>{rowItem.availability?.name || "----"}</div>
+            <div>{armor.availability?.name || "----"}</div>
         </div>
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {rowItem.description}
+                {armor.description}
             </div>
         {/if}
 
@@ -193,7 +194,7 @@
             {:else}
                 <button
                     on:click={() => {
-                        $modalSelectCallback(rowItem);
+                        $modalSelectCallback(armor);
                         closeModal();
                     }}
                 >

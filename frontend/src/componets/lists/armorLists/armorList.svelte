@@ -50,8 +50,17 @@
 
 <ListUtil
     bind:list={armors}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createArmor}
-    RowComponent={ArmorRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <ArmorRow
+        armor={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 

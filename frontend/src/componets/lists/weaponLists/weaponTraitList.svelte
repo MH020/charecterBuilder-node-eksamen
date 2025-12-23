@@ -36,10 +36,19 @@
 
 <ListUtil
     bind:list={weaponTraits}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createWeaponTraits}
-    RowComponent={WeaponTraitsRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <WeaponTraitsRow
+        weaponTrait={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 
 
 

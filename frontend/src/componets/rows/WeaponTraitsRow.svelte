@@ -2,12 +2,13 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let rowItem;
+    export let weaponTrait;
     export let onDelete;  
     export let onSave 
+    export let endpoint; 
 
-    let editableWeaponTrait = structuredClone(rowItem);
-    let isEditing = rowItem.isNew;
+    let editableWeaponTrait = structuredClone(weaponTrait);
+    let isEditing = weaponTrait.isNew;
     let showTooltip
 
     $: if (!isEditing) {
@@ -21,7 +22,7 @@
     async function saveEdit() {
         let updated;
 
-        if (rowItem.isNew) {
+        if (weaponTrait.isNew) {
             const response = await fetchPost("/api/weapon/traits", editableWeaponTrait);
             if (response.status === 201) {
                 updated = response.created
@@ -37,16 +38,16 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (rowItem.isNew) {
+        if (weaponTrait.isNew) {
 
-            onDelete(rowItem.id, true); 
+            onDelete(weaponTrait.id, true); 
         } else {
-            editableWeaponTrait = structuredClone(rowItem);
+            editableWeaponTrait = structuredClone(weaponTrait);
         }
     }
 
     function deleteRow() {
-        onDelete(rowItem.id);  
+        onDelete(weaponTrait.id);  
     }
 
 </script>
@@ -68,7 +69,7 @@
   {:else}
         <div class="cell-box">
         <div class="label">Name</div>
-        <div>{rowItem.name || "----"}</div>
+        <div>{weaponTrait.name || "----"}</div>
         </div>
 
         <button
@@ -82,7 +83,7 @@
 
         {#if showTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
-            {rowItem.description}
+            {weaponTrait.description}
         </div>
         {/if}
 
@@ -91,7 +92,7 @@
             <button on:click={startEditing}>Edit</button>
             <button on:click={deleteRow}>Delete </button>
         {:else}
-            <button on:click={() => {$modalSelectCallback(rowItem); closeModal();}}> select</button>
+            <button on:click={() => {$modalSelectCallback(weaponTrait); closeModal();}}> select</button>
         {/if}
     </div>
   {/if}

@@ -35,10 +35,19 @@
 
 <ListUtil
     bind:list={lineages}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createLineage}
-    RowComponent={LineageRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <LineageRow
+        lineage={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 
 
 

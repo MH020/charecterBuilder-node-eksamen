@@ -3,12 +3,13 @@
     import { closeModal, modalSelectCallback, openModal } from "../../store/modalStore";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
 
-    export let rowItem;
+    export let skill;
     export let onDelete;  
     export let onSave 
+    export let endpoint; 
 
-    let editableSkill = structuredClone(rowItem);
-    let isEditing = rowItem.isNew;
+    let editableSkill = structuredClone(skill);
+    let isEditing = skill.isNew;
     let showTooltip
 
     $: if (!isEditing) {
@@ -22,7 +23,7 @@
     async function saveEdit() {
         let updated;
 
-        if (rowItem.isNew) {
+        if (skill.isNew) {
             const response = await fetchPost("/api/skills", editableSkill);
             if (response.status === 201) {
                 updated = editableSkill
@@ -39,16 +40,16 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (rowItem.isNew) {
+        if (skill.isNew) {
 
-            onDelete(rowItem.id, true); 
+            onDelete(skill.id, true); 
         } else {
-            editableSkill = structuredClone(rowItem);
+            editableSkill = structuredClone(skill);
         }
     }
 
     function deleteRow() {
-        onDelete(rowItem.id);  
+        onDelete(skill.id);  
     }
 
     function setMainApptitude() {
@@ -78,7 +79,7 @@
 
       <textarea bind:value={editableSkill.description} rows="3" cols="30" placeholder="Description"></textarea>
     {:else}
-      <span class="name">{rowItem.name || "----"}</span>
+      <span class="name">{skill.name || "----"}</span>
 
       <button
         class="description-btn"
@@ -91,7 +92,7 @@
 
       {#if showTooltip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
-          {rowItem.description || "No description"}
+          {skill.description || "No description"}
         </div>
       {/if}
     {/if}
@@ -106,11 +107,11 @@
         <img src="/icons/edit-secondary.svg" alt="Edit secondary aptitude" />
       </button>
 
-      <span>Main: {editableSkill.main_aptitude?.name || rowItem.main_aptitude?.name || "----"}</span>
-      <span>Secondary: {editableSkill.secondary_aptitude?.name || rowItem.secondary_aptitude?.name || "----"}</span>
+      <span>Main: {editableSkill.main_aptitude?.name || skill.main_aptitude?.name || "----"}</span>
+      <span>Secondary: {editableSkill.secondary_aptitude?.name || skill.secondary_aptitude?.name || "----"}</span>
     {:else}
-      <span>Main: {rowItem.main_aptitude?.name || "----"}</span>
-      <span>Secondary: {rowItem.secondary_aptitude?.name || "----"}</span>
+      <span>Main: {skill.main_aptitude?.name || "----"}</span>
+      <span>Secondary: {skill.secondary_aptitude?.name || "----"}</span>
     {/if}
   </div>
 

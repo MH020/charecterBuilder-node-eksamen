@@ -34,7 +34,16 @@
 
 <ListUtil
     bind:list={talents}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createTalent}
-    RowComponent={TalentRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <TalentRow
+        talent={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>

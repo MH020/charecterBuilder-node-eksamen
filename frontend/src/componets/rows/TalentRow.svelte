@@ -7,13 +7,13 @@
     import RaceList from "../lists/characterLists/RaceList.svelte";
     import TalentList from "../lists/characterLists/TalentList.svelte";
 
-    export let rowItem;
+    export let talent;
     export let onSave;
     export let onDelete;
     export let endpoint;
 
-    let isEditing = rowItem.isNew;
-    let editableTalent = structuredClone(rowItem);
+    let isEditing = talent.isNew;
+    let editableTalent = structuredClone(talent);
     let showTooltip;
 
     function startEditing() {
@@ -40,7 +40,7 @@
     function cancelEdit() {
         isEditing = false;
         if (editableTalent.isNew) onDelete(editableTalent.id, true);
-        else editableTalent = structuredClone(rowItem);
+        else editableTalent = structuredClone(talent);
     }
 
     function deleteRow() {
@@ -61,10 +61,10 @@
         "Class Feature Only",
         "Expert Talent",
     ];
-    let SelectedType = rowItem.type;
+    let SelectedType = talent.type;
 
     $: if (SelectedType) {
-        rowItem.type = SelectedType;
+        talent.type = SelectedType;
     }
 </script>
 
@@ -160,7 +160,7 @@
                 <button on:click={deleteRow}>Delete</button>
                 <button
                     on:click={() => {
-                        $modalSelectCallback(rowItem);
+                        $modalSelectCallback(talent);
                         closeModal();
                     }}
                 >
@@ -172,7 +172,7 @@
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">Name</div>
-                <div>{rowItem.name || "----"}</div>
+                <div>{talent.name || "----"}</div>
             </div>
         </div>
 
@@ -187,35 +187,35 @@
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {rowItem.description}
+                {talent.description}
             </div>
         {/if}
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">type</div>
-                <div>{rowItem.type || "----"}</div>
+                <div>{talent.type || "----"}</div>
             </div>
         </div>
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">prerequisite talent</div>
-                <div>{rowItem.prerequisite_talent.name || "none"}</div>
+                <div>{talent.prerequisite_talent.name || "none"}</div>
             </div>
         </div>
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">prerequisite talent</div>
-                <div>{rowItem.required_race.name || "-----"}</div>
+                <div>{talent.required_race.name || "-----"}</div>
             </div>
         </div>
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">required lineage</div>
-                <div>{rowItem.required_lineage.name || "-----"}</div>
+                <div>{talent.required_lineage.name || "-----"}</div>
             </div>
         </div>
 

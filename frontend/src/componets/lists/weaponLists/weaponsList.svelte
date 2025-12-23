@@ -4,6 +4,7 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity} from '../../../../util/ListUtil';
     import ListUtil from '../../util/ListUtil.svelte';
+    import WeaponClassRow from '../../rows/weaponClassRow.svelte';
 
     let weapons = [];
     let sortType = "all"; 
@@ -40,12 +41,22 @@
         console.log(weapons)
     }
 </script>
+
 <ListUtil
     bind:list={weapons}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createWeapon}
-    RowComponent={WeaponsRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <WeaponsRow
+        weapon={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 
 
 

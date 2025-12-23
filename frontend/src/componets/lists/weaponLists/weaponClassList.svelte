@@ -37,10 +37,19 @@
 
 <ListUtil
     bind:list={weaponClasses}
-    endpoint={endpoint}
+    endpoint= {endpoint}
     createRow={createWeaponClass}
-    RowComponent={WeaponClassRow}
-/>
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <WeaponClassRow
+        weaponClass={item}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
 
 
 

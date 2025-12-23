@@ -10,12 +10,13 @@
     import ApptitudesList from "../lists/ApptitudesList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
-    export let rowItem;
+    export let lineage;
     export let onSave;
     export let onDelete;
+    export let endpoint; 
 
-    let isEditing = rowItem.isNew;
-    let editableLineage = structuredClone(rowItem);
+    let isEditing = lineage.isNew;
+    let editableLineage = structuredClone(lineage);
     let showTooltip;
     let featureShowTooltip;
 
@@ -26,7 +27,7 @@
     async function saveEdit() {
         let updated;
 
-        if (rowItem.isNew) {
+        if (lineage.isNew) {
             const response = await fetchPost("/api/lineage", editableLineage);
             if (response.status === 201) {
                 updated = editableLineage;
@@ -45,15 +46,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (rowItem.isNew) {
-            onDelete(rowItem.id, true);
+        if (lineage.isNew) {
+            onDelete(lineage.id, true);
         } else {
-            editableLineage = structuredClone(rowItem);
+            editableLineage = structuredClone(lineage);
         }
     }
 
     function deleteRow() {
-        onDelete(rowItem.id);
+        onDelete(lineage.id);
     }
 
     function selectRace() {
@@ -175,7 +176,7 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{rowItem.name || "----"}</div>
+            <div>{lineage.name || "----"}</div>
         </div>
 
         <button
@@ -189,7 +190,7 @@
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {rowItem.description || "No description"}
+                {lineage.description || "No description"}
             </div>
         {/if}
 
@@ -204,19 +205,19 @@
 
         {#if featureShowTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {rowItem.defining_features || "No defining features"}
+                {lineage.defining_features || "No defining features"}
             </div>
         {/if}
 
         <div class="cell-box">
             <div class="label">required race</div>
-            <div>{rowItem.required_race.name || "----"}</div>
+            <div>{lineage.required_race.name || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">characteristic bonus</div>
             <div class="tags">
-                {#each rowItem.bonuses as bonus}
+                {#each lineage.bonuses as bonus}
                     <div>{bonus.characteristic_name} +({bonus.bonus})</div>
                 {/each}
             </div>
@@ -225,7 +226,7 @@
         <div class="cell-box">
             <div class="label">aptitudes</div>
             <div class="tags">
-                {#each rowItem.aptitudes as aptitude, index}
+                {#each lineage.aptitudes as aptitude, index}
                     <div>{aptitude.aptitude_name || "----"}</div>
                 {/each}
             </div>
@@ -238,7 +239,7 @@
             {:else}
                 <button
                     on:click={() => {
-                        $modalSelectCallback(rowItem);
+                        $modalSelectCallback(lineage);
                         closeModal();
                     }}
                 >

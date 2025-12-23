@@ -2,12 +2,13 @@
   import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
   import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-  export let rowItem;
+  export let category;
   export let onSave;
   export let onDelete;
+  export let endpoint
 
-  let isEditing = rowItem.isNew;
-  let editableCategory = structuredClone(rowItem);
+  let isEditing = category.isNew;
+  let editableCategory = structuredClone(category);
 
   function startEditing() {
     isEditing = true;
@@ -16,7 +17,7 @@
   async function saveEdit() {
     let updated;
 
-    if (rowItem.isNew) {
+    if (category.isNew) {
       const response = await fetchPost("/api/category", editableCategory);
       if (response.status === 201) {
         updated = response.created;
@@ -33,15 +34,15 @@
   function cancelEdit() {
     isEditing = false;
 
-    if (rowItem.isNew) {
-      onDelete(rowItem.id, true);
+    if (category.isNew) {
+      onDelete(category.id, true);
     } else {
-      editableCategory = structuredClone(rowItem);
+      editableCategory = structuredClone(category);
     }
   }
 
   function deleteRow() {
-    onDelete(rowItem.id);
+    onDelete(category.id);
   }
 </script>
 
@@ -69,17 +70,17 @@
   {:else}
     <div class="cell-box">
       <div class="label">Name</div>
-      <div>{rowItem.name || "----"}</div>
+      <div>{category.name || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">description</div>
-      <div>{rowItem.description || "----"}</div>
+      <div>{category.description || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">category type</div>
-      <div>{rowItem.category_type || "----"}</div>
+      <div>{category.category_type || "----"}</div>
     </div>
 
     <div class="buttons">
@@ -89,7 +90,7 @@
       {:else}
         <button
           on:click={() => {
-            $modalSelectCallback(rowItem);
+            $modalSelectCallback(category);
             closeModal();
           }}
         >

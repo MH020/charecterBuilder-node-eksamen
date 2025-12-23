@@ -8,12 +8,13 @@
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
-    export let rowItem;
+    export let item;
     export let onSave;
     export let onDelete;
+    export let endpoint; 
 
-    let isEditing = rowItem.isNew;
-    let editableItem = structuredClone(rowItem);
+    let isEditing = item.isNew;
+    let editableItem = structuredClone(item);
     let showTooltip;
 
     function startEditing() {
@@ -23,7 +24,7 @@
     async function saveEdit() {
         let updated;
 
-        if (rowItem.isNew) {
+        if (item.isNew) {
             const response = await fetchPost("/api/items", editableItem);
             if (response.status === 201) {
                 updated = editableItem;
@@ -42,15 +43,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (rowItem.isNew) {
-            onDelete(rowItem.id, true);
+        if (item.isNew) {
+            onDelete(item.id, true);
         } else {
-            editableItem = structuredClone(rowItem);
+            editableItem = structuredClone(item);
         }
     }
 
     function deleteRow() {
-        onDelete(rowItem.id);
+        onDelete(item.id);
     }
 
     function selectCategory() {
@@ -102,12 +103,12 @@
     {:else}
         <div class="cell-box">
             <div class="label">category:</div>
-            <div>{rowItem.category?.name || "----"}</div>
+            <div>{item.category?.name || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{rowItem.name || "----"}</div>
+            <div>{item.name || "----"}</div>
         </div>
 
         <button
@@ -121,13 +122,13 @@
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {rowItem.description}
+                {item.description}
             </div>
         {/if}
 
         <div class="cell-box">
             <div class="label">Availability</div>
-            <div>{rowItem.availability?.name || "----"}</div>
+            <div>{item.availability?.name || "----"}</div>
         </div>
 
         <div class="buttons">
@@ -137,7 +138,7 @@
             {:else}
                 <button
                     on:click={() => {
-                        $modalSelectCallback(rowItem);
+                        $modalSelectCallback(item);
                         closeModal();
                     }}
                 >

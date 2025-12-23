@@ -2,12 +2,13 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let rowItem;
+    export let weaponClass;
     export let onSave;     
     export let onDelete;   
+    export let endpoint; 
 
-    let isEditing = rowItem.isNew;
-    let editableCategory = structuredClone(rowItem);
+    let isEditing = weaponClass.isNew;
+    let editableCategory = structuredClone(weaponClass);
 
 
     function startEditing() {
@@ -17,7 +18,7 @@
     async function saveEdit() {
         let updated;
 
-        if (rowItem.isNew) {
+        if (weaponClass.isNew) {
             const response = await fetchPost("/api/weapon/classes", editableCategory);
             if (response.status === 201) {
                 updated = response.created;
@@ -34,16 +35,16 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (rowItem.isNew) {
+        if (weaponClass.isNew) {
 
-            onDelete(rowItem.id, true); 
+            onDelete(weaponClass.id, true); 
         } else {
-            editableCategory = structuredClone(rowItem);
+            editableCategory = structuredClone(weaponClass);
         }
     }
 
     function deleteRow() {
-        onDelete(rowItem.id);  
+        onDelete(weaponClass.id);  
     }
 
 </script>
@@ -67,12 +68,12 @@
   {:else}
     <div class="cell-box">
       <div class="label">Name</div>
-      <div>{rowItem.name || "----"}</div>
+      <div>{weaponClass.name || "----"}</div>
     </div>
 
     <div class="cell-box">
       <div class="label">description</div>
-      <div>{rowItem.description || "----"}</div>
+      <div>{weaponClass.description || "----"}</div>
     </div>
 
     <div class="buttons">
@@ -80,7 +81,7 @@
             <button on:click={startEditing}>Edit</button>
             <button on:click={deleteRow}>Delete </button>
         {:else}
-            <button on:click={() => {$modalSelectCallback(rowItem); closeModal()}}> select</button>
+            <button on:click={() => {$modalSelectCallback(weaponClass); closeModal()}}> select</button>
         {/if}
     </div>
   {/if}

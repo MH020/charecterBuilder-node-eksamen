@@ -4,12 +4,11 @@
     import { deleteEntity } from "../../../../util/ListUtil";
     import StatlineRow from "../../rows/StatlineRow.svelte";
     import RaceRow from "../../rows/RaceRow.svelte";
+    import ListUtil from "../../util/ListUtil.svelte";
 
 
     let races = [];
     let sizes = []; 
-    let sortType = "all";
-    let sortedRaces = [];
     const endpoint = "/api/races"
 
     onMount(async () => {
@@ -34,73 +33,21 @@
         };
         races = [...races, newRace];
     }
-
-    async function deleteRace(id, isNew = false) {
-        if (isNew) {
-            races = races.filter(
-                (race) => race.id !== id,
-            );
-            return;
-        }
-        races = await deleteEntity(id, endpoint, races);
-    }
-
-    $: if (races) {
-        sortedRaces = [...races].sort((a, b) => {
-            if (sortType === "all") {
-                if (a.name < b.name) {
-                    return 1;
-                }
-                if (a.name > b.name) {
-                    return -1;
-                }
-                return 0;
-            } else {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
-    }
-
-    function updateStatlines(updated) {
-        races = races.map((statline) => {
-            if (statline.isNew) {
-                return { ...updated, isNew: false };
-            }
-
-            if (statline.id === updated.id) {
-                return { ...statline, ...updated };
-            }
-
-            return statline;
-        });
-    }
-
-    function toggleSort() {
-        sortType = sortType === "all" ? "asc" : "all";
-    }
 </script>
 
-<div class="button-panel">
-    <button on:click={toggleSort}>
-        Sort {sortType === "all" ? "A -> Z" : "Z -> A"}
-    </button>
-    <button on:click={createRace}> new race ? </button>
-</div>
-
-<div>
-    {#each sortedRaces as race (race.id)}
-        <RaceRow
-            race={race}
-            onSave={updateStatlines}
-            onDelete={deleteRace}
-            endpoint={endpoint}
-            sizes = {sizes}
-        />
-    {/each}
-</div>
+<ListUtil
+    bind:list={races}
+    endpoint= {endpoint}
+    createRow={createRace}
+    let:item
+    let:onSave
+    let:onDelete
+>
+    <RaceRow
+        race={item}
+        sizes={sizes}
+        onSave={onSave}
+        onDelete={onDelete}
+        endpoint={endpoint}
+    />
+</ListUtil>
