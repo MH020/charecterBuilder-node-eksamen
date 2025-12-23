@@ -1,25 +1,19 @@
 <script>
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { selectMultibleFromModal } from "../../../util/ListUtil";
-    import {
-        closeModal,
-        modalSelectCallback,
-        openModal,
-    } from "../../store/modalStore";
-
+    import {closeModal, modalSelectCallback, openModal} from "../../store/modalStore";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
     import LineageList from "../lists/characterLists/lineageList.svelte";
     import RaceList from "../lists/characterLists/RaceList.svelte";
     import TalentList from "../lists/characterLists/TalentList.svelte";
 
-    export let talent;
+    export let rowItem;
     export let onSave;
     export let onDelete;
     export let endpoint;
 
-    let isEditing = talent.isNew;
-    let editableTalent = structuredClone(talent);
-    let selectedSize = null;
+    let isEditing = rowItem.isNew;
+    let editableTalent = structuredClone(rowItem);
     let showTooltip;
 
     function startEditing() {
@@ -28,8 +22,6 @@
 
     async function saveEdit() {
         let updated;
-        console.log(endpoint);
-        console.log(editableTalent);
         if (editableTalent.isNew) {
             const response = await fetchPost(endpoint, editableTalent);
             if (response.status === 201) {
@@ -48,7 +40,7 @@
     function cancelEdit() {
         isEditing = false;
         if (editableTalent.isNew) onDelete(editableTalent.id, true);
-        else editableTalent = structuredClone(talent);
+        else editableTalent = structuredClone(rowItem);
     }
 
     function deleteRow() {
@@ -69,10 +61,10 @@
         "Class Feature Only",
         "Expert Talent",
     ];
-    let SelectedType = talent.type;
+    let SelectedType = rowItem.type;
 
     $: if (SelectedType) {
-        talent.type = SelectedType;
+        rowItem.type = SelectedType;
     }
 </script>
 
@@ -168,7 +160,7 @@
                 <button on:click={deleteRow}>Delete</button>
                 <button
                     on:click={() => {
-                        $modalSelectCallback(talent);
+                        $modalSelectCallback(rowItem);
                         closeModal();
                     }}
                 >
@@ -180,7 +172,7 @@
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">Name</div>
-                <div>{talent.name || "----"}</div>
+                <div>{rowItem.name || "----"}</div>
             </div>
         </div>
 
@@ -195,35 +187,35 @@
 
         {#if showTooltip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {talent.description}
+                {rowItem.description}
             </div>
         {/if}
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">type</div>
-                <div>{talent.type || "----"}</div>
+                <div>{rowItem.type || "----"}</div>
             </div>
         </div>
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">prerequisite talent</div>
-                <div>{talent.prerequisite_talent.name || "none"}</div>
+                <div>{rowItem.prerequisite_talent.name || "none"}</div>
             </div>
         </div>
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">prerequisite talent</div>
-                <div>{talent.required_race.name || "-----"}</div>
+                <div>{rowItem.required_race.name || "-----"}</div>
             </div>
         </div>
 
         <div class="row-fields">
             <div class="cell-box">
                 <div class="label">required lineage</div>
-                <div>{talent.required_lineage.name || "-----"}</div>
+                <div>{rowItem.required_lineage.name || "-----"}</div>
             </div>
         </div>
 
