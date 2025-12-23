@@ -2,12 +2,12 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let availability;
+    export let rowItem;
     export let onSave;     
     export let onDelete;   
 
-    let isEditing = availability.isNew;
-    let editableAvailability = structuredClone(availability);
+    let isEditing = rowItem.isNew;
+    let editableAvailability = structuredClone(rowItem);
 
 
     function startEditing() {
@@ -17,7 +17,7 @@
     async function saveEdit() {
         let updated;
 
-        if (availability.isNew) {
+        if (rowItem.isNew) {
             const response = await fetchPost("/api/availability", editableAvailability);
             if (response.status === 201) {
                 updated = response.created;
@@ -34,16 +34,16 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (availability.isNew) {
+        if (rowItem.isNew) {
 
-            onDelete(availability.id, true); 
+            onDelete(rowItem.id, true); 
         } else {
-            editableAvailability = structuredClone(availability);
+            editableAvailability = structuredClone(rowItem);
         }
     }
 
     function deleteRow() {
-        onDelete(availability.id);  
+        onDelete(rowItem.id);  
     }
 
 </script>
@@ -63,7 +63,7 @@
   {:else}
     <div class="cell-box">
       <div class="label">Name</div>
-      <div>{availability.name || "----"}</div>
+      <div>{rowItem.name || "----"}</div>
     </div>
 
     <div class="buttons">
@@ -71,7 +71,7 @@
             <button on:click={ startEditing}>Edit</button>
             <button on:click={deleteRow}>Delete </button>
         {:else}
-            <button on:click={() => {$modalSelectCallback(availability); closeModal();}}> select</button>
+            <button on:click={() => {$modalSelectCallback(rowItem); closeModal();}}> select</button>
         {/if}
     </div>
   {/if}
