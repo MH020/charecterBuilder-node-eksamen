@@ -3,7 +3,7 @@
     import { fetchDelete, fetchGet } from "../../../../util/fetchUtil";
     import toastrDisplayHTTPCode from "../../../../util/ToastrUtil";
     import CategoryRow from "../../rows/CategoryRow.svelte";
-    import ListUtil from "../../util/ListUtil.svelte";
+    import ListUtil from "../../wrappers/EditableList.svelte";
 
     let categoryies = [];
     let endpoint = "/api/Category"
