@@ -3,7 +3,7 @@
     import WeaponsRow from '../../rows/weaponsRow.svelte';
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity} from '../../../../util/ListUtil';
-    import ListUtil from '../../util/ListUtil.svelte';
+    import ListUtil from '../../wrappers/EditableList.svelte';
     import WeaponClassRow from '../../rows/weaponClassRow.svelte';
 
     let weapons = [];
