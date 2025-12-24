@@ -113,8 +113,8 @@ CREATE TABLE IF NOT EXISTS trait (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    max_level INTEGER NOT NULL,
-    race_id INTEGER NOT NULL,
+    has_input BOOLEAN DEFAULT FALSE,
+    race_id INTEGER,
     is_custom BOOLEAN DEFAULT FALSE,
     category TEXT NOT NULL CHECK (category IN ('nothing','disorder','malignancy','malice','blessing')),
     CONSTRAINT fk_t_race_id FOREIGN KEY (race_id) REFERENCES race(id)
