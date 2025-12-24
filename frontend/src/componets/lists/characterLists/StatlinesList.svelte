@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { fetchGet } from "../../../../util/fetchUtil";
     import StatlineRow from "../../rows/StatlineRow.svelte";
-    import ListUtil from "../../util/ListUtil.svelte";
+    import ListUtil from "../../wrappers/EditableList.svelte";
 
 
     let Statlines = [];
