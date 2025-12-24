@@ -4,7 +4,7 @@
     import { deleteEntity } from "../../../../util/ListUtil";
     import StatlineRow from "../../rows/StatlineRow.svelte";
     import RaceRow from "../../rows/RaceRow.svelte";
-    import ListUtil from "../../util/ListUtil.svelte";
+    import ListUtil from "../../wrappers/EditableList.svelte";
 
 
     let races = [];
