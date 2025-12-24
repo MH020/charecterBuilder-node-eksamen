@@ -120,6 +120,26 @@ CREATE TABLE IF NOT EXISTS trait (
     CONSTRAINT fk_t_race_id FOREIGN KEY (race_id) REFERENCES race(id)
 );
 
+CREATE TABLE IF NOT EXISTS "power" (
+    id SERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    ascendant TEXT,
+    duration TEXT,
+    actions INTEGER,
+    concentration BOOLEAN, 
+    dc INTEGER,
+    "range" TEXT, 
+    shape TEXT
+);
+
+CREATE TABLE IF NOT EXISTS prerequisite_powers (
+    id SERIAL PRIMARY KEY,
+    power_id INTEGER NOT NULL,
+    prerequisite_Powers_id INTEGER NOT NULL,
+    CONSTRAINT fk_pp_power_id FOREIGN KEY (power_id) REFERENCES "power"(id),
+    CONSTRAINT fk_pp_prerequisite_Powers_id FOREIGN KEY (prerequisite_Powers_id) REFERENCES "power"(id)
+);
 
 CREATE TABLE IF NOT EXISTS class (
     id SERIAL PRIMARY KEY,
@@ -129,11 +149,28 @@ CREATE TABLE IF NOT EXISTS class (
     CONSTRAINT fk_c_parent_id FOREIGN KEY (parent_id) REFERENCES class(id)
 );
 
+CREATE TABLE IF NOT EXISTS class_powers (
+    id SERIAL PRIMARY KEY,
+    class_id INTEGER NOT NULL,
+    power_id INTEGER NOT NULL,
+    "level" INTEGER NOT NULL,
+    CONSTRAINT fk_cp_class_id FOREIGN KEY (class_id) REFERENCES class(id),
+    CONSTRAINT fk_cp_power_id FOREIGN KEY (power_id) REFERENCES "power"(id)
+);
+
+CREATE TABLE IF NOT EXISTS class_powers_known (
+    id SERIAL PRIMARY KEY,
+    class_id INTEGER NOT NULL,
+    powers_known INTEGER NOT NULL,
+    "level" INTEGER NOT NULL,
+    CONSTRAINT fk_cp_class_id FOREIGN KEY (class_id) REFERENCES class(id)
+);
 
 CREATE TABLE IF NOT EXISTS class_traits (
     id SERIAL PRIMARY KEY,
     class_id INTEGER NOT NULL,
     trait_id INTEGER NOT NULL,
+    "level" INTEGER NOT NULL,
     CONSTRAINT fk_ct_class_id FOREIGN KEY (class_id) REFERENCES class(id),
     CONSTRAINT fk_ct_trait_id FOREIGN KEY (trait_id) REFERENCES trait(id)
 );
