@@ -4,7 +4,7 @@
     import { fetchDelete, fetchGet } from "../../../util/fetchUtil";
     import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
     import { deleteEntity } from "../../../util/ListUtil";
-    import ListUtil from "../util/ListUtil.svelte";
+    import ListUtil from "../wrappers/EditableList.svelte";
 
     let skills = [];
     const endpoint = "/api/skills"
