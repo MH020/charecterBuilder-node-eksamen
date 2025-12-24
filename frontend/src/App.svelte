@@ -29,6 +29,7 @@
     import RaceList from "./componets/lists/characterLists/RaceList.svelte";
     import SizeList from "./componets/lists/characterLists/sizeList.svelte";
     import TalentList from "./componets/lists/characterLists/TalentList.svelte";
+    import TraitsList from "./componets/lists/characterLists/TraitsList.svelte";
 
   let user = null;
   let loading = true;
@@ -102,7 +103,7 @@
         <Route path="/craftsmanship"><CraftmanshipList /></Route>
 
         <Route path="/talents"><TalentList /></Route>
-
+        <Route path="/traits"><TraitsList /></Route>
 
         <Route path="/armor"><ArmorList /></Route>
       </NotLoggedinLayout>
