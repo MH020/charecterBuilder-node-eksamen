@@ -3,7 +3,7 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import WeaponClassRow from '../../rows/weaponClassRow.svelte';
     import { deleteEntity } from '../../../../util/ListUtil';
-    import ListUtil from '../../util/ListUtil.svelte';
+    import ListUtil from '../../wrappers/EditableList.svelte';
 
     let weaponClasses = [];
     let sortType = "all"; 
