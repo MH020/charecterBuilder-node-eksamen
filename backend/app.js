@@ -25,6 +25,7 @@ import raceRouter from './routers/characters/racesRouter.js'
 import statlineRouter from './routers/characters/statlineRaceRouter.js'
 import sizeROuter from './routers/characters/sizeRouter.js'
 import talentsRouter from './routers/characters/talentsRouter.js'
+import traitsRouter from './routers/characters/TraitsRouter.js'
 
 const app = express()
 
@@ -131,6 +132,8 @@ app.use(sizeROuter)
 app.use(statlineRouter)
 
 app.use(talentsRouter)
+
+app.use(traitsRouter)
 
 
 // aouth
