@@ -3,7 +3,7 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity, saveEntity } from '../../../../util/ListUtil';
     import WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
-    import ListUtil from '../../util/ListUtil.svelte';
+    import ListUtil from '../../wrappers/EditableList.svelte';
 
 
 
