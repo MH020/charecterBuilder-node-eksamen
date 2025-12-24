@@ -4,7 +4,7 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity} from '../../../../util/ListUtil';
     import LineageRow from '../../rows/lineageRow.svelte';
-    import ListUtil from '../../util/ListUtil.svelte';
+    import ListUtil from '../../wrappers/EditableList.svelte';
 
     let lineages = [];
     let endpoint = "/api/lineage"
