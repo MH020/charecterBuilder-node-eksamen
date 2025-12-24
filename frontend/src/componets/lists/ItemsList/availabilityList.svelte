@@ -3,7 +3,7 @@
     import { fetchDelete, fetchGet } from '../../../../util/fetchUtil';
     import toastrDisplayHTTPCode from '../../../../util/ToastrUtil';
     import AvailabilityRow from '../../rows/availabilityRow.svelte';
-    import ListUtil from '../../util/ListUtil.svelte';
+    import ListUtil from '../../wrappers/EditableList.svelte';
 
     let availabilityies = [];
     let sortType = "asc";
