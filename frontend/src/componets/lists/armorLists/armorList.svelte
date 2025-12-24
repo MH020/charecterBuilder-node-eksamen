@@ -3,7 +3,7 @@
     import { fetchGet } from '../../../../util/fetchUtil';
     import { deleteEntity } from '../../../../util/ListUtil';
     import ArmorRow from '../../rows/armorRow.svelte';
-    import ListUtil from '../../util/ListUtil.svelte';
+    import ListUtil from '../../wrappers/EditableList.svelte';
 
     let armors = [];
     let sortType = "asc";
