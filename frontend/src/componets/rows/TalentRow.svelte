@@ -64,7 +64,7 @@
     let SelectedType = talent.type;
 
     $: if (SelectedType) {
-        talent.type = SelectedType;
+        editableTalent.type = SelectedType;
     }
 </script>
 
@@ -77,8 +77,7 @@
             </div>
         </div>
 
-        <textarea bind:value={editableTalent.description} rows="3" cols="30"
-        ></textarea>
+        <textarea bind:value={editableTalent.description} rows="3" cols="30"></textarea>
 
         <div class="select-box">
             <div class="label">type</div>
