@@ -5,7 +5,7 @@
         openModal,
     } from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
-    import EditableRowSlot from "../util/EditableRowSlot.svelte";
+    import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
 
     export let armor;
     export let onSave;
