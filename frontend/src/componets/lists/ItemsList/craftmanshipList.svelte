@@ -3,7 +3,7 @@
     import { fetchGet } from "../../../../util/fetchUtil";
     import { deleteEntity } from "../../../../util/ListUtil";
     import CraftsmanshipRow from "../../rows/craftsmanshipRow.svelte";
-    import ListUtil from "../../util/ListUtil.svelte";
+    import ListUtil from "../../wrappers/EditableList.svelte";
     
 
     let craftmanships = [];
