@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { fetchGet } from "../../../../util/fetchUtil";
     import TalentRow from "../../rows/TalentRow.svelte";
-    import ListUtil from "../../util/ListUtil.svelte";
+    import ListUtil from "../../wrappers/EditableList.svelte";
 
     let talents = [];
     const endpoint = "/api/talents";
