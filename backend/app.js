@@ -26,6 +26,7 @@ import statlineRouter from './routers/characters/statlineRaceRouter.js'
 import sizeROuter from './routers/characters/sizeRouter.js'
 import talentsRouter from './routers/characters/talentsRouter.js'
 import traitsRouter from './routers/characters/TraitsRouter.js'
+import classPowers from './routers/classes/classPowersRouter.js'
 
 const app = express()
 
@@ -135,7 +136,9 @@ app.use(talentsRouter)
 
 app.use(traitsRouter)
 
+//classes
 
+app.use(classPowers)
 // aouth
 app.use(authRouthes)
 
