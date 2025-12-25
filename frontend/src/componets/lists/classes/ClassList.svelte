@@ -22,7 +22,7 @@
             id: null,  
             name: "",  
             description: "",
-            parent: {},
+            isNew: true
         };
         classes = [...classes, newClass];
     }
