@@ -3,52 +3,60 @@ import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 const router = Router()
 
-router.get('/api/traits', async (req, res) => {
+router.get('/api/classes', async (req, res) => {
     try {
         const result = await db.query(`
-        SELECT
-            t.id, t.name, t.description, t.has_input, t.is_custom, t.category,
-
-            json_build_object(
-                'id', r.id,
-                'name', r.name
-            ) AS race
-
-            FROM trait t
-            LEFT JOIN race r
-                ON r.id = t.race_id
+        SELECT * FROM "class"  
         `)
-        const traits = result.rows
+        const classes = result.rows
 
-        return res.status(200).send(traits)
+        return res.status(200).send(classes)
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
     }
 })
 
-router.post('/api/traits', async (req, res) => {
-    try {
-        const {
-            name, description, has_input, category, race,
-        } = req.body
 
-        if (!name) {
-            return res.status(400).send({ message: 'missing fields' })
+router.get('/api/classes/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const result = await db.query(`
+        SELECT * FROM "class" WHERE id = $1
+        `, [id])
+
+
+        const classes = result.rows[0]
+
+
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Class not found' })
         }
 
-        const allowedCategory = ['nothing', 'disorder', 'malignancy', 'malice', 'blessing'];
-        if (!allowedCategory.includes(type)) {
-            return res.status(400).send({ message: 'wrong category' });
+        return res.status(200).send(classes)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })
+    }
+})
+
+router.post('/api/classes', async (req, res) => {
+    try {
+        const { name, description, parent_id } = req.body
+
+        if (!name || !description) {
+            return res.status(400).send({ message: 'missing fields' })
         }
 
         const is_custom = req.session.user?.role === 'ADMIN'
 
         const result = await db.query(
-            `INSERT INTO trait (name, description, has_input, race_id, is_custom, category)
-            VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+            `INSERT INTO "class" (name, description, parent_id)
+            VALUES ($1,$2,$3) RETURNING *`,
 
-            [name, description, has_input || false, category, race.id || null, is_custom ]
+            [name, description, parent_id]
         )
         const createdTrait = result.rows[0]
 
@@ -59,31 +67,28 @@ router.post('/api/traits', async (req, res) => {
     }
 })
 
-router.put('/api/traits/:id', async (req, res) => {
+router.put('/api/classes/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const {
-            name, description, has_input, category, race,
-        } = req.body
+        const { name, description, parent_id } = req.body
 
         await db.query(`UPDATE trait SET
-                        name = $1, description = $2, has_input = $3, category = $4, race_id = $5
-                        WHERE id = $6`,
-
-            [name, description, has_input || false, category, race.id || null, id]
+                        name = $1, description = $2, parent_id = $3
+                        WHERE id = $4`,
+                        [name, description, parent_id, id]
         )
 
 
 
-        return res.status(200).send({ message: 'trait updated' })
+        return res.status(200).send({ message: 'class updated' })
 
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
     }
 })
-
-router.delete('/api/traits/:id', async (req, res) => {
+//wait with this one until everything else is set and then delete from all tables
+router.delete('/api/classes/:id', async (req, res) => {
     try {
         const { id } = req.params
 
