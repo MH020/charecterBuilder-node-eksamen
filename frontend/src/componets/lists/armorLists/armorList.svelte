@@ -6,7 +6,6 @@
     import ListUtil from '../../wrappers/EditableList.svelte';
 
     let armors = [];
-    let sortType = "asc";
     let endpoint = "/api/armors"
 
     onMount(async () => {
