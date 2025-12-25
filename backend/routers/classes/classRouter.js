@@ -77,7 +77,7 @@ router.put('/api/classes/:id', async (req, res) => {
         const { id } = req.params
         const { name, description, parent_id } = req.body
 
-        await db.query(`UPDATE trait SET
+        await db.query(`UPDATE "class" SET
                         name = $1, description = $2, parent_id = $3
                         WHERE id = $4`,
                         [name, description, parent_id, id]
