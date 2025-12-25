@@ -27,7 +27,7 @@ import sizeROuter from './routers/characters/sizeRouter.js'
 import talentsRouter from './routers/characters/talentsRouter.js'
 import traitsRouter from './routers/characters/TraitsRouter.js'
 import classPowers from './routers/classes/classPowersRouter.js'
-
+import classRouter from './routers/classes/classRouter.js'
 const app = express()
 
 app.use(express.json())
@@ -137,6 +137,8 @@ app.use(talentsRouter)
 app.use(traitsRouter)
 
 //classes
+
+app.use(classRouter)
 
 app.use(classPowers)
 // aouth
