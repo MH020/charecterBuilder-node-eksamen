@@ -6,6 +6,7 @@ export async function seed (knex) {
   // Deletes ALL existing entries
   await knex('weapon_weapon_traits').del()
   await knex('weapon_weapon_class').del()
+  await knex('talent_aptitude').del()
   await knex('lineage_characteristic_bonus').del()
   await knex('lineage_aptitude').del()
   await knex('weapon_upgrade').del()
@@ -14,7 +15,9 @@ export async function seed (knex) {
   await knex('armor').del()
   await knex('availability').del()
   await knex('characteristic').del()
+  await knex('talent').del()
   await knex('lineage').del()
+  await knex('trait').del()
   await knex('race').del()
 
   await knex('characteristic').insert([
