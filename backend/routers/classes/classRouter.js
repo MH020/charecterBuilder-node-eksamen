@@ -6,7 +6,13 @@ const router = Router()
 router.get('/api/classes', async (req, res) => {
     try {
         const result = await db.query(`
-        SELECT * FROM "class"  
+        SELECT c.id, c.name, c.description,
+        json_build_object(
+            'id', p.id,
+            'name', p.name
+        ) AS parent
+        FROM "class" c
+        LEFT JOIN "class" p ON c.parent_id = p.id;
         `)
         const classes = result.rows
 
@@ -50,7 +56,6 @@ router.post('/api/classes', async (req, res) => {
             return res.status(400).send({ message: 'missing fields' })
         }
 
-        const is_custom = req.session.user?.role === 'ADMIN'
 
         const result = await db.query(
             `INSERT INTO "class" (name, description, parent_id)
@@ -58,9 +63,9 @@ router.post('/api/classes', async (req, res) => {
 
             [name, description, parent_id]
         )
-        const createdTrait = result.rows[0]
+        const createdClass = result.rows[0]
 
-        return res.status(201).send({ message: 'Trait created sucessfully', created: createdTrait })
+        return res.status(201).send({ message: 'Trait created sucessfully', created: createdClass })
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
