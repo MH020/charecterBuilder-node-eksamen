@@ -16,7 +16,7 @@
 <style>
 .user-layout {
     display: flex;
-    height: 100vh;
+    min-height: 100vh; 
 }
 
 .user-main {
@@ -28,6 +28,5 @@
 main {
     flex: 1;
     padding: 1rem;
-    overflow-y: auto;
 }
 </style>
