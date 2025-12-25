@@ -28,7 +28,7 @@
 {#if !loading}
   <Router>
 
-    <!-- NOT LOGGED IN -->
+
     {#if !user}
       <Route path="/">
         <NotLoggedinLayout>
@@ -43,7 +43,6 @@
       </Route>
     {/if}
 
-    <!-- LOGGED IN USER -->
     {#if user?.role === "USER"}
       <Route path="/">
         <UserLayout>
@@ -58,7 +57,6 @@
       </Route>
     {/if}
 
-    <!-- ADMIN -->
     {#if user?.role === "ADMIN" || user?.role === "OWNER"}
       <Route path="/admin/*">
         <Adminlayout>
@@ -73,6 +71,12 @@
       </Route>
 
       <Route path="/profile">
+        <Adminlayout>
+          <Profile />
+        </Adminlayout>
+      </Route>
+
+            <Route path="/class/*">
         <Adminlayout>
           <Profile />
         </Adminlayout>
