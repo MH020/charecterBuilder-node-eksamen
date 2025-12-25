@@ -1,0 +1,92 @@
+<script>
+    import {
+        closeModal,
+        modalSelectCallback,
+        openModal,
+    } from "../../store/modalStore";
+    import ClassList from "../lists/classes/ClassList.svelte";
+    import DescriptionUtil from "../UI/DescriptionUtil.svelte";
+    import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
+
+    export let clss;
+    export let onSave;
+    export let onDelete;
+    export let endpoint; 
+    
+    let editableClss = structuredClone(clss);
+
+    function selectClss() {
+        modalSelectCallback.set((parent) => {
+            clss.parent = parent;
+
+            modalSelectCallback.set(null);
+        });
+        openModal(ClassList);
+    }
+
+</script>
+
+
+<EditableRowSlot
+  item={clss}
+  endpoint={endpoint}
+  onSave={onSave}
+  onDelete={onDelete}
+  bind:editable={editableClss}
+  let:isEditing
+  let:startEditing
+  let:save
+  let:cancel
+  let:remove
+>
+<div class="row">
+    {#if isEditing}
+    <div class="cell-box">
+      <div class="label">Name</div>
+      <input bind:value={editableClss.name} />
+    </div>
+
+    <div class="cell-box">
+      <div class="label">Description</div>
+      <textarea bind:value={editableClss.description} rows="3" cols="30"></textarea>
+    </div>
+
+
+    <div class="cell-box">
+      <div class="label">Availability</div>
+      <button on:click={selectClss}>
+        {editableClss.availability?.name || "Availability"}
+      </button>
+    </div>
+
+    <div class="buttons">
+      <button on:click={save}>Save</button>
+      <button on:click={cancel}>Cancel</button>
+    </div>
+
+    {:else}
+        <div class="cell-box">
+            <div class="label">Name</div>
+            <div>{clss.name || "----"}</div>
+        </div>
+
+        <DescriptionUtil bind:item = {clss}/>
+
+        <div class="buttons">
+            {#if !$modalSelectCallback}
+                <button on:click={startEditing}>Edit</button>
+                <button on:click={remove}>Delete </button>
+            {:else}
+                <button
+                    on:click={() => {
+                        $modalSelectCallback(clss);
+                        closeModal();
+                    }}
+                >
+                    select</button
+                >
+            {/if}
+        </div>
+    {/if}
+</div>
+</EditableRowSlot>
