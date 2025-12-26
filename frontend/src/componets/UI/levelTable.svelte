@@ -1,7 +1,7 @@
 <script>
-    export let classTalents;
-    export let subClassTalents;
-    export let classPowers;
+    export let classTalents = [];
+    export let subClassTalents = [];
+    export let classPowers = [];
 
     let levels = Array.from({ length: 20 }, (_, i) => ({
         level: i + 1,
