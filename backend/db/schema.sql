@@ -154,16 +154,9 @@ CREATE TABLE IF NOT EXISTS class_powers (
     class_id INTEGER NOT NULL,
     power_id INTEGER NOT NULL,
     "level" INTEGER NOT NULL,
+    powers_known INTEGER NOT NULL,
     CONSTRAINT fk_cp_class_id FOREIGN KEY (class_id) REFERENCES class(id),
     CONSTRAINT fk_cp_power_id FOREIGN KEY (power_id) REFERENCES "power"(id)
-);
-
-CREATE TABLE IF NOT EXISTS class_powers_known (
-    id SERIAL PRIMARY KEY,
-    class_id INTEGER NOT NULL,
-    powers_known INTEGER NOT NULL,
-    "level" INTEGER NOT NULL,
-    CONSTRAINT fk_cp_class_id FOREIGN KEY (class_id) REFERENCES class(id)
 );
 
 CREATE TABLE IF NOT EXISTS class_traits (
@@ -199,6 +192,15 @@ CREATE TABLE IF NOT EXISTS class_weapon_training (
     CONSTRAINT fk_cwt_class_id FOREIGN KEY (class_id) REFERENCES class(id),
     CONSTRAINT fk_cwt_talent_id FOREIGN KEY (talent_id) REFERENCES talent(id)
 );
+
+CREATE TABLE IF NOT EXISTS class_weapon_class (
+    id SERIAL PRIMARY KEY,
+    class_id INTEGER NOT NULL,
+    weapon_class INTEGER NOT NULL,
+    CONSTRAINT fk_cwc_class_id FOREIGN KEY (class_id) REFERENCES class(id),
+    CONSTRAINT fk_cwc_weapon_class_id FOREIGN KEY (weapon_class) REFERENCES weapon_class(id)
+);
+
 
 CREATE TABLE IF NOT EXISTS class_talents (
     id SERIAL PRIMARY KEY,
@@ -320,6 +322,14 @@ CREATE TABLE IF NOT EXISTS item (
     is_custom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_i_category_id FOREIGN KEY (category_id) REFERENCES category(id),
     CONSTRAINT fk_i_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id)
+);
+
+CREATE TABLE IF NOT EXISTS class_items (
+    id SERIAL PRIMARY KEY,
+    item_id INTEGER NOT NULL,
+    class_id INTEGER NOT NULL,
+    CONSTRAINT fk_ci_item_id FOREIGN KEY (item_id) REFERENCES item(id),
+    CONSTRAINT fk_ci_class_id FOREIGN KEY (class_id) REFERENCES class(id)
 );
 
 CREATE TABLE IF NOT EXISTS craftsmanship (
