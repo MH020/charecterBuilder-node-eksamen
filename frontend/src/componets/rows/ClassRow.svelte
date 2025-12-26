@@ -1,12 +1,14 @@
 <script>
+    import { navigate } from "svelte-routing";
     import {
         closeModal,
         modalSelectCallback,
         openModal,
     } from "../../store/modalStore";
-    import ClassList from "../lists/classes/ClassList.svelte";
+
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
+    import { classDataStore, setCurrentClass } from "../../store/classStore";
 
     export let clss;
     export let onSave;
@@ -44,7 +46,6 @@
                 ></textarea>
             </div>
 
-
             <div class="buttons">
                 <button on:click={save}>Save</button>
                 <button on:click={cancel}>Cancel</button>
@@ -61,14 +62,21 @@
                 {#if !$modalSelectCallback}
                     <button on:click={startEditing}>Edit</button>
                     <button on:click={remove}>Delete </button>
+
+                    <button
+                        on:click={() => {
+                            setCurrentClass(clss.id)
+                            console.log(clss.id)
+                            navigate(`/class`);
+                        }}
+                        >class page
+                    </button>
                 {:else}
                     <button
                         on:click={() => {
                             $modalSelectCallback(clss);
                             closeModal();
-                        }}
-                    >
-                        select</button
+                        }}>select</button
                     >
                 {/if}
             </div>
