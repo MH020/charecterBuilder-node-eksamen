@@ -7,12 +7,11 @@
   import Login from "./pages/login.svelte";
   import Profile from "./pages/profile.svelte";
   import AdminPage from "./pages/adminPage.svelte";
-    import NotLoggedinLayout from "./componets/layouts/notLoggedinLayout.svelte";
-    import UserLayout from "./componets/layouts/userLayout.svelte";
-    import BaseModal from "./componets/modal/BaseModal.svelte";
-    import Adminlayout from "./componets/layouts/adminlayout.svelte";
-    import ClassPage from "./pages/classPage.svelte";
-
+  import NotLoggedinLayout from "./componets/layouts/notLoggedinLayout.svelte";
+  import UserLayout from "./componets/layouts/userLayout.svelte";
+  import BaseModal from "./componets/modal/BaseModal.svelte";
+  import Adminlayout from "./componets/layouts/adminlayout.svelte";
+  import ClassPage from "./pages/classPage.svelte";
 
   let user = null;
   let loading = true;
@@ -28,8 +27,6 @@
 
 {#if !loading}
   <Router>
-
-
     {#if !user}
       <Route path="/">
         <NotLoggedinLayout>
@@ -76,12 +73,11 @@
           <Profile />
         </Adminlayout>
       </Route>
-            <Route path="/class">
+      <Route path="/class/*">
         <Adminlayout>
-          <ClassPage /> 
+          <ClassPage />
         </Adminlayout>
       </Route>
     {/if}
-
   </Router>
 {/if}
