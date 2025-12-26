@@ -154,9 +154,16 @@ CREATE TABLE IF NOT EXISTS class_powers (
     class_id INTEGER NOT NULL,
     power_id INTEGER NOT NULL,
     "level" INTEGER NOT NULL,
-    powers_known INTEGER NOT NULL,
     CONSTRAINT fk_cp_class_id FOREIGN KEY (class_id) REFERENCES class(id),
     CONSTRAINT fk_cp_power_id FOREIGN KEY (power_id) REFERENCES "power"(id)
+);
+
+CREATE TABLE IF NOT EXISTS class_powers_known (
+    id SERIAL PRIMARY KEY,
+    class_id INTEGER NOT NULL,
+    powers_known INTEGER NOT NULL,
+    "level" INTEGER NOT NULL,
+    CONSTRAINT fk_cp_class_id FOREIGN KEY (class_id) REFERENCES class(id)
 );
 
 CREATE TABLE IF NOT EXISTS class_traits (
@@ -193,13 +200,6 @@ CREATE TABLE IF NOT EXISTS class_weapon_training (
     CONSTRAINT fk_cwt_talent_id FOREIGN KEY (talent_id) REFERENCES talent(id)
 );
 
-CREATE TABLE IF NOT EXISTS class_weapon_class (
-    id SERIAL PRIMARY KEY,
-    class_id INTEGER NOT NULL,
-    weapon_class INTEGER NOT NULL,
-    CONSTRAINT fk_cwc_class_id FOREIGN KEY (class_id) REFERENCES class(id),
-    CONSTRAINT fk_cwc_weapon_class_id FOREIGN KEY (weapon_class) REFERENCES weapon_class(id)
-);
 
 
 CREATE TABLE IF NOT EXISTS class_talents (
@@ -231,6 +231,14 @@ CREATE TABLE IF NOT EXISTS weapon_class (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS class_weapon_class (
+    id SERIAL PRIMARY KEY,
+    class_id INTEGER NOT NULL,
+    weapon_class_id INTEGER NOT NULL,
+    CONSTRAINT fk_cwc_class_id FOREIGN KEY (class_id) REFERENCES class(id),
+    CONSTRAINT fk_cwc_weapon_class_id FOREIGN KEY (weapon_class_id) REFERENCES weapon_class(id)
 );
 
 
