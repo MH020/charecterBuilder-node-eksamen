@@ -112,6 +112,147 @@ export async function seed (knex) {
       lineage_id: bloodAngels.id,
       asi: false,
       is_custom: false
-    }
+    },
+    {
+  name: 'Las Weapon Training',
+  description: 'You are trained in the use and maintenance of lasguns, laspistols, and related Imperial laser weapons.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: false,
+  is_custom: false
+},
+{
+  name: 'Solid Projectile Weapon Training',
+  description: 'You are proficient with autoguns, stubbers, and other solid projectile firearms.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: false,
+  is_custom: false
+},
+{
+  name: 'Bolt Weapon Training',
+  description: 'You are trained in the devastating bolt weapons used by elite Imperial forces.',
+  type: 'Full Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: false,
+  is_custom: false
+},
+{
+  name: 'Chain Weapon Training',
+  description: 'You are skilled in the use of chainblades, chainaxes, and other roaring melee weapons.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: false,
+  is_custom: false
+},
+{
+  name: 'Power Weapon Training',
+  description: 'You are trained to wield power swords, axes, and mauls without self-injury.',
+  type: 'Expert Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: false,
+  is_custom: false
+},
+{
+  name: 'Heavy Weapon Training',
+  description: 'You are capable of operating heavy weapons such as heavy bolters, autocannons, and plasma cannons.',
+  type: 'Expert Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: false,
+  is_custom: false
+},
+{
+  name: 'Combat Conditioning',
+  description: 'Rigorous drills and constant exposure to combat have improved your physical performance.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Field Discipline',
+  description: 'You maintain order and composure even in chaotic combat environments.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Tactical Awareness',
+  description: 'You possess a refined sense for battlefield positioning, timing, and threat assessment.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Close Quarters Specialist',
+  description: 'You are trained to fight efficiently in confined spaces and brutal melee engagements.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Marksman Drills',
+  description: 'Through repetitive drills and live-fire exercises, your accuracy has steadily improved.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Battlefield Resilience',
+  description: 'You have learned how to push through pain, exhaustion, and shock in prolonged engagements.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Command Presence',
+  description: 'Your bearing and confidence inspire obedience and trust from those around you.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+},
+{
+  name: 'Technical Familiarity',
+  description: 'You are accustomed to operating, maintaining, and adapting complex equipment under pressure.',
+  type: 'Half Talent',
+  prerequisite_talent_id: null,
+  required_race_id: null,
+  lineage_id: null,
+  asi: true,
+  is_custom: false
+}
+
   ])
 }
