@@ -1,26 +1,23 @@
 <script>
-    import { onMount } from "svelte";
-    import { fetchGet } from "../../../util/fetchUtil";
+
     import ClassesInfoList from "../UI/ClassesInfoList.svelte";
     import LevelTable from "../UI/levelTable.svelte";
 
     export let clss;
+    console.log(clss)
+    const classPowers = clss.powers || [];
+    const powersKnown = clss.powers_known || [];
+    const classTraits = clss.traits;
+    const classApptitudes = clss.aptitudes;
+    const classTalents = clss.talents;
+    const weaponsTrainings = clss.weapon_trainings;
+    const weaponsClasses = clss.weapon_classes;
+    const classBonuses = clss.bonuses || [];
+    const classItems = clss.items || [];
+    let subClassTalents = clss.SubclassTalents || []
 
-    let classApptitudes = [];
-    let classBonuses = [];
-    let classItems = [];
-    let classTraits = [];
-    let classTalents = []; 
-    let subClassTalents = []; 
-    let classPowers = []; 
-    let classes
-
-    onMount(async () => {
-        const response = await fetchGet(`/api/classes/${clss.id}/full`);
-        console.log(response)
-        if (response.status === 200) {
-            classes = response.data;
-        }
+    let startingTraits = classTraits.filter((trait) => {
+        trait.level = 1;
     });
 </script>
 
@@ -28,16 +25,19 @@
     <h1>{clss.name}</h1>
 </div>
 
-<ClassesInfoList listItems={classApptitudes} name="Starting Aptitudes" />
 <ClassesInfoList listItems={classBonuses} name="Characteristic Bonus" />
+<ClassesInfoList listItems={classApptitudes} name="Starting Aptitudes" />
+<ClassesInfoList listItems={weaponsClasses} name="Weapon Proficiency" />
+<ClassesInfoList listItems={weaponsTrainings} name="Weapon Training" />
 <ClassesInfoList listItems={classItems} name="Specialist Equipment" />
 
-{#if classTraits.length > 0}
-    <ClassesInfoList listItems={classTraits} name="Starting Traits" />
+{#if startingTraits.length !== 0}
+    <ClassesInfoList listItems={startingTraits} name="Starting Traits:" />
 {/if}
+<ClassesInfoList listItems={weaponsTrainings} name="Weapon Training" />
 
-<LevelTable 
-classTalents = {classTalents},
-subClassTalents = {subClassTalents},
-classPowers = {}
+<LevelTable
+    classTalents={classTalents}
+    subClassTalents={subClassTalents}
+    {classPowers}
 />
