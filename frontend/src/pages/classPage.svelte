@@ -1,4 +1,6 @@
 <script>
+    import ClassOverview from "../componets/subPages/ClassOverview.svelte";
+
   export let clss;
 
 
