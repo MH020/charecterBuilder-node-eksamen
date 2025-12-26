@@ -14,10 +14,10 @@ export async function seed(knex) {
 
   await knex('prerequisite_powers').insert([
 
-    { power_id: fireball.id, prerequisite_Powers_id: iceSpike.id },
+    { power_id: fireball.id, prerequisite_powers_id: iceSpike.id },
 
 
-    { power_id: iceSpike.id, prerequisite_Powers_id: healingLight.id }
+    { power_id: iceSpike.id, prerequisite_powers_id: healingLight.id }
 
 
   ]);
