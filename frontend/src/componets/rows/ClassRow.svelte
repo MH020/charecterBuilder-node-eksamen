@@ -8,7 +8,6 @@
 
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
-    import { classDataStore, setCurrentClass } from "../../store/classStore";
 
     export let clss;
     export let onSave;
@@ -65,9 +64,7 @@
 
                     <button
                         on:click={() => {
-                            setCurrentClass(clss.id)
-                            console.log(clss.id)
-                            navigate(`/class`);
+                            navigate(`/class/?id=${clss.id}`);
                         }}
                         >class page
                     </button>
