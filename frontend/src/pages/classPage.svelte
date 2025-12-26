@@ -2,34 +2,42 @@
   import { onMount } from "svelte";
   import { fetchGet } from "../../util/fetchUtil";
   import ClassOverview from "../componets/subPages/ClassOverview.svelte";
-  import { classDataStore } from "../store/classStore";
+  let currentClass ;
 
-    let activeTab = "overview";
+  let id = "";
+  let activeTab = "overview";
 
-    const tabs = [
+  const tabs = [
     { id: "overview", label: "Overview" },
     { id: "talents", label: "Talents" },
     { id: "powers", label: "Powers" },
   ];
 
-    $: currentClass = $classDataStore;
+  onMount(async () => {
+    
+    const url = new URL(window.location.href);
+    const queryParams = new URLSearchParams(url.search);
+    id = queryParams.get("id");
 
-  $: if (currentClass.classID && (!currentClass.clss || currentClass.clss.id !== currentClass.classID)) {
-    fetchGet(`/api/classes/${currentClass.classID}/full`).then(response => {
+    const storedClass = localStorage.getItem("clss");
+    currentClass = storedClass ? JSON.parse(storedClass) : null;
+
+    if (!currentClass || currentClass.id !== id) {
+      const response = await fetchGet(`/api/classes/${id}/full`)
+      console.log(response);
       if (response.status === 200) {
-        classDataStore.update(store => {
-          store.clss = response.data;
-          return store;
-        });
+        currentClass = response.data;
+        localStorage.setItem("clss", JSON.stringify(currentClass));
+          console.log("currentclass ?", currentClass);
       }
-    });
-  }
+    }
+  });
 
 </script>
 
 <div class="class-overview">
-  {#if currentClass.clss}
-    <h2>{currentClass.clss.name}</h2>
+  {#if currentClass}
+    <h2>{currentClass.name}</h2>
 
     <nav class="tabs">
       {#each tabs as tab}
@@ -44,16 +52,14 @@
 
     <section class="class-content">
       {#if activeTab === "overview"}
-        <ClassOverview clss={currentClass.clss} />
+        <ClassOverview bind:clss={currentClass} />
       {:else if activeTab === "talents"}
         <p>Talents go here</p>
       {:else if activeTab === "powers"}
         <p>Powers go here</p>
       {/if}
     </section>
-
   {:else}
     <p>Loading class…</p>
   {/if}
 </div>
-
