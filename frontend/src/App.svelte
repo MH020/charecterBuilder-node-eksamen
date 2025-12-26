@@ -11,6 +11,7 @@
     import UserLayout from "./componets/layouts/userLayout.svelte";
     import BaseModal from "./componets/modal/BaseModal.svelte";
     import Adminlayout from "./componets/layouts/adminlayout.svelte";
+    import ClassPage from "./pages/classPage.svelte";
 
 
   let user = null;
@@ -75,10 +76,9 @@
           <Profile />
         </Adminlayout>
       </Route>
-
-            <Route path="/class/*">
+            <Route path="/class">
         <Adminlayout>
-          <Profile />
+          <ClassPage /> 
         </Adminlayout>
       </Route>
     {/if}
