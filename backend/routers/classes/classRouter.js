@@ -53,8 +53,12 @@ router.get('/api/classes/:id/full', async (req, res) => {
     try {
         const { id } = req.params
 
-        const classResult = await db.query(`
+        const classRow = await db.query(`
         SELECT * FROM "class" WHERE id = $1
+        `, [id])
+
+        const subClassRow = await db.query(`
+        SELECT * FROM "class" WHERE parent_id = $1 ORDER BY id LIMIT 1
         `, [id])
 
 
@@ -142,6 +146,24 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY ct.level;
         `, [id]);
 
+            const subClasstalentsRows = await db.query(`
+            SELECT
+                ct.id,
+                ct.class_id,
+                ct.level,
+                json_build_object(
+                    'id', t.id,
+                    'name', t.name,
+                    'description', t.description,
+                    'asi', t.asi
+                ) AS talent
+            FROM class_talents ct
+            LEFT JOIN talent t ON ct.talent_id = t.id
+            WHERE ct.class_id = $1
+            ORDER BY ct.level;
+        `, [subClassRow.rows[0]?.id]);
+
+
 
     const weaponTrainingRows = await db.query(`
         SELECT 
@@ -198,18 +220,19 @@ router.get('/api/classes/:id/full', async (req, res) => {
 
 
         const fullClass = {
-            ...classResult.rows[0],
+            ...classRow.rows[0],
             powers: powerRows.rows,
             powers_known: powersKnownResult.rows,
             traits: traitRows.rows,
             aptitudes: aptitudesRows.rows,
             talents: talentsRows.rows,
+            SubclassTalents: subClasstalentsRows.rows,
             weapon_trainings: weaponTrainingRows.rows,
             weapon_classes: weaponClassRows.rows,
             bonuses: bonusesRows.rows,
         };
 
-        if (classResult.rows.length === 0) {
+        if (classRow.rows.length === 0) {
             return res.status(404).json({ message: 'Class not found' })
         }
 
