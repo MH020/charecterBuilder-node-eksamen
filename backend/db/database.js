@@ -28,7 +28,7 @@ async function database () {
     try {
       await db.query('DROP SCHEMA public CASCADE;')
 
-      await db.query('  CREATE SCHEMA public;')
+      await db.query('CREATE SCHEMA public;')
 
       await db.query(dbfile)
 
