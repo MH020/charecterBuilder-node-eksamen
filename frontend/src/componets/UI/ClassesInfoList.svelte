@@ -1,6 +1,7 @@
 <script>
-    export let name;
-    export let listItems;
+    export let name = "";
+    export let listItems = [];
+    console.log("listitems?", listItems)
 </script>
 
 <div class="class-overview">
