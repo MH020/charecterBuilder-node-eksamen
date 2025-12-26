@@ -14,6 +14,7 @@
     import StatlinesList from "../componets/lists/characterLists/StatlinesList.svelte";
     import SizeList from "../componets/lists/characterLists/sizeList.svelte";
     import WeaponTraitList from "../componets/lists/weaponLists/weaponTraitList.svelte";
+    import ClassList from "../componets/lists/classes/ClassList.svelte";
 </script>
 
 <div class="admin-layout">
@@ -50,7 +51,7 @@
 
             <Route path="armor"><ArmorList /></Route>
 
-            <Route path="class"><ClassList /></Route>
+            <Route path="classes"><ClassList /></Route>
         </section>
     </Router>
 </div>
