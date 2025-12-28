@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { fetchGet } from "../../util/fetchUtil";
   import ClassOverview from "../componets/subPages/ClassOverview.svelte";
+    import ClassTalents from "../componets/subPages/classTalents.svelte";
   let currentClass ;
 
   let id = "";
@@ -27,6 +28,7 @@
       console.log(response);
       if (response.status === 200) {
         currentClass = response.data;
+         localStorage.setItem("clss", null);
         localStorage.setItem("clss", JSON.stringify(currentClass));
           console.log("currentclass ?", currentClass);
       }
@@ -37,8 +39,6 @@
 
 <div class="class-overview">
   {#if currentClass}
-    <h2>{currentClass.name}</h2>
-
     <nav class="tabs">
       {#each tabs as tab}
         <button
@@ -54,7 +54,7 @@
       {#if activeTab === "overview"}
         <ClassOverview bind:clss={currentClass} />
       {:else if activeTab === "talents"}
-        <p>Talents go here</p>
+        <ClassTalents bind:currentClass = {currentClass}  />
       {:else if activeTab === "powers"}
         <p>Powers go here</p>
       {/if}
