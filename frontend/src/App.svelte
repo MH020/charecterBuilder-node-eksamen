@@ -39,6 +39,18 @@
           <Login />
         </NotLoggedinLayout>
       </Route>
+
+            <Route path="/admin/*">
+        <Adminlayout>
+          <AdminPage />
+        </Adminlayout>
+      </Route>
+
+            <Route path="/class/*">
+        <Adminlayout>
+          <ClassPage />
+        </Adminlayout>
+      </Route>
     {/if}
 
     {#if user?.role === "USER"}
