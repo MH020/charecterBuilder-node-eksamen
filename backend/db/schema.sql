@@ -124,13 +124,23 @@ CREATE TABLE IF NOT EXISTS "power" (
     id SERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    powers_Category_id INTEGER NOT NULL
     ascendant TEXT,
     duration TEXT,
     actions INTEGER,
     concentration BOOLEAN, 
     dc INTEGER,
     "range" TEXT, 
-    shape TEXT
+    shape TEXT,
+
+    CONSTRAINT fk_p_powers_Category_id FOREIGN KEY (powers_Category_id) REFERENCES powers_category(id)
+);
+
+CREATE TABLE IF NOT EXISTS powers_category (
+    id SERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    power_id INTEGER NOT NULL,
+    CONSTRAINT fk_pp_power_id FOREIGN KEY (power_id) REFERENCES "power"(id)
 );
 
 CREATE TABLE IF NOT EXISTS prerequisite_powers (
