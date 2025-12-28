@@ -13,20 +13,4 @@
     </div>
 </div>
 
-<style>
-.user-layout {
-    display: flex;
-    min-height: 100vh; 
-}
 
-.user-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-    padding: 1rem;
-}
-</style>
