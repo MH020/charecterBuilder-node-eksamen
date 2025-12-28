@@ -88,13 +88,16 @@
             <div class="cell-box">
                 <div class="label">Name</div>
                 <div>
-                    {trait.name
-                        ? `${trait.name}${trait.has_input ? " (x)" : ""}`
-                        : "----"}
+                    {#if trait.name}
+                        <DescriptionUtil item={trait} />
+                        {#if trait.has_input}
+                            <span> (x)</span>
+                        {/if}
+                    {:else}
+                        ----
+                    {/if}
                 </div>
             </div>
-
-            <DescriptionUtil item={trait} />
 
             {#if trait.race.id}
                 <div class="row-fields">
