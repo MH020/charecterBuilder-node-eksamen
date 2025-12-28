@@ -52,10 +52,9 @@
         {:else}
             <div class="cell-box">
                 <div class="label">Name</div>
-                <div>{clss.name || "----"}</div>
+                <DescriptionUtil bind:item={clss} />
             </div>
 
-            <DescriptionUtil bind:item={clss} />
 
             <div class="buttons">
                 {#if !$modalSelectCallback}
