@@ -4,7 +4,9 @@
 </script>
 
 <div class="admin-layout">
+    <div class="sidebar">
     <AdminSidebar />
+</div>
 
     <div class="admin-main">
         <AdminNav />
@@ -20,15 +22,13 @@
     height: 100vh;
 }
 
-.admin-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
 }
 
-main {
-    flex: 1;
+.admin-main main {
     padding: 1rem;
-    overflow-y: auto;
+    flex: 1;
 }
 </style>
