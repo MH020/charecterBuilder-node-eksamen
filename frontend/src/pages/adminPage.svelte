@@ -15,6 +15,14 @@
     import SizeList from "../componets/lists/characterLists/sizeList.svelte";
     import WeaponTraitList from "../componets/lists/weaponLists/weaponTraitList.svelte";
     import ClassList from "../componets/lists/classes/ClassList.svelte";
+    import ArmorList from "../componets/lists/armorLists/armorList.svelte";
+    import TraitsList from "../componets/lists/characterLists/TraitsList.svelte";
+    import TalentList from "../componets/lists/characterLists/TalentList.svelte";
+    import CraftmanshipList from "../componets/lists/ItemsList/craftmanshipList.svelte";
+    import AvailabilityList from "../componets/lists/ItemsList/availabilityList.svelte";
+    import CategoryList from "../componets/lists/ItemsList/categoryList.svelte";
+    import ItemsList from "../componets/lists/ItemsList/itemsList.svelte";
+    import WeaponClassList from "../componets/lists/weaponLists/weaponClassList.svelte";
 </script>
 
 <div class="admin-layout">
@@ -36,7 +44,7 @@
 
             <Route path="weapons"><WeaponsList /></Route>
             <Route path="weapons/traits"><WeaponTraitList /></Route>
-            <Route path="weapons/class"><WeaponTraitList /></Route>
+            <Route path="weapons/class"><WeaponClassList /></Route>
 
             <Route path="items"><ItemsList /></Route>
             <Route path="category"><CategoryList /></Route>
@@ -47,11 +55,10 @@
             <Route path="talents"><TalentList /></Route>
             <Route path="traits"><TraitsList /></Route>
 
-
-
             <Route path="armor"><ArmorList /></Route>
 
             <Route path="classes"><ClassList /></Route>
         </section>
     </Router>
 </div>
+
