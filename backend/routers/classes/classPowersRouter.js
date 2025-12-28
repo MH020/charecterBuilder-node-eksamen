@@ -8,26 +8,25 @@ router.get('/api/class/:id/powers', async (req, res) => {
     try {
         const result = await db.query(`
         SELECT
-            cp.id, cp.class_id, cp.power_id, cp.level,
-
+            p.id,
+            p.name,
+            p.description,
+            p.ascendant,
+            p.duration,
+            p.actions,
+            p.concentration,
+            p.dc,
+            p.range,
+            p.shape,
             json_build_object(
-                'id', p.id,
-                'name', p.name,
-                'description', p.description,
-                'ascendant', p.ascendant,
-                'duration', p.duration,
-                'actions', p.actions,
-                'concentration', p.concentration,
-                'dc', p.dc,
-                'range', p.range,
-                'shape', p.shape
-            ) AS power
-
-            FROM class_powers cp
-            LEFT JOIN power p
-            ON p.id = cp.power_id
-            WHERE cp.class_id = $1
-            ORDER BY cp.level
+                'id', pc.id,
+                'name', pc.name
+            ) AS category
+        FROM class_powers cp
+        JOIN power p ON p.id = cp.power_id
+        JOIN powers_category pc ON pc.id = p.powers_category_id
+        WHERE cp.class_id = $1
+        ORDER BY cp.level;
         `, [id])
         const classPowers = result.rows
 
@@ -48,12 +47,12 @@ router.post('/api/class/:id/powers', async (req, res) => {
         }
 
         const result = await db.query(
-            `INSERT INTO power (name, description, ascendant, duration, actions, concentration,
+            `INSERT INTO power (name, description, powers_Category_id, ascendant, duration, actions, concentration,
                 dc, range, shape
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 10$) RETURNING *`,
 
-            [power.name, power.description, power.ascendant, power.duration,
+            [power.name, power.description, power.category.id, power.ascendant, power.duration,
             power.actions, power.concentration, power.dc, power.range, power.shape
             ]
         )
@@ -76,11 +75,11 @@ router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
         const { level, power } = req.body
 
         await db.query(`UPDATE power SET
-                        name = $1, description = $2, ascendant = $3, duration = $4, 
-                        actions = $5, concentration = $6, dc = $7, range = $8, shape = $9
-                        WHERE id = $10`,
+                        name = $1, description = $2, powers_Category_id = $3, ascendant = $4, duration = $5, 
+                        actions = $6, concentration = $7, dc = $8, range = $9, shape = $10
+                        WHERE id = $11`,
 
-            [power.name, power.description, power.ascendant, power.duration,
+            [power.name, power.description, power.category.id, power.ascendant, power.duration,
             power.actions, power.concentration, power.dc, power.range, power.shape,
             power.id
             ]
