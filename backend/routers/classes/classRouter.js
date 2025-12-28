@@ -63,7 +63,11 @@ router.get('/api/classes/:id/full', async (req, res) => {
 
 
         const powerRows = await db.query(`
-            SELECT cp.id, cp.class_id, cp.level,
+            SELECT
+                cp.id,
+                cp.class_id,
+                cp.level,
+
                 json_build_object(
                     'id', p.id,
                     'name', p.name,
@@ -74,8 +78,13 @@ router.get('/api/classes/:id/full', async (req, res) => {
                     'concentration', p.concentration,
                     'dc', p.dc,
                     'range', p.range,
-                    'shape', p.shape
+                    'shape', p.shape,
+                    'category', json_build_object(
+                        'id', pc.id,
+                        'name', pc.name
+                    )
                 ) AS power,
+
                 (
                     SELECT json_agg(
                         json_build_object(
@@ -84,12 +93,14 @@ router.get('/api/classes/:id/full', async (req, res) => {
                         )
                     )
                     FROM prerequisite_powers pr
-                    LEFT JOIN power pp ON pr.prerequisite_powers_id = pp.id
+                    JOIN power pp ON pp.id = pr.prerequisite_powers_id
                     WHERE pr.power_id = cp.power_id
                 ) AS prerequisite_powers
 
             FROM class_powers cp
-            LEFT JOIN power p ON cp.power_id = p.id
+            JOIN power p ON p.id = cp.power_id
+            JOIN powers_category pc ON pc.id = p.powers_category_id
+
             WHERE cp.class_id = $1
             ORDER BY cp.level;
         `, [id]);
