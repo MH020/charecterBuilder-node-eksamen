@@ -7,7 +7,7 @@
     } from "../../store/modalStore";
 
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
-    import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
+    import EditableRowSlot from "../wrappers/Editable.svelte";
 
     export let clss;
     export let onSave;
