@@ -6,7 +6,7 @@
     } from "../../store/modalStore";
     import RaceList from "../lists/characterLists/RaceList.svelte";
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
-    import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
+    import EditableRowSlot from "../wrappers/Editable.svelte";
 
     export let trait;
     export let onSave;
