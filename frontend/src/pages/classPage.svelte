@@ -2,9 +2,10 @@
   import { onMount } from "svelte";
   import { fetchGet } from "../../util/fetchUtil";
   import ClassOverview from "../componets/subPages/ClassOverview.svelte";
-    import ClassTalents from "../componets/subPages/classTalents.svelte";
-  let currentClass ;
+  import ClassTalents from "../componets/subPages/classTalents.svelte";
+  import ClassPowers from "../componets/subPages/classPowers.svelte";
 
+  let currentClass ;
   let id = "";
   let activeTab = "overview";
 
@@ -54,9 +55,9 @@
       {#if activeTab === "overview"}
         <ClassOverview bind:clss={currentClass} />
       {:else if activeTab === "talents"}
-        <ClassTalents bind:currentClass = {currentClass}  />
+        <ClassTalents bind:clss = {currentClass}  />
       {:else if activeTab === "powers"}
-        <p>Powers go here</p>
+        <ClassPowers bind:clss = {currentClass}/>
       {/if}
     </section>
   {:else}
