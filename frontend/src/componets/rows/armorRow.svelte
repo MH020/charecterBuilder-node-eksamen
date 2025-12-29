@@ -1,11 +1,7 @@
 <script>
-    import {
-        closeModal,
-        modalSelectCallback,
-        openModal,
-    } from "../../store/modalStore";
+    import {closeModal,modalSelectCallback, openModal} from "../../store/modalStore";
     import AvailabilityList from "../lists/ItemsList/availabilityList.svelte";
-    import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
+    import EditableRowSlot from "../wrappers/Editable.svelte";
 
     export let armor;
     export let onSave;
