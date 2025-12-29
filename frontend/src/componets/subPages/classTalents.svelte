@@ -1,9 +1,9 @@
 <script>
     import TalentCard from "../cards/ClassTalentCard.svelte";
 
-    export let currentClass 
+    export let clss 
 
-    $: talents = currentClass.talents
+    $: talents = clss.talents
 </script>
 
     <div class="class-talents">
