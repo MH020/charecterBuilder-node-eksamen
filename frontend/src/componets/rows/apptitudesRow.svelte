@@ -1,6 +1,6 @@
 <script>
   import { closeModal, modalSelectCallback } from "../../store/modalStore";
-  import EditableRowSlot from "../wrappers/EditableRowSlot.svelte";
+  import EditableRowSlot from "../wrappers/Editable.svelte";
 
   export let apptitude;
   export let onSave;
