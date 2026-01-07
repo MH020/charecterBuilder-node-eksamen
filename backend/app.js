@@ -28,6 +28,7 @@ import talentsRouter from './routers/characters/talentsRouter.js'
 import traitsRouter from './routers/characters/TraitsRouter.js'
 import classPowers from './routers/classes/classPowersRouter.js'
 import classRouter from './routers/classes/classRouter.js'
+import powerCategoriesRouter from './routers/classes/powerCategory.js'
 const app = express()
 
 app.use(express.json())
@@ -141,6 +142,10 @@ app.use(traitsRouter)
 app.use(classRouter)
 
 app.use(classPowers)
+
+app.use(powerCategoriesRouter)
+
+
 // aouth
 app.use(authRouthes)
 
