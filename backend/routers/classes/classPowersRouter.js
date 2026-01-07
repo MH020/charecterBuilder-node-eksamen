@@ -130,6 +130,8 @@ router.delete('/api/class/:classID/powers/:powerID', async (req, res) => {
     try {
         const { classID, powerID } = req.params
 
+        console.log(classID, powerID)
+
         await db.query('DELETE FROM class_powers where class_id = $1 AND power_id = $2', [classID, powerID])
 
         await db.query('DELETE FROM power where id = $1', [powerID])
