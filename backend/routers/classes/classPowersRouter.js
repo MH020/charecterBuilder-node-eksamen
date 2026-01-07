@@ -41,7 +41,7 @@ router.post('/api/class/:id/powers', async (req, res) => {
     const { id } = req.params
     try {
         const { level, power } = req.body
-
+        console.log(req.body)
         if (!power) {
             return res.status(400).send({ message: 'missing power' })
         }
@@ -50,7 +50,7 @@ router.post('/api/class/:id/powers', async (req, res) => {
             `INSERT INTO power (name, description, powers_Category_id, ascendant, duration, actions, concentration,
                 dc, range, shape
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 10$) RETURNING *`,
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
 
             [power.name, power.description, power.category.id, power.ascendant, power.duration,
             power.actions, power.concentration, power.dc, power.range, power.shape
@@ -58,11 +58,37 @@ router.post('/api/class/:id/powers', async (req, res) => {
         )
         const createdPower = result.rows[0]
 
-        await db.query(`INSERT INTO class_powers (class_id, power_id, level)`,
+        const classPowerResult = await db.query(
+            `INSERT INTO class_powers (class_id, power_id, level) VALUES ($1, $2, $3) RETURNING *`,
             [id, createdPower.id, level]
         );
 
-        return res.status(201).send({ message: 'power created sucessfully', created: createdPower })
+        const classPowerRow = classPowerResult.rows[0];
+
+            const classPower = {
+            id: classPowerRow.id,
+            class_id: classPowerRow.class_id,
+            level: classPowerRow.level,
+            power: {
+                id: createdPower.id,
+                name: createdPower.name,
+                description: createdPower.description,
+                ascendant: createdPower.ascendant,
+                duration: createdPower.duration,
+                actions: createdPower.actions,
+                concentration: createdPower.concentration,
+                dc: createdPower.dc,
+                range: createdPower.range,
+                shape: createdPower.shape,
+                category: {
+                    id: power.category.id,
+                    name: power.category.name
+                }
+            },
+            prerequisite_powers: null
+        };
+
+        return res.status(201).send({ message: 'power created sucessfully', created: classPower })
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
@@ -91,8 +117,6 @@ router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
             WHERE class_id = $2 AND power_id = $3`,
             [level, classID, powerID]
         )
-
-
 
         return res.status(200).send({ message: 'power updated' })
 
