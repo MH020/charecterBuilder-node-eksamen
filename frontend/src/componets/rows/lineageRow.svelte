@@ -8,6 +8,7 @@
     } from "../../store/modalStore";
     import LineageBonusCard from "../cards/LineageBonusCard.svelte";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
+    import RaceList from "../lists/characterLists/RaceList.svelte";
     import CategoryList from "../lists/ItemsList/categoryList.svelte";
 
     export let lineage;
@@ -63,7 +64,7 @@
 
             modalSelectCallback.set(null);
         });
-        openModal(CategoryList); //raceList
+        openModal(RaceList); //raceList
     }
 
     function createBonus() {
