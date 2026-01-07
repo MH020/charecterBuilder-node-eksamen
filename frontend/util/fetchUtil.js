@@ -1,7 +1,7 @@
 import { openModal } from '../src/store/modalStore'
 import toastrDisplayHTTPCode from './ToastrUtil'
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin
+const BASE_URL = "http://localhost:8080" 
 
 export async function fetchGet (endpoint) {
   try {
