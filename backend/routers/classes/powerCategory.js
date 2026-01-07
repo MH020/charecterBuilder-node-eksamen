@@ -4,7 +4,7 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/power/category', async (req, res) => {
+router.get('/api/power-categories', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM powers_category')
     const powersCategoryies = result.rows
@@ -15,7 +15,7 @@ router.get('/api/power/category', async (req, res) => {
   }
 })
 
-router.post('/api/power/category', async (req, res) => {
+router.post('/api/power-categories', async (req, res) => {
   try {
     const { name } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/power/category', async (req, res) => {
   }
 })
 
-router.put('/api/power/category/:id', async (req, res) => {
+router.put('/api/power-categories/:id', async (req, res) => {
   try {
     const id = req.params.id
     const { name } = req.body
@@ -49,10 +49,9 @@ router.put('/api/power/category/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/power/category/:id', async (req, res) => {
+router.delete('/api/power-categories/:id', async (req, res) => {
   try {
     const { id } = req.params
-    console.log('skillid?', id)
 
     await db.query(
       'DELETE FROM powers_category where id = $1 ', [id]
