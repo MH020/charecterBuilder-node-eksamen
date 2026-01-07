@@ -1,9 +1,7 @@
 <script>
     import { deleteEntity } from "../../../util/ListUtil";
-
     export let list = [];
     export let endpoint;
-    export let createCard;
 
 
     async function onDelete(id, isNew) {
@@ -14,17 +12,20 @@
         }
     }
 
-    function onSave(updated) {
-        list = list.map(item =>
-            item.isNew ? { ...updated, isNew: false }
-            : item.id === updated.id ? { ...item, ...updated }
+function onSave(updated) {
+    list = list.map(item =>
+        item.isNew
+            ? { ...updated, isNew: false }
+            : item.id === updated.id
+            ? { ...item, ...updated }
             : item
-        );
-    }
-</script>
- <button on:click={createCard}>New Card</button>
+    );
 
-{#each list as card (card.id ?? card)}
+}
+</script>
+
+
+{#each list as card (card.id)}
     <slot
         item={card}
         onSave={onSave}
