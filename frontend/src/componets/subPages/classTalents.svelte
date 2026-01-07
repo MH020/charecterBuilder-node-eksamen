@@ -17,8 +17,8 @@
 <style>
 .talents-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
-    gap: 5rem; /* space between cards */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5rem; 
 }
 </style>
 
