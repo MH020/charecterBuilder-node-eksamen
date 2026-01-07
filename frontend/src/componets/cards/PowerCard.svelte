@@ -1,5 +1,7 @@
 <script>
     import { classSelectCallback } from "../../store/classStore";
+    import { modalSelectCallback, openModal } from "../../store/modalStore";
+    import ClassPowersCategoryList from "../lists/classes/ClassPowersCategoryList.svelte";
     import Editable from "../wrappers/Editable.svelte";
 
     export let PowerElement;
@@ -16,6 +18,15 @@
             editablePowerElement.prerequisite_powers.add(prereq);
             selecting = false;
         });
+    }
+
+    function selectPowerCategory() {
+        modalSelectCallback.set((category) => {
+            editablePowerElement.power.category = category;
+
+            modalSelectCallback.set(null);
+        });
+        openModal(ClassPowersCategoryList);
     }
 </script>
 
@@ -47,12 +58,12 @@
                 ></textarea>
             </div>
 
+
             <div class="stat-cell">
                 <div class="label">Category</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.category.name}
-                />
+                <button on:click={selectPowerCategory}>
+                    {editablePowerElement.power.category.name|| "select category"}
+                </button>
             </div>
 
             <div class="stat-cell">
