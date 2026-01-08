@@ -1,6 +1,7 @@
 <script>
     import PowerCard from "../cards/PowerCard.svelte";
-import EditableCardsPages from "../wrappers/editableCardsPages.svelte";
+    import { fetchDelete, fetchPost, fetchUpdate } from "../../../util/fetchUtil";
+    import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
 
     export let clss;
     const endpoint = `/api/class/${clss.id}/powers`
@@ -56,6 +57,48 @@ import EditableCardsPages from "../wrappers/editableCardsPages.svelte";
         console.log(clss.powers)
     }
 
+        async function onDelete(id, deleteID, isNew) {
+        if (isNew) {
+            clss.powers = clss.powers.filter((p) => p.id !== id);
+        } else {
+            const response = await fetchDelete(endpoint, deleteID);
+            toastrDisplayHTTPCode(response.status, response.message);
+            if (response.status === 200) {
+                clss.powers = clss.powers.filter((item) => item.id !== id);
+            }
+            return clss.powers;
+        }
+    }
+
+
+    async function onSave(updated) {
+    let saved;
+
+    if (updated.isNew) {
+        const response = await fetchPost(endpoint, updated);
+        if (response.status === 201) {
+            saved = response.created;
+        } else {
+            return; 
+        }
+    } else {
+        const response = await fetchUpdate(endpoint, updated);
+        if (response.status === 200) {
+            saved = updated;
+        } else {
+            return; 
+        }
+    }
+
+    clss.powers = clss.powers.map((item) =>
+        item.isNew
+            ? { ...saved, isNew: false }
+            : item.id === saved.id
+                ? { ...item, ...saved }
+                : item
+    );
+}
+
 
 </script>
 
@@ -70,23 +113,18 @@ import EditableCardsPages from "../wrappers/editableCardsPages.svelte";
     {/if}
 
 
-    <div class="powers-cards">
-        <EditableCardsPages
-        list={category.powers}
-        endpoint= {endpoint}
-        let:item
-        let:onSave
-        let:onDelete
-        >
+    {#each category.powers as card (card.id)}
+        <div class="powers-cards">
         <PowerCard
-        PowerElement = {item}
+        PowerElement = {card}
         onSave={onSave}
         onDelete={onDelete}
         endpoint={endpoint}
         />
+    </div>
+{/each}
 
-        </EditableCardsPages>
-</div>
+
 {/each}
 
 
