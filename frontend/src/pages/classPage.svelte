@@ -4,6 +4,7 @@
   import ClassOverview from "../componets/subPages/ClassOverview.svelte";
   import ClassTalents from "../componets/subPages/classTalents.svelte";
   import ClassPowers from "../componets/subPages/classPowers.svelte";
+    import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
 
   let currentClass ;
   let id = "";
@@ -13,6 +14,7 @@
     { id: "overview", label: "Overview" },
     { id: "talents", label: "Talents" },
     { id: "powers", label: "Powers" },
+    { id: "subclasses", label: "Subclasses" },
   ];
 
 onMount(async () => {
@@ -48,6 +50,8 @@ onMount(async () => {
         <ClassTalents bind:clss = {currentClass}  />
       {:else if activeTab === "powers"}
         <ClassPowers bind:clss = {currentClass}/>
+      {:else if activeTab === "subclasses"}
+        <ClassSubclasses bind:clss = {currentClass}/>
       {/if}
     </section>
   {:else}
