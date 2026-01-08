@@ -94,7 +94,9 @@
         </div>
     {/if}
 
-    <LevelTable bind:classTalents bind:subClassTalents bind:powersKnown />
+    {#if clss.parent_id === null}
+        <LevelTable bind:classTalents bind:subClassTalents bind:powersKnown />
+    {/if}
 {:else}
     <p>Loading class…</p>
 {/if}
