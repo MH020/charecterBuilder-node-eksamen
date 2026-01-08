@@ -65,7 +65,7 @@ router.post('/api/class/:id/powers', async (req, res) => {
 
         const classPowerRow = classPowerResult.rows[0];
 
-            const classPower = {
+        const classPower = {
             id: classPowerRow.id,
             class_id: classPowerRow.class_id,
             level: classPowerRow.level,
@@ -128,13 +128,19 @@ router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
 
 router.delete('/api/class/:classID/powers/:powerID', async (req, res) => {
     try {
-        const { classID, powerID } = req.params
+        
+        const classID = Number(req.params.classID)
+        const powerID = Number(req.params.powerID)
 
         console.log(classID, powerID)
 
-        await db.query('DELETE FROM class_powers where class_id = $1 AND power_id = $2', [classID, powerID])
+        const result = await db.query(
+            'DELETE FROM class_powers WHERE class_id = $1 AND power_id = $2 RETURNING *',
+            [classID, powerID]
+        )
+        console.log('deleted rows:', result.rowCount)
 
-        await db.query('DELETE FROM power where id = $1', [powerID])
+        await db.query('DELETE FROM "power" where id = $1', [powerID])
 
         return res.status(200).send({ message: 'power deleted' })
     } catch (error) {
