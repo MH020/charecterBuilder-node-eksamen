@@ -51,6 +51,12 @@
           <ClassPage />
         </Adminlayout>
       </Route>
+
+              <Route path="/subclass/*">
+        <Adminlayout>
+          <ClassPage />
+        </Adminlayout>
+      </Route>
     {/if}
 
     {#if user?.role === "USER"}
@@ -86,6 +92,12 @@
         </Adminlayout>
       </Route>
       <Route path="/class/*">
+        <Adminlayout>
+          <ClassPage />
+        </Adminlayout>
+      </Route>
+
+        <Route path="/subclass/*">
         <Adminlayout>
           <ClassPage />
         </Adminlayout>
