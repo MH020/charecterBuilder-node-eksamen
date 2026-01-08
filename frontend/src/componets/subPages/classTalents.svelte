@@ -96,20 +96,6 @@
     gap: 5rem; 
 }
 
-.power-section-title {
-    margin: 3rem 0 1.5rem;
-    padding-bottom: 0.5rem;
 
-    font-family: 'Courier New', monospace;
-    font-size: 1.4rem;
-    font-weight: bold;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    color: var(--color-accent);
-
-    border-bottom: 2px solid var(--color-accent-dark);
-    position: relative;
-}
 
 </style>
