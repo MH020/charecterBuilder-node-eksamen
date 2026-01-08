@@ -119,7 +119,6 @@
         PowerElement = {card}
         onSave={onSave}
         onDelete={onDelete}
-        endpoint={endpoint}
         />
     </div>
 {/each}
