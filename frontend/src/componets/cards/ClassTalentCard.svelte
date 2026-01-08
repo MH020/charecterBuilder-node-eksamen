@@ -17,7 +17,7 @@
 
   function cancel() {
     if (classTalent.isNew) {
-      onDelete(classTalent.id, true); 
+      onDelete(classTalent.id, null, true); 
     } else {
       editableTalent = structuredClone(classTalent);
       isEditing = false;
@@ -42,12 +42,10 @@
       <textarea bind:value={editableTalent.talent.description}></textarea>
     </div>
 
-    {#if editableTalent.talent.type !== undefined}
       <div class="stat-cell">
         <div class="label">Type</div>
         <input type="text" bind:value={editableTalent.talent.type} />
       </div>
-    {/if}
 
     {#if editableTalent.talent.prerequisite_talent !== undefined}
       <div class="stat-cell">
@@ -56,12 +54,6 @@
       </div>
     {/if}
 
-    {#if editableTalent.talent.required_race !== undefined}
-      <div class="stat-cell">
-        <div class="label">Required Race</div>
-        <input type="text" bind:value={editableTalent.talent.required_race.name} />
-      </div>
-    {/if}
 
     {#if editableTalent.talent.aptitudes !== undefined}
         <button
@@ -147,7 +139,7 @@
 
     <div class="buttons">
       <button on:click={startEdit}>Edit</button>
-      <button on:click={() => onDelete(classTalent.id, false)}>Delete</button>
+      <button on:click={() => onDelete(classTalent.id, classTalent.talent.id)}>Delete</button>
     </div>
   {/if}
 </div>
