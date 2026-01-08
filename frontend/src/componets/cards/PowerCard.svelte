@@ -2,7 +2,6 @@
     import { classSelectCallback } from "../../store/classStore";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
     import ClassPowersCategoryList from "../lists/classes/ClassPowersCategoryList.svelte";
-    import Editable from "../wrappers/Editable.svelte";
 
     export let PowerElement;
     export let endpoint;
@@ -11,6 +10,8 @@
 
     let selecting = false;
     let editablePowerElement = structuredClone(PowerElement);
+    let isEditing = PowerElement.isNew ?? false;
+
 
     function selectPreReq() {
         selecting = true;
@@ -28,20 +29,33 @@
         });
         openModal(ClassPowersCategoryList);
     }
+
+    function startEdit() {
+        editablePowerElement = structuredClone(PowerElement);
+        isEditing = true;
+    }
+
+    function cancel() {
+        if (PowerElement.isNew) {
+            // remove new card
+            onDelete(PowerElement.id, null, true);
+        } else {
+            editablePowerElement = structuredClone(PowerElement);
+            isEditing = false;
+        }
+    }
+
+    async function save() {
+        await onSave(editablePowerElement);
+        isEditing = false;
+    }
+
+    function remove() {
+        onDelete(PowerElement.id, PowerElement.power.id, PowerElement.isNew);
+    }
+
 </script>
 
-<Editable
-    item={PowerElement}
-    {endpoint}
-    {onSave}
-    {onDelete}
-    bind:editable={editablePowerElement}
-    let:isEditing
-    let:startEditing
-    let:save
-    let:cancel
-    let:remove
->
     <div class="card">
         {#if isEditing}
             <div class="stat-cell">
@@ -58,11 +72,11 @@
                 ></textarea>
             </div>
 
-
             <div class="stat-cell">
                 <div class="label">Category</div>
                 <button on:click={selectPowerCategory}>
-                    {editablePowerElement.power.category.name|| "select category"}
+                    {editablePowerElement.power.category.name ||
+                        "select category"}
                 </button>
             </div>
 
@@ -124,7 +138,11 @@
 
             <div class="buttons">
                 <button on:click={save}>Save</button>
-                <button on:click={cancel}>Cancel</button>
+                <button
+                    on:click={cancel}
+                >
+                    Cancel
+                </button>
             </div>
         {:else}
             <div class="name">{PowerElement.power.name}</div>
@@ -208,7 +226,7 @@
 
             <div class="buttons">
                 {#if !selecting}
-                    <button on:click={startEditing}>Edit</button>
+                    <button on:click={startEdit}>Edit</button>
                     <button on:click={remove}>Delete </button>
                 {:else}
                     <button on:click={selectPreReq}> select</button>
@@ -216,7 +234,6 @@
             </div>
         {/if}
     </div>
-</Editable>
 
 <style>
     .card {
