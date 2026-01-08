@@ -254,6 +254,29 @@ router.get('/api/classes/:id/full', async (req, res) => {
     }
 })
 
+
+router.get('/api/classes/:id/subclasses', async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const result = await db.query(`
+        SELECT * FROM "class" WHERE parent_id = $1
+        `, [id])
+
+        const classes = result.rows
+
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'no subclasses found for this class' })
+        }
+
+        return res.status(200).send(classes)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })
+    }
+})
+
 router.post('/api/classes', async (req, res) => {
     try {
         const { name, description, parent_id } = req.body
@@ -271,7 +294,32 @@ router.post('/api/classes', async (req, res) => {
         )
         const createdClass = result.rows[0]
 
-        return res.status(201).send({ message: 'Trait created sucessfully', created: createdClass })
+        return res.status(201).send({ message: 'class created sucessfully', created: createdClass })
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })
+    }
+})
+
+router.post('/api/classes/:id/subclasses', async (req, res) => {
+    try {
+        const { parent_id } = req.params
+        const { name, description } = req.body
+
+        if (!name || !description) {
+            return res.status(400).send({ message: 'missing fields' })
+        }
+
+
+        const result = await db.query(
+            `INSERT INTO "class" (name, description, parent_id)
+            VALUES ($1, $2, $3) RETURNING *`,
+
+            [name, description, parent_id]
+        )
+        const createdClass = result.rows[0]
+
+        return res.status(201).send({ message: 'subclass created sucessfully', created: createdClass })
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
