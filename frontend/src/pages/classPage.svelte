@@ -15,26 +15,16 @@
     { id: "powers", label: "Powers" },
   ];
 
-  onMount(async () => {
-    
-    const url = new URL(window.location.href);
-    const queryParams = new URLSearchParams(url.search);
-    id = queryParams.get("id");
+onMount(async () => {
+  const url = new URL(window.location.href);
+  id = new URLSearchParams(url.search).get("id");
 
-    const storedClass = localStorage.getItem("clss");
-    currentClass = storedClass ? JSON.parse(storedClass) : null;
-
-    if (!currentClass || currentClass.id !== id) {
-      const response = await fetchGet(`/api/classes/${id}/full`)
-      console.log(response);
-      if (response.status === 200) {
-        currentClass = response.data;
-         localStorage.setItem("clss", null);
-        localStorage.setItem("clss", JSON.stringify(currentClass));
-          console.log("currentclass ?", currentClass);
-      }
-    }
-  });
+  const response = await fetchGet(`/api/classes/${id}/full`);
+  if (response.status === 200) {
+    currentClass = response.data;
+    //localStorage.setItem("clss", JSON.stringify(currentClass));
+  }
+});
 
 </script>
 
