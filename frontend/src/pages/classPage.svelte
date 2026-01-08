@@ -4,30 +4,42 @@
   import ClassOverview from "../componets/subPages/ClassOverview.svelte";
   import ClassTalents from "../componets/subPages/classTalents.svelte";
   import ClassPowers from "../componets/subPages/classPowers.svelte";
-    import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
+  import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
 
-  let currentClass ;
+  let currentClass;
   let id = "";
   let activeTab = "overview";
+  $: tabs = [];
 
-  const tabs = [
-    { id: "overview", label: "Overview" },
-    { id: "talents", label: "Talents" },
-    { id: "powers", label: "Powers" },
-    { id: "subclasses", label: "Subclasses" },
-  ];
+  onMount(async () => {
+    const url = new URL(window.location.href);
+    id = new URLSearchParams(url.search).get("id");
 
-onMount(async () => {
-  const url = new URL(window.location.href);
-  id = new URLSearchParams(url.search).get("id");
+    const response = await fetchGet(`/api/classes/${id}/full`);
+    if (response.status === 200) {
+      currentClass = response.data;
+      tabs = createTabs(currentClass)
+      //localStorage.setItem("clss", JSON.stringify(currentClass));
+    }
+  });
 
-  const response = await fetchGet(`/api/classes/${id}/full`);
-  if (response.status === 200) {
-    currentClass = response.data;
-    //localStorage.setItem("clss", JSON.stringify(currentClass));
+  function createTabs(currentClass) {
+    if (currentClass && currentClass?.parent_id === null) {
+      tabs = [
+        { id: "overview", label: "Overview" },
+        { id: "talents", label: "Talents" },
+        { id: "powers", label: "Powers" },
+        { id: "subclasses", label: "Subclasses" },
+      ];
+    } else {
+      tabs = [
+        { id: "overview", label: "Overview" },
+        { id: "talents", label: "Talents" },
+        { id: "powers", label: "Powers" },
+      ];
+    }
+    return tabs;
   }
-});
-
 </script>
 
 <div class="class-overview">
@@ -47,11 +59,11 @@ onMount(async () => {
       {#if activeTab === "overview"}
         <ClassOverview bind:clss={currentClass} />
       {:else if activeTab === "talents"}
-        <ClassTalents bind:clss = {currentClass}  />
+        <ClassTalents bind:clss={currentClass} />
       {:else if activeTab === "powers"}
-        <ClassPowers bind:clss = {currentClass}/>
+        <ClassPowers bind:clss={currentClass} />
       {:else if activeTab === "subclasses"}
-        <ClassSubclasses bind:clss = {currentClass}/>
+        <ClassSubclasses bind:clss={currentClass} />
       {/if}
     </section>
   {:else}
