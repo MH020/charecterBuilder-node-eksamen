@@ -4,7 +4,6 @@
     import ClassPowersCategoryList from "../lists/classes/ClassPowersCategoryList.svelte";
 
     export let PowerElement;
-    export let endpoint;
     export let onSave;
     export let onDelete;
 
@@ -12,11 +11,10 @@
     let editablePowerElement = structuredClone(PowerElement);
     let isEditing = PowerElement.isNew ?? false;
 
-
     function selectPreReq() {
         selecting = true;
         classSelectCallback.set((prereq) => {
-            editablePowerElement.prerequisite_powers.add(prereq);
+            editablePowerElement.prerequisite_powers.pus(prereq);
             selecting = false;
         });
     }
@@ -53,187 +51,182 @@
     function remove() {
         onDelete(PowerElement.id, PowerElement.power.id, PowerElement.isNew);
     }
-
 </script>
 
-    <div class="card">
-        {#if isEditing}
+<div class="card">
+    {#if isEditing}
+        <div class="stat-cell">
+            <div class="label">Name</div>
+            <input type="text" bind:value={editablePowerElement.power.name} />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Description</div>
+            <textarea bind:value={editablePowerElement.power.description}
+            ></textarea>
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Category</div>
+            <button on:click={selectPowerCategory}>
+                {editablePowerElement.power.category.name || "select category"}
+            </button>
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Ascendant</div>
+            <input
+                type="text"
+                bind:value={editablePowerElement.power.ascendant}
+            />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Duration</div>
+            <input
+                type="text"
+                bind:value={editablePowerElement.power.duration}
+            />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Actions</div>
+            <input
+                type="text"
+                bind:value={editablePowerElement.power.actions}
+            />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">level</div>
+            <input
+                type="text"
+                bind:value={editablePowerElement.power.level}
+            />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Concentration</div>
+            <input
+                type="checkbox"
+                bind:checked={editablePowerElement.power.concentration}
+            />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">DC</div>
+            <input type="number" bind:value={editablePowerElement.power.dc} />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Range</div>
+            <input type="text" bind:value={editablePowerElement.power.range} />
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Shape</div>
+            <input type="text" bind:value={editablePowerElement.power.shape} />
+        </div>
+
+        <div class="buttons">
+            <button on:click={save}>Save</button>
+            <button on:click={cancel}> Cancel </button>
+        </div>
+    {:else}
+        <div class="name">{PowerElement.power.name}</div>
+
+        {#if PowerElement.prerequisite_powers?.length}
             <div class="stat-cell">
-                <div class="label">Name</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.name}
-                />
-            </div>
+                <div class="label">Prerequisites</div>
 
-            <div class="stat-cell">
-                <div class="label">Description</div>
-                <textarea bind:value={editablePowerElement.power.description}
-                ></textarea>
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Category</div>
-                <button on:click={selectPowerCategory}>
-                    {editablePowerElement.power.category.name ||
-                        "select category"}
-                </button>
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Ascendant</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.ascendant}
-                />
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Duration</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.duration}
-                />
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Actions</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.actions}
-                />
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Concentration</div>
-                <input
-                    type="checkbox"
-                    bind:checked={editablePowerElement.power.concentration}
-                />
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">DC</div>
-                <input
-                    type="number"
-                    bind:value={editablePowerElement.power.dc}
-                />
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Range</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.range}
-                />
-            </div>
-
-            <div class="stat-cell">
-                <div class="label">Shape</div>
-                <input
-                    type="text"
-                    bind:value={editablePowerElement.power.shape}
-                />
-            </div>
-
-            <div class="buttons">
-                <button on:click={save}>Save</button>
-                <button
-                    on:click={cancel}
-                >
-                    Cancel
-                </button>
-            </div>
-        {:else}
-            <div class="name">{PowerElement.power.name}</div>
-
-            {#if PowerElement.prerequisite_powers?.length}
-                <div class="stat-cell">
-                    <div class="label">Prerequisites</div>
-
-                    <div class="value prereq-list">
-                        {#each PowerElement.prerequisite_powers as prereq}
-                            <span class="prereq-pill">
-                                {prereq.name}
-                            </span>
-                        {/each}
-                    </div>
+                <div class="value prereq-list">
+                    {#each PowerElement.prerequisite_powers as prereq}
+                        <span class="prereq-pill">
+                            {prereq.name}
+                        </span>
+                    {/each}
                 </div>
-            {/if}
-
-            <div class="stat-cell">
-                <div class="label">Description</div>
-                <div class="value">{PowerElement.power.description}</div>
-            </div>
-
-            {#if PowerElement.power.category}
-                <div class="stat-cell">
-                    <div class="label">Category</div>
-                    <div class="value">{PowerElement.power.category.name}</div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.ascendant}
-                <div class="stat-cell">
-                    <div class="label">Ascendant</div>
-                    <div class="value">{PowerElement.power.ascendant}</div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.duration}
-                <div class="stat-cell">
-                    <div class="label">Duration</div>
-                    <div class="value">{PowerElement.power.duration}</div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.actions !== null}
-                <div class="stat-cell">
-                    <div class="label">Actions</div>
-                    <div class="value">{PowerElement.power.actions}</div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.concentration !== null}
-                <div class="stat-cell">
-                    <div class="label">Concentration</div>
-                    <div class="value">
-                        {PowerElement.power.concentration ? "Yes" : "No"}
-                    </div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.dc}
-                <div class="stat-cell">
-                    <div class="label">DC</div>
-                    <div class="value">{PowerElement.power.dc}</div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.range}
-                <div class="stat-cell">
-                    <div class="label">Range</div>
-                    <div class="value">{PowerElement.power.range}</div>
-                </div>
-            {/if}
-
-            {#if PowerElement.power.shape}
-                <div class="stat-cell">
-                    <div class="label">Shape</div>
-                    <div class="value">{PowerElement.power.shape}</div>
-                </div>
-            {/if}
-
-            <div class="buttons">
-                {#if !selecting}
-                    <button on:click={startEdit}>Edit</button>
-                    <button on:click={remove}>Delete </button>
-                {:else}
-                    <button on:click={selectPreReq}> select</button>
-                {/if}
             </div>
         {/if}
-    </div>
+
+            <div class="stat-cell">
+            <div class="label">level</div>
+            <div class="value">{PowerElement.level}</div>
+        </div>
+
+        <div class="stat-cell">
+            <div class="label">Description</div>
+            <div class="value">{PowerElement.power.description}</div>
+        </div>
+
+        {#if PowerElement.power.category}
+            <div class="stat-cell">
+                <div class="label">Category</div>
+                <div class="value">{PowerElement.power.category.name}</div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.ascendant}
+            <div class="stat-cell">
+                <div class="label">Ascendant</div>
+                <div class="value">{PowerElement.power.ascendant}</div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.duration}
+            <div class="stat-cell">
+                <div class="label">Duration</div>
+                <div class="value">{PowerElement.power.duration}</div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.actions !== null}
+            <div class="stat-cell">
+                <div class="label">Actions</div>
+                <div class="value">{PowerElement.power.actions}</div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.concentration !== null}
+            <div class="stat-cell">
+                <div class="label">Concentration</div>
+                <div class="value">
+                    {PowerElement.power.concentration ? "Yes" : "No"}
+                </div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.dc}
+            <div class="stat-cell">
+                <div class="label">DC</div>
+                <div class="value">{PowerElement.power.dc}</div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.range}
+            <div class="stat-cell">
+                <div class="label">Range</div>
+                <div class="value">{PowerElement.power.range}</div>
+            </div>
+        {/if}
+
+        {#if PowerElement.power.shape}
+            <div class="stat-cell">
+                <div class="label">Shape</div>
+                <div class="value">{PowerElement.power.shape}</div>
+            </div>
+        {/if}
+
+        <div class="buttons">
+            {#if !selecting}
+                <button on:click={startEdit}>Edit</button>
+                <button on:click={remove}>Delete </button>
+            {:else}
+                <button on:click={selectPreReq}> select</button>
+            {/if}
+        </div>
+    {/if}
+</div>
 
 <style>
     .card {
