@@ -1,4 +1,6 @@
 <script>
+    import { navigate } from "svelte-routing";
+
 
   export let subClass;
   export let onSave;
@@ -55,6 +57,7 @@
     <div class="buttons">
       <button on:click={startEdit}>Edit</button>
       <button on:click={() => onDelete(subClass.id, subClass.id)}>Delete</button>
+      <button on:click={() => navigate(`/subclass/?id=${subClass.id}`)}>subclass page</button>
     </div>
   {/if}
 </div>
