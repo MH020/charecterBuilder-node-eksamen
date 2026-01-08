@@ -8,25 +8,31 @@
     import ClassTalentCard from "../cards/ClassTalentCard.svelte";
 
     export let clss;
-    export let endpoint;
+    const endpoint = "booo"
 
     $: talents = clss.talents;
         console.log(clss)
 
-    function createTalent() {
-        const newTalent = {
+    function createClassTalent() {
+        const newClassTalent = {
+            class_id: clss.id, 
             id: null,
-            name: "",
-            description: "",
-            type: "",
-            asi: false,
-            prerequisite_talent: {},
-            required_race: {},
-            required_lineage: {},
-            aptitudes: [],
+            level: 1,
+            talent: {
+                id: null,
+                name: "",
+                description: "",
+                type: "",
+                asi: false,
+                prerequisite_talent: {},
+                required_race: {},
+                required_lineage: {},
+                aptitudes: [],
+                isNew: true,
+            },
             isNew: true,
         };
-        clss.talents = [...talents, newTalent];
+        clss.talents = [...talents, newClassTalent];
     }
 
     async function onDelete(id, deleteID, isNew) {
@@ -73,7 +79,7 @@
 
 <div class="class-talents">
 
-    <button on:click={createTalent}>New Card</button>
+    <button on:click={createClassTalent}>New Card</button>
 
 
     <div class="talents-cards">
@@ -84,9 +90,26 @@
 </div>
 
 <style>
-    .talents-cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5rem;
-    }
+.talents-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5rem; 
+}
+
+.power-section-title {
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: var(--color-accent);
+
+    border-bottom: 2px solid var(--color-accent-dark);
+    position: relative;
+}
+
 </style>
