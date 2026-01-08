@@ -6,7 +6,8 @@
   export let classTalent;
   export let onSave;
   export let onDelete;
-    console.log(classTalent)
+
+  
   let isEditing = classTalent.isNew ?? false;
   let editableTalent = structuredClone(classTalent);
 
