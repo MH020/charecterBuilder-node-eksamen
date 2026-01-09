@@ -29,15 +29,6 @@
         return trait.level === 1;
     });
 
-    let selected = {};
-
-    const newbonus = {
-        id: null,
-        class_id: clss.id,
-        bonus: selected.bonus,
-        characteristic: selected.characteristic,
-    };
-
     function createBonus() {
         modalSelectCallback.set(async (selected) => {
             console.log(selected);
@@ -418,6 +409,7 @@
         <LevelTable bind:classTalents bind:subClassTalents bind:powersKnown 
             clss = {clss}
             endpoint = {endpoint}
+            classPowers = {classPowers}
             />
     {/if}
 {:else}
