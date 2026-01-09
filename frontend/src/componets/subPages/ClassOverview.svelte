@@ -9,6 +9,7 @@
     import ClassBonusCard from "../cards/ClassBonusCard.svelte";
     import LineageBonusCard from "../cards/LineageBonusCard.svelte";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
+    import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import LevelTable from "../UI/levelTable.svelte";
 
@@ -29,6 +30,15 @@
     $: startingTraits = classTraits.filter((trait) => {
         return trait.level === 1;
     });
+
+    let selected = {};
+
+    const newbonus = {
+        id: null,
+        class_id: clss.id,
+        bonus: selected.bonus,
+        characteristic: selected.characteristic,
+    };
 
     function createBonus() {
         modalSelectCallback.set(async (selected) => {
@@ -110,6 +120,40 @@
             ];
         }
     }
+
+    async function addWeaponProficiency() {
+        modalSelectCallback.set(async (selected) => {
+            const classWeaponClass = {
+                id: null,
+                class_id: clss.id,
+                weapon_class: selected,
+            };
+
+            const response = await fetchPost(
+                endpoint + "/weapon-proficiency",
+                selected,
+            );
+            classWeaponClass.id = response.created.id;
+
+            if (response.status === 201) {
+                weaponsClasses = [...weaponsClasses, classWeaponClass];
+            }
+            modalSelectCallback.set(null);
+        });
+
+        openModal(WeaponClassList);
+    }
+
+    async function removeWeaponProfecency(wp) {
+        const response = await fetchDelete(
+            endpoint + "/weapon-proficiency",
+            wp.id,
+        );
+
+        if (response.status === 200) {
+            weaponsClasses = [...weaponsClasses.filter((a) => a.id !== wp.id)];
+        }
+    }
 </script>
 
 {#if clss}
@@ -121,14 +165,14 @@
         <div class="cell-box">
             <div class="cell-header">
                 <div class="label">Characteristic Bonus:</div>
-                <button class="add-bonus" on:click={createBonus}>
+                <button class="add" on:click={createBonus}>
                     + Add bonus
                 </button>
             </div>
 
-            <div class="bonus-list">
+            <div class="list">
                 {#each classBonuses as b (b.id)}
-                    <div class="bonus-item">
+                    <div class="item">
                         <span
                             ><DescriptionUtil item={b.characteristic} /> + ({b.bonus})</span
                         >
@@ -147,19 +191,43 @@
         <div class="cell-box">
             <div class="cell-header">
                 <div class="label">starting Apptitudes:</div>
-                <button class="add-aptitude" on:click={addApptitude}>
+                <button class="add" on:click={addApptitude}>
                     + Add apptitude
                 </button>
             </div>
 
-            <div class="aptitude-list">
+            <div class="list">
                 {#each classApptitudes as a (a.id)}
-                    <div class="aptitude-item">
+                    <div class="item">
                         <span>{a.aptitude.name}</span>
                         <button
                             class="delete-btn"
                             on:click={() => removeApptitude(a)}>Delete</button
                         >
+                    </div>
+                {/each}
+            </div>
+        </div>
+    </div>
+
+    <div class="class-overview">
+        <div class="cell-box">
+            <div class="cell-header">
+                <div class="label">Weapon Proficiency:</div>
+                <button class="add" on:click={addWeaponProficiency}>
+                    + Add bonus
+                </button>
+            </div>
+
+            <div class="list">
+                {#each weaponsClasses as wp}
+                    <div class="item">
+                        <span><DescriptionUtil item={wp.weapon_class} /></span>
+                        <button
+                            class="delete-btn"
+                            on:click={() => removeWeaponProfecency(wp)}
+                            >Delete
+                        </button>
                     </div>
                 {/each}
             </div>
@@ -275,8 +343,7 @@
         gap: 0.5rem;
     }
 
-    /* each bonus row */
-    .bonus-item {
+    .item {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -285,25 +352,15 @@
         border: 1px solid var(--border-dark);
     }
 
-    /* smaller buttons */
     .add-bonus,
     .delete-btn {
         font-size: 0.75rem;
         padding: 0.2rem 0.45rem;
     }
 
-    .aptitude-list {
+    .list {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-    }
-
-    .aptitude-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.35rem 0.6rem;
-        background: #111;
-        border: 1px solid var(--border-dark);
     }
 </style>
