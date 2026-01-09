@@ -543,7 +543,7 @@ router.post('/api/classes/:classID/powers-known', async (req, res) => {
     const { powers_known, level } = req.body
 
 
-    if (!id || !powers_known ) {
+    if (!classID || !powers_known ) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
@@ -562,10 +562,11 @@ router.post('/api/classes/:classID/powers-known', async (req, res) => {
   }
 })
 
-router.put('/api/classes/:classID/powers-known', async (req, res) => {
+router.put('/api/classes/:classID/powers-known/:id', async (req, res) => {
   try {
-    const { classID } = req.params
-    const { id, powers_known, level } = req.body
+    const { classID, id } = req.params
+    const { powers_known, level } = req.body
+    console.log(req.body)
 
     await db.query(`UPDATE class_powers_known SET
                         powers_known = $1, "level" = $2 
