@@ -1,14 +1,12 @@
 <script>
-    import {
-        fetchDelete,
-        fetchPost,
-        fetchUpdate,
-    } from "../../../util/fetchUtil";
-    import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
+    import { fetchDelete, fetchPost } from "../../../util/fetchUtil";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
     import ClassBonusCard from "../cards/ClassBonusCard.svelte";
     import LineageBonusCard from "../cards/LineageBonusCard.svelte";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
+    import TalentList from "../lists/characterLists/TalentList.svelte";
+    import TraitsList from "../lists/characterLists/TraitsList.svelte";
+    import ItemsList from "../lists/ItemsList/itemsList.svelte";
     import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import LevelTable from "../UI/levelTable.svelte";
@@ -130,7 +128,7 @@
             };
 
             const response = await fetchPost(
-                endpoint + "/weapon-proficiency",
+                endpoint + "/weapon-class",
                 selected,
             );
             classWeaponClass.id = response.created.id;
@@ -146,7 +144,7 @@
 
     async function removeWeaponProfecency(wp) {
         const response = await fetchDelete(
-            endpoint + "/weapon-proficiency",
+            endpoint + "/weapon-class",
             wp.id,
         );
 
@@ -154,6 +152,113 @@
             weaponsClasses = [...weaponsClasses.filter((a) => a.id !== wp.id)];
         }
     }
+
+
+        async function addWeaponTraining() {
+        modalSelectCallback.set(async (selected) => {
+            const classWeaponTraining = {
+                id: null,
+                class_id: clss.id,
+                talent: selected,
+            };
+
+            const response = await fetchPost(
+                endpoint + "/weapon-training",
+                selected,
+            );
+            classWeaponTraining.id = response.created.id;
+
+            if (response.status === 201) {
+                weaponsTrainings = [...weaponsTrainings, classWeaponTraining];
+            }
+            modalSelectCallback.set(null);
+        });
+
+        openModal(TalentList);
+    }
+
+    async function removeWeaponTraining(wt) {
+        const response = await fetchDelete(
+            endpoint + "/weapon-training",
+            wt.id,
+        );
+
+        if (response.status === 200) {
+            weaponsTrainings = [...weaponsTrainings.filter((ct) => ct.id !== wt.id)];
+        }
+    }
+
+
+            async function addItems() {
+        modalSelectCallback.set(async (selected) => {
+            const NewClassItem = {
+                id: null,
+                class_id: clss.id,
+                item: selected,
+            };
+
+            const response = await fetchPost(
+                endpoint + "/items",
+                selected,
+            );
+            NewClassItem.id = response.created.id;
+
+            if (response.status === 201) {
+                classItems = [...classItems, NewClassItem];
+            }
+            modalSelectCallback.set(null);
+        });
+
+        openModal(ItemsList);
+    }
+
+    async function removeItems(wt) {
+        const response = await fetchDelete(
+            endpoint + "/items",
+            wt.id,
+        );
+
+        if (response.status === 200) {
+            classItems = [...classItems.filter((ct) => ct.id !== wt.id)];
+        }
+    }
+
+
+                async function addTrait() {
+        modalSelectCallback.set(async (selected) => {
+            const NewClassTrait = {
+                id: null,
+                class_id: clss.id,
+                trait: selected,
+            };
+
+            const response = await fetchPost(
+                endpoint + "/traits",
+                selected,
+            );
+            NewClassTrait.id = response.created.id;
+
+            if (response.status === 201) {
+                classTraits = [...classTraits, NewClassTrait];
+            }
+            modalSelectCallback.set(null);
+        });
+
+        openModal(TraitsList);
+    }
+
+    async function removeTrait(trait) {
+        const response = await fetchDelete(
+            endpoint + "/traits",
+            trait.id,
+        );
+
+        if (response.status === 200) {
+            classTraits = [...classTraits.filter((t) => t.id !== trait.id)];
+        }
+    }
+
+
 </script>
 
 {#if clss}
@@ -173,9 +278,7 @@
             <div class="list">
                 {#each classBonuses as b (b.id)}
                     <div class="item">
-                        <span
-                            ><DescriptionUtil item={b.characteristic} /> + ({b.bonus})</span
-                        >
+                        <span><DescriptionUtil item={b.characteristic} /> + ({b.bonus})</span>
                         <button
                             class="delete-btn"
                             on:click={() => removeBonus(b)}
@@ -215,7 +318,7 @@
             <div class="cell-header">
                 <div class="label">Weapon Proficiency:</div>
                 <button class="add" on:click={addWeaponProficiency}>
-                    + Add bonus
+                    + Add Proficiency
                 </button>
             </div>
 
@@ -234,46 +337,77 @@
         </div>
     </div>
 
-    <div class="class-overview">
-        <div class="cell-box">
-            <div class="label">{"Weapon Proficiency"}:</div>
-            <div class="tags">
-                {#each weaponsClasses as wp}
-                    <DescriptionUtil item={wp.weapon_class} /> ,
-                {/each}
-            </div>
-        </div>
-    </div>
 
-    <div class="class-overview">
+        <div class="class-overview">
         <div class="cell-box">
-            <div class="label">{"Weapon Training"}:</div>
-            <div class="tags">
+            <div class="cell-header">
+                <div class="label">Weapon Training:</div>
+                <button class="add" on:click={addWeaponTraining}>
+                    + Add Weapon Training
+                </button>
+            </div>
+
+            <div class="list">
                 {#each weaponsTrainings as wt}
-                    <DescriptionUtil item={wt.talent} /> ,
+                    <div class="item">
+                        <span><DescriptionUtil item={wt.talent} /></span>
+                        <button
+                            class="delete-btn"
+                            on:click={() => removeWeaponTraining(wt)}
+                            >Delete
+                        </button>
+                    </div>
                 {/each}
             </div>
         </div>
     </div>
 
-    <div class="class-overview">
+
+            <div class="class-overview">
         <div class="cell-box">
-            <div class="label">{"Specialist Equipment"}:</div>
-            <div class="tags">
-                {#each classItems as ct}
-                    <DescriptionUtil item={ct.item} /> ,
+            <div class="cell-header">
+                <div class="label">Specialist Equipment:</div>
+                <button class="add" on:click={addItems}>
+                    + Add Specialist Equipment
+                </button>
+            </div>
+
+            <div class="list">
+                {#each classItems as ci}
+                    <div class="item">
+                        <span><DescriptionUtil item={ci.item} /></span>
+                        <button
+                            class="delete-btn"
+                            on:click={() => removeItems(ci)}
+                            >Delete
+                        </button>
+                    </div>
                 {/each}
             </div>
         </div>
     </div>
+
 
     {#if startingTraits.length !== 0}
         <div class="class-overview">
             <div class="cell-box">
-                <div class="label">{"Starting Traits"}:</div>
-                <div class="tags">
-                    {#each startingTraits as st}
-                        <DescriptionUtil item={st.trait} /> ,
+                <div class="cell-header">
+                    <div class="label">Starting Traits:</div>
+                    <button class="add" on:click={addTrait}>
+                        + Add Starting Traits
+                    </button>
+                </div>
+
+                <div class="list">
+                    {#each classTraits as t}
+                        <div class="item">
+                            <span><DescriptionUtil item={t.trait} /></span>
+                            <button
+                                class="delete-btn"
+                                on:click={() => removeTrait(t)}
+                                >Delete
+                            </button>
+                        </div>
                     {/each}
                 </div>
             </div>
@@ -288,79 +422,90 @@
 {/if}
 
 <style>
-    .class-name h1 {
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        border-bottom: 2px solid var(--border-dark);
-        padding-bottom: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
 
-    .class-overview {
-        background: var(--bg-panel);
-        border: 1px solid var(--border-dark);
-        margin-bottom: 1rem;
-        padding: 0.75rem 1rem;
-    }
+.class-overview {
+    background: var(--bg-panel, #1a1a1a);
+    border: 1px solid var(--border-dark, #333);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    padding: 1rem 1.25rem;
+}
 
-    .cell-box {
-        display: grid;
-        grid-template-columns: 200px 1fr;
-        gap: 1rem;
-        align-items: start;
-    }
 
-    .label {
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-    }
+.cell-box {
+    display: grid;
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+    width: 100%;
+}
 
-    .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
 
-    .tags h1 {
-        font-size: 0.85rem;
-        font-weight: normal;
-        margin: 0;
-        padding: 0.3rem 0.6rem;
-        border: 1px solid var(--border-dark);
-        background: #111;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
 
-    .add-bonus {
-        font-size: 0.85rem;
-    }
 
-    .bonus-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+.cell-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
-    .item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.35rem 0.6rem;
-        background: #111;
-        border: 1px solid var(--border-dark);
-    }
+.label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #ffb86c;
+    line-height: 1.3;
+}
 
-    .add-bonus,
-    .delete-btn {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.45rem;
-    }
 
-    .list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+}
+
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    width: 100%;
+    min-height: 2.4rem;
+
+    padding: 0.55rem 0.9rem;
+    background: #111;
+    border: 1px solid var(--border-dark, #333);
+    border-radius: 4px;
+
+    font-family: 'Courier New', monospace;
+}
+
+
+.item span {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ---------- BUTTONS ---------- */
+
+.add,
+.delete-btn {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.55rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.delete-btn {
+    opacity: 0.85;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
 </style>
