@@ -1,9 +1,15 @@
 <script>
+    import { fetchPost } from "../../../util/fetchUtil";
+    import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
+    import { modalSelectCallback, openModal } from "../../store/modalStore";
+    import ClassBonusCard from "../cards/ClassBonusCard.svelte";
+    import LineageBonusCard from "../cards/LineageBonusCard.svelte";
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import LevelTable from "../UI/levelTable.svelte";
 
     export let clss;
-    console.log(clss);
+    const endpoint = `/api/classes/${clss.id}`;
+
     $: classPowers = clss?.powers ?? [];
     $: powersKnown = clss?.powers_known ?? [];
     $: classTraits = clss?.traits ?? [];
@@ -18,7 +24,37 @@
     $: startingTraits = classTraits.filter((trait) => {
         return trait.level === 1;
     });
-    console.log("starting traits ? ", startingTraits);
+
+    function createBonus() {
+        modalSelectCallback.set(async (selected) => {
+            console.log(selected);
+            const newbonus = {
+                id: null,
+                class_id: clss.id,
+                bonus: selected.bonus,
+                characteristic: selected.characteristic,
+            };
+            const response = await fetchPost(endpoint + "/bonuses", newbonus);
+            newbonus.id = response.created.id;
+
+            if (response.status === 200) {
+
+                classBonuses = [
+                    ...classBonuses.filter(
+                        (b) =>
+                            b.characteristic.id !== newbonus.characteristic.id,
+                    ),
+                    newbonus,
+                ];
+            }
+
+            modalSelectCallback.set(null);
+        });
+
+        openModal(ClassBonusCard);
+    }
+
+    
 </script>
 
 {#if clss}
@@ -32,9 +68,11 @@
             <div class="tags">
                 {#each classBonuses as b}
                     <h1>{b.characteristic.name + ` + (${b.bonus})`}</h1>
+                    <button on:click={createBonus}>New bonus</button>
                 {/each}
             </div>
         </div>
+        
     </div>
 
     <div class="class-overview">
