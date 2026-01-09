@@ -55,7 +55,9 @@
         }
 
         if (response.status === 201) {
-            powersKnown = [...powersKnown, power];
+             if (!powersKnown.some(p => p.id === power.id)) {
+                powersKnown = [...powersKnown, power];
+            }
         }
         editingPowerId = null; 
     }
@@ -80,6 +82,7 @@
 $: levels = levels.map(lvl => ({
     ...lvl,
     powers: powersKnown.filter(p => p.level === lvl.level),
+    
 }));
 
 
