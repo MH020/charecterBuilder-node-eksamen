@@ -415,7 +415,10 @@
     {/if}
 
     {#if clss.parent_id === null}
-        <LevelTable bind:classTalents bind:subClassTalents bind:powersKnown />
+        <LevelTable bind:classTalents bind:subClassTalents bind:powersKnown 
+            clss = {clss}
+            endpoint = {endpoint}
+            />
     {/if}
 {:else}
     <p>Loading class…</p>
@@ -426,6 +429,7 @@
 .class-overview {
     background: var(--bg-panel, #1a1a1a);
     border: 1px solid var(--border-dark, #333);
+     width: 100%;
     border-radius: 6px;
     margin-bottom: 1rem;
     padding: 1rem 1.25rem;
@@ -437,7 +441,6 @@
     grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
     gap: 1.5rem;
     align-items: start;
-    width: 100%;
 }
 
 
@@ -463,7 +466,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    width: 100%;
 }
 
 
@@ -473,7 +475,7 @@
     justify-content: space-between;
     gap: 1rem;
 
-    width: 100%;
+    width: 90%;
     min-height: 2.4rem;
 
     padding: 0.55rem 0.9rem;
@@ -490,7 +492,6 @@
     min-width: 0;
 }
 
-/* ---------- BUTTONS ---------- */
 
 .add,
 .delete-btn {
