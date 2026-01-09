@@ -7,6 +7,7 @@
     export let powersKnown = [];
     export let clss;
     export let endpoint;
+    export let classPowers
 
     let editingPowerId = null;
 
@@ -101,7 +102,7 @@ $: levels = levels.map(lvl => ({
                 <td>{lvl.level}</td>
 
                 <td>
-                    {#if lvl.talents.length}
+                    {#if classPowers.length}
                         {#each lvl.talents as t}
                             <DescriptionUtil item={t.talent} /> ,
                         {/each}
