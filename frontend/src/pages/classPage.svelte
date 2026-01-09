@@ -9,6 +9,7 @@
   let currentClass;
   let id = "";
   let activeTab = "overview";
+  
   $: tabs = [];
 
   onMount(async () => {
