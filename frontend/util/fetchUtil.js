@@ -9,6 +9,9 @@ export async function fetchGet (endpoint) {
       credentials: 'include'
     })
     const data = await response.json()
+    
+    toastrDisplayHTTPCode(response.status, data.message)
+
     return { status: response.status, data }
   } catch (error) {
     console.log(error)
@@ -30,6 +33,9 @@ export async function fetchPost (endpoint, body) {
     console.log(response)
     console.log(BASE_URL + endpoint)
     const data = await response.json()
+
+    toastrDisplayHTTPCode(response.status, data.message)
+
     return { status: response.status, ...data }
   } catch (error) {
     console.log(error)
@@ -51,8 +57,10 @@ export async function fetchUpdate (endpoint, row) {
         body: JSON.stringify(row)
       }
     )
-
     const data = await response.json()
+
+    toastrDisplayHTTPCode(response.status, data.message)
+
     return { status: response.status, ...data }
   } catch (error) {
     console.error(error)
@@ -75,6 +83,9 @@ export async function fetchDelete (endpoint, id) {
       }
     })
     const data = await response.json()
+
+    toastrDisplayHTTPCode(response.status, data.message)
+
     return { status: response.status, ...data }
   } catch (error) {
     console.log(error)
