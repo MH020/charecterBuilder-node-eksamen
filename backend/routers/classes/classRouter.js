@@ -303,7 +303,7 @@ router.post('/api/classes', async (req, res) => {
 
 router.post('/api/classes/:id/subclasses', async (req, res) => {
     try {
-        const { parent_id } = req.params
+        const { id } = req.params
         const { name, description } = req.body
 
         if (!name || !description) {
@@ -315,11 +315,48 @@ router.post('/api/classes/:id/subclasses', async (req, res) => {
             `INSERT INTO "class" (name, description, parent_id)
             VALUES ($1, $2, $3) RETURNING *`,
 
-            [name, description, parent_id]
+            [name, description, id]
         )
         const createdClass = result.rows[0]
 
         return res.status(201).send({ message: 'subclass created sucessfully', created: createdClass })
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: 'server error', error: error.message })
+    }
+})
+
+
+router.post('/api/classes/:id/bonuses', async (req, res) => {
+    try {
+        const { id } = req.params
+        console.log(id)
+        const { bonus, characteristic } = req.body
+        console.log(req.body)
+
+        if (!bonus || !characteristic) {
+            return res.status(400).send({ message: 'missing fields' })
+        }
+
+        const characteristicResult =  await db.query(
+            `SELECT * FROM class_bonuses WHERE class_id = $1 AND characteristic_id = $2`,
+            [id, characteristic.id ]
+        )
+
+        if ( characteristicResult.rows.length > 0) {
+            await db.query('DELETE FROM class_bonuses WHERE class_id = $1 AND characteristic_id = $2', [ id, characteristic.id ])
+        }
+
+
+        const result = await db.query(
+            `INSERT INTO class_bonuses (class_id, characteristic_id, bonus)
+            VALUES ($1, $2, $3) RETURNING *`,
+
+            [id, characteristic.id, bonus]
+        )
+        const createdClass = result.rows[0]
+
+        return res.status(201).send({ message: 'bonus added to class', created: createdClass })
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: 'server error', error: error.message })
