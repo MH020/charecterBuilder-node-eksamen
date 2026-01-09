@@ -537,6 +537,49 @@ router.post('/api/classes/:classID/traits', async (req, res) => {
   }
 })
 
+router.post('/api/classes/:classID/powers-known', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { powers_known, level } = req.body
+
+
+    if (!id || !powers_known ) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
+
+    const result = await db.query(
+            `INSERT INTO class_powers_known (class_id, powers_known, level)
+            VALUES ($1, $2, $3 ) RETURNING *`,
+
+            [ classID, powers_known , level]
+    )
+
+    return res.status(201).send({ message: 'added new powers known added to class', created: result.rows[0] })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.put('/api/classes/:classID/powers-known', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { id, powers_known, level } = req.body
+
+    await db.query(`UPDATE class_powers_known SET
+                        powers_known = $1, "level" = $2 
+                        WHERE id = $3`,
+    [powers_known, level, id]
+    )
+
+    return res.status(200).send({ message: 'powers-known updated' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
 router.put('/api/classes/:id', async (req, res) => {
   try {
     const { id } = req.params
