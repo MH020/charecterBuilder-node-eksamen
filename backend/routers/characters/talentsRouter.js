@@ -4,8 +4,8 @@ import db from '../../db/connection.js'
 const router = Router()
 
 router.get('/api/talents', async (req, res) => {
-    try {
-        const result = await db.query(`
+  try {
+    const result = await db.query(`
         SELECT
             t.id, t.name, t.description, t.type, t.asi, t.is_custom,
 
@@ -46,97 +46,96 @@ router.get('/api/talents', async (req, res) => {
         LEFT JOIN lineage l
             ON l.id = t.lineage_id;
         `)
-        const talents = result.rows
+    const talents = result.rows
 
-        return res.status(200).send(talents)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send(talents)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.post('/api/talents', async (req, res) => {
-    try {
-        const {
-            name, description, type, asi, prerequisite_talent, required_race,
-            required_lineage, aptitudes
-        } = req.body
+  try {
+    const {
+      name, description, type, asi, prerequisite_talent, required_race,
+      required_lineage, aptitudes
+    } = req.body
 
-        if (!name) {
-            return res.status(400).send({ message: 'missing fields' })
-        }
+    if (!name) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
 
-        const allowedTypes = ['Half Talent', 'Full Talent', 'Class Feature Only', 'Expert Talent'];
-        if (!allowedTypes.includes(type)) {
-            return res.status(400).send({ message: 'wrong type' });
-        }
+    const allowedTypes = ['Half Talent', 'Full Talent', 'Class Feature Only', 'Expert Talent']
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).send({ message: 'wrong type' })
+    }
 
-        const is_custom = req.session.user?.role === 'ADMIN'
+    const is_custom = req.session.user?.role === 'ADMIN'
 
-        const result = await db.query(
+    const result = await db.query(
             `INSERT INTO talent (name, description, type, asi, prerequisite_talent_id, required_race_id, lineage_id, is_custom)
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
 
             [name, description, type, asi || false, prerequisite_talent.id || null, required_race.id || null,
-                required_lineage.id || null, is_custom
+              required_lineage.id || null, is_custom
             ]
-        )
-        const createdTalent = result.rows[0]
+    )
+    const createdTalent = result.rows[0]
 
-        for (const apptitude of aptitudes) {
-            await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [createdTalent.id, apptitude.id])
-        }
-
-        return res.status(201).send({ message: 'talent created sucessfully', created: createdTalent })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
+    for (const apptitude of aptitudes) {
+      await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [createdTalent.id, apptitude.id])
     }
+
+    return res.status(201).send({ message: 'talent created sucessfully', created: createdTalent })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.put('/api/talents/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const {
-            name, description, type, asi, prerequisite_talent, required_race,
-            required_lineage, aptitudes
-        } = req.body
+  try {
+    const { id } = req.params
+    const {
+      name, description, type, asi, prerequisite_talent, required_race,
+      required_lineage, aptitudes
+    } = req.body
 
-        await db.query(`UPDATE talent SET
+    await db.query(`UPDATE talent SET
                         name = $1, description = $2, type = $3, prerequisite_talent_id = $4, required_race_id = $5,
                         lineage_id = $6, asi = $7 
                         WHERE id = $8`,
-            [name, description, type, prerequisite_talent.id || null, required_race.id,
-                required_lineage.id || null, asi || false, id
-            ])
+    [name, description, type, prerequisite_talent.id || null, required_race.id,
+      required_lineage.id || null, asi || false, id
+    ])
 
+    await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
 
-        await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
-
-        for (const apptitude of aptitudes) {
-            await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [id, apptitude.id])
-        }
-
-        return res.status(200).send({ message: 'statline updated' })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
+    for (const apptitude of aptitudes) {
+      await db.query('INSERT INTO talent_aptitude (talent_id, aptitude_id) VALUES ($1, $2)', [id, apptitude.id])
     }
+
+    return res.status(200).send({ message: 'statline updated' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.delete('/api/talents/:id', async (req, res) => {
-    try {
-        const { id } = req.params
+  try {
+    const { id } = req.params
 
-        await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
+    await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
 
-        await db.query('DELETE FROM talent where id = $1 ', [id])
+    await db.query('DELETE FROM talent where id = $1 ', [id])
 
-        return res.status(200).send({ message: 'statline race deleted' })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send({ message: 'statline race deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 export default router

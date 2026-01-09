@@ -34,7 +34,6 @@ export async function seed (knex) {
       is_custom: false
     },
 
-
     {
       name: 'Adeptus Astartes',
       weapon_skill: 30,

@@ -18,7 +18,7 @@ export function saveEntity (updated, list) {
   return list
 }
 
-export function selectSingleFromModal(target, field, component) {
+export function selectSingleFromModal (target, field, component) {
   modalSelectCallback.set((selected) => {
     target[field] = selected
 
@@ -30,11 +30,11 @@ export function selectSingleFromModal(target, field, component) {
   openModal(component)
 }
 
-export function selectMultibleFromModal(component, onSelect) {
+export function selectMultibleFromModal (component, onSelect) {
   modalSelectCallback.set((selected) => {
-    onSelect(selected);   
-    modalSelectCallback.set(null);
-  });
+    onSelect(selected)
+    modalSelectCallback.set(null)
+  })
 
-  openModal(component);
+  openModal(component)
 }

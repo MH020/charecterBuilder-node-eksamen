@@ -2,9 +2,9 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Clear existing data
-  await knex('class').del();
+  await knex('class').del()
 
   // ===== Base Classes =====
   await knex('class').insert([
@@ -28,7 +28,7 @@ export async function seed(knex) {
       description: 'An agent of the Imperium tasked with rooting out heresy, mutation, and xenos influence.',
       parent_id: null
     }
-  ]);
+  ])
 
   // ===== Guardsman Subclasses =====
   await knex('class').insert([
@@ -47,7 +47,7 @@ export async function seed(knex) {
       description: 'A reconnaissance specialist skilled in stealth, survival, and forward observation.',
       parent_id: knex('class').select('id').where({ name: 'Guardsman' })
     }
-  ]);
+  ])
 
   // ===== Space Marine Subclasses =====
   await knex('class').insert([
@@ -66,7 +66,7 @@ export async function seed(knex) {
       description: 'A heavy support Marine wielding the deadliest ranged weapons.',
       parent_id: knex('class').select('id').where({ name: 'Adeptus Astartes' })
     }
-  ]);
+  ])
 
   // ===== Adeptus Mechanicus Subclasses =====
   await knex('class').insert([
@@ -80,7 +80,7 @@ export async function seed(knex) {
       description: 'A cybernetically enhanced soldier armed with precision weaponry.',
       parent_id: knex('class').select('id').where({ name: 'Adeptus Mechanicus' })
     }
-  ]);
+  ])
 
   // ===== Inquisition Subclasses =====
   await knex('class').insert([
@@ -94,5 +94,5 @@ export async function seed(knex) {
       description: 'A trusted servant of an Inquisitor, operating in the shadows of the Imperium.',
       parent_id: knex('class').select('id').where({ name: 'Inquisition' })
     }
-  ]);
+  ])
 }

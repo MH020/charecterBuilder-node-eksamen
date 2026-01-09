@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Clear existing traits
   await knex('trait').del()
 
@@ -18,7 +18,7 @@ export async function seed(knex) {
       has_input: true,
       race_id: human?.id ?? null,
       is_custom: false,
-      category: 'blessing',
+      category: 'blessing'
     },
     {
       name: 'Sheer Determination',
@@ -26,7 +26,7 @@ export async function seed(knex) {
       has_input: false,
       race_id: human?.id ?? null,
       is_custom: false,
-      category: 'blessing',
+      category: 'blessing'
     },
 
     // ---------- Adeptus Astartes ----------
@@ -36,7 +36,7 @@ export async function seed(knex) {
       has_input: false,
       race_id: astartes?.id ?? null,
       is_custom: false,
-      category: 'blessing',
+      category: 'blessing'
     },
     {
       name: 'And They Shall Know No Fear',
@@ -44,7 +44,7 @@ export async function seed(knex) {
       has_input: false,
       race_id: astartes?.id ?? null,
       is_custom: false,
-      category: 'blessing',
+      category: 'blessing'
     },
 
     // ---------- Generic / No race ----------
@@ -54,7 +54,7 @@ export async function seed(knex) {
       has_input: false,
       race_id: null,
       is_custom: false,
-      category: 'disorder',
+      category: 'disorder'
     },
     {
       name: 'Dark Ambition',
@@ -62,7 +62,7 @@ export async function seed(knex) {
       has_input: true,
       race_id: null,
       is_custom: false,
-      category: 'malice',
-    },
+      category: 'malice'
+    }
   ])
 }

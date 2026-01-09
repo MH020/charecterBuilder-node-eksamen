@@ -23,7 +23,6 @@ export async function seed (knex) {
   const leadership = await knex('characteristic').where({ name: 'Leadership' }).first()
   const save = await knex('characteristic').where({ name: 'Save' }).first()
 
-
   await knex('lineage_characteristic_bonus').insert([
 
     {
@@ -52,7 +51,6 @@ export async function seed (knex) {
       bonus: 2
     },
 
- 
     {
       lineage_id: ultramarines.id,
       characteristic_id: weaponSkill.id,

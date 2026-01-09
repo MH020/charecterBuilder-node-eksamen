@@ -5,7 +5,6 @@
 export async function seed (knex) {
   await knex('talent_aptitude').del()
 
-
   const agility = await knex('aptitude').where({ name: 'Agility' }).first()
   const awareness = await knex('aptitude').where({ name: 'Awareness' }).first()
   const strength = await knex('aptitude').where({ name: 'Strength' }).first()
@@ -21,12 +20,10 @@ export async function seed (knex) {
   const codexDiscipline = await knex('talent').where({ name: 'Codex Discipline' }).first()
   const redThirst = await knex('talent').where({ name: 'Red Thirst' }).first()
 
-
   await knex('talent_aptitude').insert([
 
     { talent_id: ironWill.id, aptitude_id: awareness.id },
     { talent_id: ironWill.id, aptitude_id: charisma.id },
-
 
     { talent_id: battleHardened.id, aptitude_id: strength.id },
 
@@ -34,21 +31,16 @@ export async function seed (knex) {
     { talent_id: hiveSurvivor.id, aptitude_id: agility.id },
     { talent_id: hiveSurvivor.id, aptitude_id: awareness.id },
 
-
     { talent_id: machineEmpathy.id, aptitude_id: intelligence.id },
-
 
     { talent_id: transhumanPhysiology.id, aptitude_id: strength.id },
     { talent_id: transhumanPhysiology.id, aptitude_id: agility.id },
 
-
     { talent_id: codexDiscipline.id, aptitude_id: intelligence.id },
     { talent_id: codexDiscipline.id, aptitude_id: awareness.id },
 
-
     { talent_id: fenrisianFerocity.id, aptitude_id: strength.id },
     { talent_id: fenrisianFerocity.id, aptitude_id: agility.id },
-
 
     { talent_id: redThirst.id, aptitude_id: strength.id },
     { talent_id: redThirst.id, aptitude_id: charisma.id }

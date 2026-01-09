@@ -3,14 +3,13 @@
  * @returns { Promise<void> }
  */
 export async function seed (knex) {
-
   await knex('weapon_weapon_class').del()
 
-  const pistol = await knex('weapon_class').where({ name: 'Pistol' }).first();
-  const carbine = await knex('weapon_class').where({ name: 'Carbine' }).first();
-  const longRifle = await knex('weapon_class').where({ name: 'Long Rifle:' }).first();
-  const heavy = await knex('weapon_class').where({ name: 'Heavy' }).first();
-  const superHeavy = await knex('weapon_class').where({ name: 'Super Heavy' }).first();
+  const pistol = await knex('weapon_class').where({ name: 'Pistol' }).first()
+  const carbine = await knex('weapon_class').where({ name: 'Carbine' }).first()
+  const longRifle = await knex('weapon_class').where({ name: 'Long Rifle:' }).first()
+  const heavy = await knex('weapon_class').where({ name: 'Heavy' }).first()
+  const superHeavy = await knex('weapon_class').where({ name: 'Super Heavy' }).first()
 
   const [longsword] = await knex('weapon').where({ name: 'Longsword' })
   const [handgun] = await knex('weapon').where({ name: '9mm Handgun' })

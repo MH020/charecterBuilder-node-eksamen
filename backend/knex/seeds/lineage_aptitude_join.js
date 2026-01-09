@@ -6,13 +6,11 @@ export async function seed (knex) {
   // Deletes ALL existing entries
   await knex('lineage_aptitude').del()
 
-
   const agility = await knex('aptitude').where({ name: 'Agility' }).first()
   const awareness = await knex('aptitude').where({ name: 'Awareness' }).first()
   const strength = await knex('aptitude').where({ name: 'Strength' }).first()
   const intelligence = await knex('aptitude').where({ name: 'intelligence' }).first()
   const charisma = await knex('aptitude').where({ name: 'Charisma' }).first()
-
 
   const hiveWorlder = await knex('lineage').where({ name: 'Hive Worlder' }).first()
   const forgeWorlder = await knex('lineage').where({ name: 'Forge Worlder' }).first()
@@ -48,7 +46,6 @@ export async function seed (knex) {
       lineage_id: imperialWorlder.id,
       aptitude_id: awareness.id
     },
-
 
     {
       lineage_id: ultramarines.id,

@@ -5,10 +5,8 @@
 export async function seed (knex) {
   await knex('lineage').del()
 
-
   const human = await knex('race').where({ name: 'Human' }).first()
   const astartes = await knex('race').where({ name: 'Adeptus Astartes' }).first()
-
 
   await knex('lineage').insert([
 
@@ -33,7 +31,6 @@ export async function seed (knex) {
       required_race_id: human.id,
       is_custom: false
     },
-
 
     {
       name: 'Ultramarines',

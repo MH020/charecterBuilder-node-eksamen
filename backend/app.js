@@ -4,9 +4,8 @@ import path from 'path'
 import helmet from 'helmet'
 import { rateLimit } from 'express-rate-limit'
 import session from 'express-session'
-import { Server } from 'socket.io';
-import http from 'http';
-
+import { Server } from 'socket.io'
+import http from 'http'
 
 import authRouthes from './routers/users/authRoutes.js'
 import skillsRoutes from './routers/skill/skillsRouter.js'
@@ -38,49 +37,45 @@ app.use(express.static('./../frontend/dist'))
 app.use(helmet())
 
 export const sessionMiddleware = session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-});
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+})
 
-app.use(sessionMiddleware);
+app.use(sessionMiddleware)
 
-const server = http.createServer(app);
+const server = http.createServer(app)
 
 const io = new Server(server, {
-    cors: {
-        origin: ["http://localhost:8080"],
-        credentials: true
-    }
-});
+  cors: {
+    origin: ['http://localhost:8080'],
+    credentials: true
+  }
+})
 
-//socket
+// socket
 
-io.engine.use(sessionMiddleware);
+io.engine.use(sessionMiddleware)
 
-//io.use(isPartOfCampaign)
-
-
+// io.use(isPartOfCampaign)
 
 io.on('connection', (socket) => {
+  socket.campaignId = 1
+  socket.userId = 1
 
-    socket.campaignId = 1;
-    socket.userId = 1;
-
-  socket.join(`campaign:${socket.campaignId}`);
+  socket.join(`campaign:${socket.campaignId}`)
 
   socket.on('log:entry', (entry) => {
     console.log(entry)
-    io.to(`campaign:${socket.campaignId}`).emit('log:entry', 
-      {...entry, userId: socket.userId});
-  });
+    io.to(`campaign:${socket.campaignId}`).emit('log:entry',
+      { ...entry, userId: socket.userId })
+  })
 
   socket.on('disconnect', () => {
     console.log('Socket disconnected', socket.id)
   })
 })
-
 
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -137,14 +132,13 @@ app.use(talentsRouter)
 
 app.use(traitsRouter)
 
-//classes
+// classes
 
 app.use(classRouter)
 
 app.use(classPowers)
 
 app.use(powerCategoriesRouter)
-
 
 // aouth
 app.use(authRouthes)
@@ -158,4 +152,4 @@ app.all('/{*splat}', (req, res) => {
 })
 
 const PORT = 8080
-server.listen(PORT, () => console.log("Server is running on port", PORT));
+server.listen(PORT, () => console.log('Server is running on port', PORT))

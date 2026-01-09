@@ -1,10 +1,10 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Deletes ALL existing entries
-  await knex('powers_category').del();
+  await knex('powers_category').del()
 
   // Inserts seed categories
   await knex('powers_category').insert([
@@ -18,5 +18,5 @@ export async function seed(knex) {
     { name: 'Blood' },
     { name: 'Temporal' },
     { name: 'Support' }
-  ]);
+  ])
 }

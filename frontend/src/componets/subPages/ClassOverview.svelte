@@ -1,9 +1,14 @@
 <script>
-    import { fetchPost } from "../../../util/fetchUtil";
+    import {
+        fetchDelete,
+        fetchPost,
+        fetchUpdate,
+    } from "../../../util/fetchUtil";
     import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
     import ClassBonusCard from "../cards/ClassBonusCard.svelte";
     import LineageBonusCard from "../cards/LineageBonusCard.svelte";
+    import ApptitudesList from "../lists/ApptitudesList.svelte";
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import LevelTable from "../UI/levelTable.svelte";
 
@@ -37,8 +42,7 @@
             const response = await fetchPost(endpoint + "/bonuses", newbonus);
             newbonus.id = response.created.id;
 
-            if (response.status === 200) {
-
+            if (response.status === 201) {
                 classBonuses = [
                     ...classBonuses.filter(
                         (b) =>
@@ -54,7 +58,58 @@
         openModal(ClassBonusCard);
     }
 
-    
+    async function removeBonus(bonus) {
+        const response = await fetchDelete(endpoint + "/bonuses", bonus.id);
+
+        if (response.status === 200) {
+            classBonuses = [
+                ...classBonuses.filter(
+                    (b) => b.characteristic.id !== bonus.characteristic.id,
+                ),
+            ];
+        }
+    }
+
+    async function addApptitude() {
+        console.log(classApptitudes);
+        modalSelectCallback.set(async (selected) => {
+            console.log(selected);
+
+            const newclassApptitude = {
+                id: null,
+                class_id: clss.id,
+                aptitude: selected,
+            };
+
+            const response = await fetchPost(
+                endpoint + "/apptitudes",
+                selected,
+            );
+            newclassApptitude.id = response.created.id;
+
+            if (response.status === 201) {
+                classApptitudes = [...classApptitudes, newclassApptitude];
+            }
+            modalSelectCallback.set(null);
+            console.log(classApptitudes);
+        });
+
+        openModal(ApptitudesList);
+    }
+
+    async function removeApptitude(apptitude) {
+        console.log(apptitude);
+        const response = await fetchDelete(
+            endpoint + "/apptitudes",
+            apptitude.id,
+        );
+
+        if (response.status === 200) {
+            classApptitudes = [
+                ...classApptitudes.filter((a) => a.id !== apptitude.id),
+            ];
+        }
+    }
 </script>
 
 {#if clss}
@@ -64,23 +119,48 @@
 
     <div class="class-overview">
         <div class="cell-box">
-            <div class="label">{"Characteristic Bonus"}:</div>
-            <div class="tags">
-                {#each classBonuses as b}
-                    <h1>{b.characteristic.name + ` + (${b.bonus})`}</h1>
-                    <button on:click={createBonus}>New bonus</button>
+            <div class="cell-header">
+                <div class="label">Characteristic Bonus:</div>
+                <button class="add-bonus" on:click={createBonus}>
+                    + Add bonus
+                </button>
+            </div>
+
+            <div class="bonus-list">
+                {#each classBonuses as b (b.id)}
+                    <div class="bonus-item">
+                        <span
+                            ><DescriptionUtil item={b.characteristic} /> + ({b.bonus})</span
+                        >
+                        <button
+                            class="delete-btn"
+                            on:click={() => removeBonus(b)}
+                            >Delete
+                        </button>
+                    </div>
                 {/each}
             </div>
         </div>
-        
     </div>
 
     <div class="class-overview">
         <div class="cell-box">
-            <div class="label">{"Starting Aptitudes"}:</div>
-            <div class="tags">
-                {#each classApptitudes as a}
-                    <h1>{a.aptitude.name}</h1>
+            <div class="cell-header">
+                <div class="label">starting Apptitudes:</div>
+                <button class="add-aptitude" on:click={addApptitude}>
+                    + Add apptitude
+                </button>
+            </div>
+
+            <div class="aptitude-list">
+                {#each classApptitudes as a (a.id)}
+                    <div class="aptitude-item">
+                        <span>{a.aptitude.name}</span>
+                        <button
+                            class="delete-btn"
+                            on:click={() => removeApptitude(a)}>Delete</button
+                        >
+                    </div>
                 {/each}
             </div>
         </div>
@@ -183,5 +263,47 @@
         background: #111;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+    }
+
+    .add-bonus {
+        font-size: 0.85rem;
+    }
+
+    .bonus-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    /* each bonus row */
+    .bonus-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.35rem 0.6rem;
+        background: #111;
+        border: 1px solid var(--border-dark);
+    }
+
+    /* smaller buttons */
+    .add-bonus,
+    .delete-btn {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.45rem;
+    }
+
+    .aptitude-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .aptitude-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.35rem 0.6rem;
+        background: #111;
+        border: 1px solid var(--border-dark);
     }
 </style>

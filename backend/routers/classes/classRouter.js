@@ -4,8 +4,8 @@ import db from '../../db/connection.js'
 const router = Router()
 
 router.get('/api/classes', async (req, res) => {
-    try {
-        const result = await db.query(`
+  try {
+    const result = await db.query(`
             SELECT c.id, c.name, c.description,
             json_build_object(
                 'id', p.id,
@@ -13,56 +13,50 @@ router.get('/api/classes', async (req, res) => {
             ) AS parent
             FROM "class" c
             LEFT JOIN "class" p ON c.parent_id = p.id;
-        `);
-        const classes = result.rows
+        `)
+    const classes = result.rows
 
-        return res.status(200).send(classes)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send(classes)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
-
 
 router.get('/api/classes/:id', async (req, res) => {
-    try {
-        const { id } = req.params
+  try {
+    const { id } = req.params
 
-        const result = await db.query(`
+    const result = await db.query(`
         SELECT * FROM "class" WHERE id = $1
         `, [id])
 
+    const classes = result.rows[0]
 
-        const classes = result.rows[0]
-
-
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Class not found' })
-        }
-
-        return res.status(200).send(classes)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Class not found' })
     }
+
+    return res.status(200).send(classes)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
-
 router.get('/api/classes/:id/full', async (req, res) => {
-    try {
-        const { id } = req.params
+  try {
+    const { id } = req.params
 
-        const classRow = await db.query(`
+    const classRow = await db.query(`
         SELECT * FROM "class" WHERE id = $1
         `, [id])
 
-        const subClassRow = await db.query(`
+    const subClassRow = await db.query(`
         SELECT * FROM "class" WHERE parent_id = $1 ORDER BY id LIMIT 1
         `, [id])
 
-
-        const powerRows = await db.query(`
+    const powerRows = await db.query(`
             SELECT
                 cp.id,
                 cp.class_id,
@@ -103,10 +97,9 @@ router.get('/api/classes/:id/full', async (req, res) => {
 
             WHERE cp.class_id = $1
             ORDER BY cp.level;
-        `, [id]);
+        `, [id])
 
-
-        const traitRows = await db.query(`
+    const traitRows = await db.query(`
             SELECT
                 ct.id,
                 ct.class_id,
@@ -122,11 +115,9 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN trait t ON ct.trait_id = t.id
             WHERE ct.class_id = $1
             ORDER BY ct.level;
-        `, [id]);
+        `, [id])
 
-
-
-        const aptitudesRows = await db.query(`
+    const aptitudesRows = await db.query(`
             SELECT
                 ca.id,
                 ca.class_id,
@@ -138,9 +129,9 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN aptitude a ON ca.aptitude_id = a.id
             WHERE ca.class_id = $1
             ORDER BY ca.id;
-        `, [id]);
+        `, [id])
 
-        const talentsRows = await db.query(`
+    const talentsRows = await db.query(`
             SELECT
                 ct.id,
                 ct.class_id,
@@ -155,9 +146,9 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN talent t ON ct.talent_id = t.id
             WHERE ct.class_id = $1
             ORDER BY ct.level;
-        `, [id]);
+        `, [id])
 
-            const subClasstalentsRows = await db.query(`
+    const subClasstalentsRows = await db.query(`
             SELECT
                 ct.id,
                 ct.class_id,
@@ -172,9 +163,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN talent t ON ct.talent_id = t.id
             WHERE ct.class_id = $1
             ORDER BY ct.level;
-        `, [subClassRow.rows[0]?.id]);
-
-
+        `, [subClassRow.rows[0]?.id])
 
     const weaponTrainingRows = await db.query(`
         SELECT 
@@ -189,10 +178,9 @@ router.get('/api/classes/:id/full', async (req, res) => {
         LEFT JOIN talent t ON cwt.talent_id = t.id
         WHERE cwt.class_id = $1
         ORDER BY cwt.id;
-    `, [id]);
+    `, [id])
 
-
-        const weaponClassRows = await db.query(`
+    const weaponClassRows = await db.query(`
             SELECT 
                 cwc.id, cwc.class_id,
                 json_build_object(
@@ -204,10 +192,9 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN weapon_class wc ON cwc.weapon_class_id = wc.id
             WHERE cwc.class_id = $1
             ORDER BY cwc.id;
-        `, [id]);
+        `, [id])
 
-
-        const bonusesRows = await db.query(`
+    const bonusesRows = await db.query(`
             SELECT 
                 cb.id,
                 cb.class_id,
@@ -221,180 +208,231 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN characteristic ch ON cb.characteristic_id = ch.id
             WHERE cb.class_id = $1
             ORDER BY cb.id;
-        `, [id]);
+        `, [id])
 
-
-        const powersKnownResult = await db.query(`
+    const powersKnownResult = await db.query(`
         SELECT * FROM class_powers_known where (class_id = $1) 
         ORDER BY class_powers_known.level
-        `, [id]);
+        `, [id])
 
-
-        const fullClass = {
-            ...classRow.rows[0],
-            powers: powerRows.rows,
-            powers_known: powersKnownResult.rows,
-            traits: traitRows.rows,
-            aptitudes: aptitudesRows.rows,
-            talents: talentsRows.rows,
-            SubclassTalents: subClasstalentsRows.rows,
-            weapon_trainings: weaponTrainingRows.rows,
-            weapon_classes: weaponClassRows.rows,
-            bonuses: bonusesRows.rows,
-        };
-
-        if (classRow.rows.length === 0) {
-            return res.status(404).json({ message: 'Class not found' })
-        }
-
-        return res.status(200).send(fullClass)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
+    const fullClass = {
+      ...classRow.rows[0],
+      powers: powerRows.rows,
+      powers_known: powersKnownResult.rows,
+      traits: traitRows.rows,
+      aptitudes: aptitudesRows.rows,
+      talents: talentsRows.rows,
+      SubclassTalents: subClasstalentsRows.rows,
+      weapon_trainings: weaponTrainingRows.rows,
+      weapon_classes: weaponClassRows.rows,
+      bonuses: bonusesRows.rows
     }
+
+    if (classRow.rows.length === 0) {
+      return res.status(404).json({ message: 'Class not found' })
+    }
+
+    return res.status(200).send(fullClass)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
-
 router.get('/api/classes/:id/subclasses', async (req, res) => {
-    try {
-        const { id } = req.params
+  try {
+    const { id } = req.params
 
-        const result = await db.query(`
+    const result = await db.query(`
         SELECT * FROM "class" WHERE parent_id = $1
         `, [id])
 
-        const classes = result.rows
+    const classes = result.rows
 
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'no subclasses found for this class' })
-        }
-
-        return res.status(200).send(classes)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'no subclasses found for this class' })
     }
+
+    return res.status(200).send(classes)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.post('/api/classes', async (req, res) => {
-    try {
-        const { name, description, parent_id } = req.body
+  try {
+    const { name, description, parent_id } = req.body
 
-        if (!name || !description) {
-            return res.status(400).send({ message: 'missing fields' })
-        }
+    if (!name || !description) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
 
-
-        const result = await db.query(
+    const result = await db.query(
             `INSERT INTO "class" (name, description, parent_id)
             VALUES ($1,$2,$3) RETURNING *`,
 
             [name, description, parent_id]
-        )
-        const createdClass = result.rows[0]
+    )
+    const createdClass = result.rows[0]
 
-        return res.status(201).send({ message: 'class created sucessfully', created: createdClass })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(201).send({ message: 'class created sucessfully', created: createdClass })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.post('/api/classes/:id/subclasses', async (req, res) => {
-    try {
-        const { id } = req.params
-        const { name, description } = req.body
+  try {
+    const { id } = req.params
+    const { name, description } = req.body
 
-        if (!name || !description) {
-            return res.status(400).send({ message: 'missing fields' })
-        }
+    if (!name || !description) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
 
-
-        const result = await db.query(
+    const result = await db.query(
             `INSERT INTO "class" (name, description, parent_id)
             VALUES ($1, $2, $3) RETURNING *`,
 
             [name, description, id]
-        )
-        const createdClass = result.rows[0]
+    )
+    const createdClass = result.rows[0]
 
-        return res.status(201).send({ message: 'subclass created sucessfully', created: createdClass })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(201).send({ message: 'subclass created sucessfully', created: createdClass })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
-
 router.post('/api/classes/:id/bonuses', async (req, res) => {
-    try {
-        const { id } = req.params
-        console.log(id)
-        const { bonus, characteristic } = req.body
-        console.log(req.body)
+  try {
+    const { id } = req.params
+    console.log(id)
+    const { bonus, characteristic } = req.body
+    console.log(req.body)
 
-        if (!bonus || !characteristic) {
-            return res.status(400).send({ message: 'missing fields' })
-        }
+    if (!bonus || !characteristic) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
 
-        const characteristicResult =  await db.query(
-            `SELECT * FROM class_bonuses WHERE class_id = $1 AND characteristic_id = $2`,
-            [id, characteristic.id ]
-        )
+    const characteristicResult = await db.query(
+      'SELECT * FROM class_bonuses WHERE class_id = $1 AND characteristic_id = $2',
+      [id, characteristic.id]
+    )
 
-        if ( characteristicResult.rows.length > 0) {
-            await db.query('DELETE FROM class_bonuses WHERE class_id = $1 AND characteristic_id = $2', [ id, characteristic.id ])
-        }
+    if (characteristicResult.rows.length > 0) {
+      await db.query('DELETE FROM class_bonuses WHERE class_id = $1 AND characteristic_id = $2', [id, characteristic.id])
+    }
 
-
-        const result = await db.query(
+    const result = await db.query(
             `INSERT INTO class_bonuses (class_id, characteristic_id, bonus)
             VALUES ($1, $2, $3) RETURNING *`,
 
             [id, characteristic.id, bonus]
-        )
-        const createdClass = result.rows[0]
+    )
+    const createdClass = result.rows[0]
 
-        return res.status(201).send({ message: 'bonus added to class', created: createdClass })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
+    return res.status(201).send({ message: 'bonus added to class', created: createdClass })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.post('/api/classes/:classID/apptitudes', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { id, name } = req.body
+
+    console.log(req.body)
+
+    if (!id || !name) {
+      return res.status(400).send({ message: 'missing fields' })
     }
+
+    const classAptitudesResult = await db.query(
+      'SELECT * FROM class_aptitudes WHERE class_id = $1 AND aptitude_id = $2',
+      [classID, id]
+    )
+
+    if (classAptitudesResult.rows.length > 0) {
+      return res.status(400).send({ message: 'apptitude allready on this class' })
+    }
+
+    const result = await db.query(
+            `INSERT INTO class_aptitudes (class_id, aptitude_id)
+            VALUES ($1, $2) RETURNING *`,
+
+            [classID, id]
+    )
+    const createdclassApptitude = result.rows[0]
+
+    return res.status(201).send({ message: 'apptitude added to class', created: createdclassApptitude })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 router.put('/api/classes/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const { name, description, parent_id } = req.body
+  try {
+    const { id } = req.params
+    const { name, description, parent_id } = req.body
 
-        await db.query(`UPDATE "class" SET
+    await db.query(`UPDATE "class" SET
                         name = $1, description = $2, parent_id = $3
                         WHERE id = $4`,
-            [name, description, parent_id, id]
-        )
+    [name, description, parent_id, id]
+    )
 
-
-
-        return res.status(200).send({ message: 'class updated' })
-
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send({ message: 'class updated' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
-//wait with this one until everything else is set and then delete from all tables
+
+// wait with this one until everything else is set and then delete from all tables
 router.delete('/api/classes/:id', async (req, res) => {
-    try {
-        const { id } = req.params
+  try {
+    const { id } = req.params
 
-        await db.query('DELETE FROM trait where id = $1 ', [id])
+    await db.query('DELETE FROM trait where id = $1 ', [id])
 
-        return res.status(200).send({ message: 'trait race deleted' })
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'server error', error: error.message })
-    }
+    return res.status(200).send({ message: 'trait race deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/classes/:parrent_id/bonuses/:id', async (req, res) => {
+  try {
+    const { parrent_id, id } = req.params
+
+    await db.query('DELETE FROM class_bonuses WHERE class_id = $1 AND id= $2', [parrent_id, id])
+
+    return res.status(200).send({ message: 'bonus race deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/classes/:parrent_id/apptitudes/:id', async (req, res) => {
+  try {
+    const { parrent_id, id } = req.params
+
+    await db.query('DELETE FROM class_aptitudes WHERE class_id = $1 AND id= $2', [parrent_id, id])
+
+    return res.status(200).send({ message: 'apptitudes  deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
 })
 
 export default router

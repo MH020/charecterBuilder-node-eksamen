@@ -1,7 +1,7 @@
 import { openModal } from '../src/store/modalStore'
 import toastrDisplayHTTPCode from './ToastrUtil'
 
-const BASE_URL = "http://localhost:8080" 
+const BASE_URL = 'http://localhost:8080'
 
 export async function fetchGet (endpoint) {
   try {
@@ -9,7 +9,7 @@ export async function fetchGet (endpoint) {
       credentials: 'include'
     })
     const data = await response.json()
-    
+
     toastrDisplayHTTPCode(response.status, data.message)
 
     return { status: response.status, data }

@@ -1,19 +1,18 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Deletes ALL existing entries
-  await knex('power').del();
+  await knex('power').del()
 
-
-  const categories = await knex('powers_category').select('id', 'name');
+  const categories = await knex('powers_category').select('id', 'name')
 
   const getCategoryId = (name) => {
-    const category = categories.find(c => c.name === name);
-    if (!category) throw new Error(`Category "${name}" not found`);
-    return category.id;
-  };
+    const category = categories.find(c => c.name === name)
+    if (!category) throw new Error(`Category "${name}" not found`)
+    return category.id
+  }
 
   await knex('power').insert([
     {
@@ -64,5 +63,5 @@ export async function seed(knex) {
       range: 'Melee',
       shape: 'Single Target'
     }
-  ]);
+  ])
 }
