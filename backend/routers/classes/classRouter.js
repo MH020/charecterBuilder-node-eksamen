@@ -210,6 +210,23 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY cb.id;
         `, [id])
 
+
+        const classItemsRows = await db.query(`
+            SELECT 
+                ci.id,
+                ci.class_id,
+                ci.item_id,
+                json_build_object(
+                    'id', i.id,
+                    'name', i.name,
+                    'description', i.description
+                ) AS item
+            FROM class_items ci
+            LEFT JOIN item i ON ci.item_id = i.id
+            WHERE ci.class_id = $1
+            ORDER BY ci.id;
+        `, [id]);
+
     const powersKnownResult = await db.query(`
         SELECT * FROM class_powers_known where (class_id = $1) 
         ORDER BY class_powers_known.level
@@ -225,7 +242,8 @@ router.get('/api/classes/:id/full', async (req, res) => {
       SubclassTalents: subClasstalentsRows.rows,
       weapon_trainings: weaponTrainingRows.rows,
       weapon_classes: weaponClassRows.rows,
-      bonuses: bonusesRows.rows
+      bonuses: bonusesRows.rows,
+      items: classItemsRows.rows
     }
 
     if (classRow.rows.length === 0) {
@@ -377,6 +395,148 @@ router.post('/api/classes/:classID/apptitudes', async (req, res) => {
   }
 })
 
+router.post('/api/classes/:classID/weapon-class', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { id } = req.body
+
+    console.log(req.body)
+
+    if (!id ) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
+
+    const classWeaponClassResult = await db.query(
+      'SELECT * FROM class_weapon_class WHERE class_id = $1 AND weapon_class_id = $2',
+      [classID, id]
+    )
+
+    if (classWeaponClassResult.rows.length > 0) {
+      return res.status(400).send({ message: 'weapon_class allready on this class' })
+    }
+
+    const result = await db.query(
+            `INSERT INTO class_weapon_class (class_id, weapon_class_id)
+            VALUES ($1, $2) RETURNING *`,
+
+            [classID, id]
+    )
+
+    return res.status(201).send({ message: 'weapon class added to class', created: result.rows[0] })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+
+router.post('/api/classes/:classID/weapon-training', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { id } = req.body
+
+    console.log(req.body)
+
+    if (!id ) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
+
+    const classWeaponClassResult = await db.query(
+      'SELECT * FROM class_weapon_training WHERE class_id = $1 AND talent_id = $2',
+      [classID, id]
+    )
+
+    if (classWeaponClassResult.rows.length > 0) {
+      return res.status(400).send({ message: 'weapon trainning allready on this class' })
+    }
+
+    const result = await db.query(
+            `INSERT INTO class_weapon_training (class_id, talent_id)
+            VALUES ($1, $2) RETURNING *`,
+
+            [classID, id]
+    )
+
+    return res.status(201).send({ message: 'weapon class added to class', created: result.rows[0] })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.post('/api/classes/:classID/items', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { id } = req.body
+
+    console.log(req.body)
+
+    if (!id ) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
+
+    const classWeaponClassResult = await db.query(
+      'SELECT * FROM class_items WHERE class_id = $1 AND item_id = $2',
+      [classID, id]
+    )
+
+    if (classWeaponClassResult.rows.length > 0) {
+      return res.status(400).send({ message: 'item allready on this class' })
+    }
+
+    const result = await db.query(
+            `INSERT INTO class_items (class_id, item_id)
+            VALUES ($1, $2) RETURNING *`,
+
+            [classID, id]
+    )
+
+    return res.status(201).send({ message: 'class item added to class', created: result.rows[0] })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+
+router.post('/api/classes/:classID/traits', async (req, res) => {
+  try {
+    const { classID } = req.params
+    const { id } = req.body
+
+    console.log(req.body)
+
+    if (!id ) {
+      return res.status(400).send({ message: 'missing fields' })
+    }
+
+    const classWeaponClassResult = await db.query(
+      'SELECT * FROM class_traits WHERE class_id = $1 AND trait_id = $2',
+      [classID, id]
+    )
+
+    if (classWeaponClassResult.rows.length > 0) {
+      return res.status(400).send({ message: 'trait allready on this class' })
+    }
+
+    const result = await db.query(
+            `INSERT INTO class_traits (class_id, trait_id, "level")
+            VALUES ($1, $2, $3) RETURNING *`,
+
+            [classID, id, 1]
+    )
+
+    return res.status(201).send({ message: 'class trait added to class', created: result.rows[0] })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
 router.put('/api/classes/:id', async (req, res) => {
   try {
     const { id } = req.params
@@ -429,6 +589,58 @@ router.delete('/api/classes/:parrent_id/apptitudes/:id', async (req, res) => {
     await db.query('DELETE FROM class_aptitudes WHERE class_id = $1 AND id= $2', [parrent_id, id])
 
     return res.status(200).send({ message: 'apptitudes  deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/classes/:parrent_id/weapon-class/:id', async (req, res) => {
+  try {
+    const { parrent_id, id } = req.params
+
+    await db.query('DELETE FROM class_weapon_class WHERE class_id = $1 AND id= $2', [parrent_id, id])
+
+    return res.status(200).send({ message: 'class_weapon_class  deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/classes/:parrent_id/weapon-training/:id', async (req, res) => {
+  try {
+    const { parrent_id, id } = req.params
+
+    await db.query('DELETE FROM class_weapon_training WHERE class_id = $1 AND id= $2', [parrent_id, id])
+
+    return res.status(200).send({ message: 'class_weapon_training  deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/classes/:parrent_id/items/:id', async (req, res) => {
+  try {
+    const { parrent_id, id } = req.params
+
+    await db.query('DELETE FROM class_items WHERE class_id = $1 AND id= $2', [parrent_id, id])
+
+    return res.status(200).send({ message: 'class_item  deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+router.delete('/api/classes/:parrent_id/traits/:id', async (req, res) => {
+  try {
+    const { parrent_id, id } = req.params
+
+    await db.query('DELETE FROM class_traits WHERE class_id = $1 AND id= $2', [parrent_id, id])
+
+    return res.status(200).send({ message: 'class_traits  deleted' })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
