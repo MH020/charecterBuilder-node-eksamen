@@ -1,14 +1,20 @@
 <script>
     import PowerCard from "../cards/PowerCard.svelte";
-    import { fetchDelete, fetchPost, fetchUpdate } from "../../../util/fetchUtil";
+    import {
+        fetchDelete,
+        fetchPost,
+        fetchUpdate,
+    } from "../../../util/fetchUtil";
     import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
+    import { user } from "../../store/userStore";
 
     export let clss;
-    const endpoint = `/api/class/${clss.id}/powers`
 
+    $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
 
-    $: powers = clss.powers
+    const endpoint = `/api/class/${clss.id}/powers`;
 
+    $: powers = clss.powers;
 
     const new_category = { name: "new powers", isNew: true };
 
@@ -21,7 +27,7 @@
             if (!map.has(cat.name)) {
                 map.set(cat.name, {
                     ...cat,
-                    powers: []
+                    powers: [],
                 });
             }
 
@@ -31,33 +37,29 @@
         if (!map.has(new_category.name)) {
             map.set(new_category.name, {
                 ...new_category,
-                powers: []
+                powers: [],
             });
         }
 
         return [...map.values()];
     })();
 
-    
-
-    
-
-    function createPower(){
+    function createPower() {
         const newPower = {
             id: null,
-            class_id: clss.id, 
-            level: 1, 
+            class_id: clss.id,
+            level: 1,
             power: {
-                category: new_category, 
+                category: new_category,
             },
             prerequisite_powers: [],
-            isNew: true
-        }
+            isNew: true,
+        };
         clss.powers = [...clss.powers, newPower];
-        console.log(clss.powers)
+        console.log(clss.powers);
     }
 
-        async function onDelete(id, deleteID, isNew) {
+    async function onDelete(id, deleteID, isNew) {
         if (isNew) {
             clss.powers = clss.powers.filter((p) => p.id !== id);
         } else {
@@ -70,85 +72,71 @@
         }
     }
 
-
     async function onSave(updated) {
-    let saved;
+        let saved;
 
-    if (updated.isNew) {
-        const response = await fetchPost(endpoint, updated);
-        if (response.status === 201) {
-            saved = response.created;
+        if (updated.isNew) {
+            const response = await fetchPost(endpoint, updated);
+            if (response.status === 201) {
+                saved = response.created;
+            } else {
+                return;
+            }
         } else {
-            return; 
+            const response = await fetchUpdate(endpoint, updated);
+            if (response.status === 200) {
+                saved = updated;
+            } else {
+                return;
+            }
         }
-    } else {
-        const response = await fetchUpdate(endpoint, updated);
-        if (response.status === 200) {
-            saved = updated;
-        } else {
-            return; 
-        }
+
+        clss.powers = clss.powers.map((item) =>
+            item.isNew
+                ? { ...saved, isNew: false }
+                : item.id === saved.id
+                  ? { ...item, ...saved }
+                  : item,
+        );
     }
-
-    clss.powers = clss.powers.map((item) =>
-        item.isNew
-            ? { ...saved, isNew: false }
-            : item.id === saved.id
-                ? { ...item, ...saved }
-                : item
-    );
-}
-
-
 </script>
 
-
-{#each categories as category }
-
+{#each categories as category}
     <h3 class="power-section-title">{category.name}</h3>
 
-
     {#if category.isNew}
-    <button on:click={createPower}>New Card</button>
+        {#if canEdit}
+        <button on:click={createPower}>New Card</button>
+        {/if}
     {/if}
-
 
     {#each category.powers as card (card.id)}
         <div class="powers-cards">
-        <PowerCard
-        PowerElement = {card}
-        onSave={onSave}
-        onDelete={onDelete}
-        />
-    </div>
+            <PowerCard PowerElement={card} {onSave} {onDelete} />
+        </div>
+    {/each}
 {/each}
-
-
-{/each}
-
 
 <style>
-.powers-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 5rem; 
-}
+    .powers-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5rem;
+    }
 
-.power-section-title {
-    margin: 3rem 0 1.5rem;
-    padding-bottom: 0.5rem;
+    .power-section-title {
+        margin: 3rem 0 1.5rem;
+        padding-bottom: 0.5rem;
 
-    font-family: 'Courier New', monospace;
-    font-size: 1.4rem;
-    font-weight: bold;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+        font-family: "Courier New", monospace;
+        font-size: 1.4rem;
+        font-weight: bold;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
 
-    color: var(--color-accent);
+        color: var(--color-accent);
 
-    border-bottom: 2px solid var(--color-accent-dark);
-    position: relative;
-}
-
+        border-bottom: 2px solid var(--color-accent-dark);
+        position: relative;
+    }
 </style>
-
