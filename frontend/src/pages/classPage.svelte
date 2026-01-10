@@ -5,6 +5,7 @@
   import ClassTalents from "../componets/subPages/classTalents.svelte";
   import ClassPowers from "../componets/subPages/classPowers.svelte";
   import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
+    import { refresh } from "../store/userStore";
 
   let currentClass;
   let id = "";
@@ -15,7 +16,7 @@
   onMount(async () => {
     const url = new URL(window.location.href);
     id = new URLSearchParams(url.search).get("id");
-
+    refresh()
     const response = await fetchGet(`/api/classes/${id}/full`);
     if (response.status === 200) {
       currentClass = response.data;
