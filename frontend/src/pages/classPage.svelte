@@ -20,7 +20,7 @@
     if (response.status === 200) {
       currentClass = response.data;
       tabs = createTabs(currentClass)
-      //localStorage.setItem("clss", JSON.stringify(currentClass));
+
     }
   });
 
