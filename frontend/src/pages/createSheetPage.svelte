@@ -45,8 +45,7 @@
         card = {LineageCard}/>
         
       {:else if activeTab === "characteristics"}
-        <Createcharacteristics 
-        race = {}/>
+
 
       {:else if activeTab === "classes"}
 
