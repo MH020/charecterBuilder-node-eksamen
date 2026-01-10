@@ -1,5 +1,6 @@
 <script>
     import { selectMultibleFromModal } from "../../../util/ListUtil";
+    import { user } from "../../store/userStore";
     import ApptitudesList from "../lists/ApptitudesList.svelte";
   import DescriptionUtil from "../UI/DescriptionUtil.svelte";
 
@@ -7,7 +8,8 @@
   export let onSave;
   export let onDelete;
 
-  
+    $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
+
   let isEditing = classTalent.isNew ?? false;
   let editableTalent = structuredClone(classTalent);
 
@@ -139,8 +141,10 @@
     {/if}
 
     <div class="buttons">
-      <button on:click={startEdit}>Edit</button>
-      <button on:click={() => onDelete(classTalent.id, classTalent.talent.id)}>Delete</button>
+        {#if canEdit}
+        <button on:click={startEdit}>Edit</button>
+        <button on:click={() => onDelete(classTalent.id, classTalent.talent.id)}>Delete</button>
+      {/if}
     </div>
   {/if}
 </div>
