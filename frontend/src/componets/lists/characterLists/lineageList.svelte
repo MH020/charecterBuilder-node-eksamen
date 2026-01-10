@@ -7,7 +7,7 @@
     import ListUtil from '../../wrappers/EditableList.svelte';
 
     let lineages = [];
-    let endpoint = "/api/lineage"
+    let endpoint = "/api/lineages"
 
     onMount(async () => {
         const response = await fetchGet(endpoint)
