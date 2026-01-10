@@ -3,26 +3,34 @@
     import { navigate } from "svelte-routing";
     import toastrDisplayHTTPCode from "../../util/ToastrUtil.js"
     import  redirectAfterlogin  from '../store/redirect.js';
+    import  { user } from '../store/userStore.js'
 
   let email;
   let password;
   let username
   let needsVerification = false
-  let verificationCode = "";
-  let isSignup = false;
+  let verificationCode = ""
+  let isSignup = false
 
   async function handleLogin(event) {
     event.preventDefault(); 
 
     const body = {email,password}
-    console.log(email,password)
 
     const data = await fetchPost("/api/login",body)
-    toastrDisplayHTTPCode(data.status,data.message)
+     console.log(data)
+    console.log(data.user)
 
     if(data.status === 200){
-      let redirectTo 
+    let redirectTo
 
+    user.set({
+      id: data.user.id,
+      username: data.user.username,
+      email: data.user.email,
+      role: data.user.role
+    });
+    console.log(user)
       
       redirectAfterlogin.subscribe(value => redirectTo = value)();
       navigate(redirectTo || "/")
