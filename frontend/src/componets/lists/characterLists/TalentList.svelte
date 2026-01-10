@@ -9,7 +9,6 @@
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
-        console.log(response);
         if (response.status === 200) {
             talents = response.data;
         }

@@ -8,10 +8,9 @@
     import ClassTalentCard from "../cards/ClassTalentCard.svelte";
 
     export let clss;
-    const endpoint = "booo"
+    const endpoint = "booo" //refactor
 
     $: talents = clss.talents;
-        console.log(clss)
 
     function createClassTalent() {
         const newClassTalent = {

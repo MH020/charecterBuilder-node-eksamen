@@ -9,7 +9,7 @@
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import EditableRowSlot from "../wrappers/Editable.svelte";
 
-    export let clss;
+    export let clss; //'class' is a reserved key word
     export let onSave;
     export let onDelete;
     export let endpoint;

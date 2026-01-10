@@ -17,14 +17,11 @@
         const response = await fetchGet(endpoint);
         if (response.status === 200) {
             subclasses = response.data;
-            console.log(subclasses)
         }
     });
 
-    console.log(clss);
-
     function createClassSubclasses() {
-        const newSubClass = {
+        const newSubclass = {
             id: null,  
             name: "",  
             description: "",
@@ -33,7 +30,7 @@
             },
             isNew: true
         };
-        subclasses = [...subclasses, newSubClass];
+        subclasses = [...subclasses, newSubclass];
     }
 
     async function onDelete(id, deleteID, isNew) {
@@ -83,7 +80,7 @@
 
     <div class="talents-cards">
         {#each subclasses as card (card.id ?? card)}
-            <SubclassCards subClass={card} {onSave} {onDelete} />
+            <SubclassCards subclass={card} {onSave} {onDelete} />
         {/each}
     </div>
 </div>

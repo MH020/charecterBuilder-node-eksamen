@@ -7,7 +7,7 @@
     export let onSave;
     export let onDelete;
     export let endpoint; 
-    let showTooltip
+    let showToolTip
     let editableArmor = structuredClone(armor);
 
     function selectAvailability() {
@@ -101,8 +101,8 @@
 
         <button
             class="description-btn"
-            on:mouseenter={() => (showTooltip = true)}
-            on:mouseleave={() => (showTooltip = false)}
+            on:mouseenter={() => (showToolTip = true)}
+            on:mouseleave={() => (showToolTip = false)}
             aria-describedby="tooltip-description"
         >
             description
@@ -153,7 +153,7 @@
             <div>{armor.availability?.name || "----"}</div>
         </div>
 
-        {#if showTooltip}
+        {#if showToolTip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {armor.description}
             </div>

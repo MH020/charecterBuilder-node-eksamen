@@ -38,7 +38,6 @@
         isNew: true
         };
         weapons = [...weapons, newWeapon];
-        console.log(weapons)
     }
 </script>
 

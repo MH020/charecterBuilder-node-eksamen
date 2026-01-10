@@ -5,19 +5,19 @@
     import AvailabilityRow from '../../rows/availabilityRow.svelte';
     import ListUtil from '../../wrappers/EditableList.svelte';
 
-    let availabilityies = [];
+    let availabilities = [];
     let sortType = "asc";
-    let endpoint = "/api/availability"
+    let endpoint = "/api/availability" //refactor
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
         if (response.status === 200) {
-            availabilityies = response.data;
+            availabilities = response.data;
         }
     });
 
 
-    $: sortedAvailabilityies = [...availabilityies].sort((a, b) => {
+    $: sortedAvailabilities = [...availabilities].sort((a, b) => {
         if (!a.name || !b.name) return 0;
         return sortType === "asc"
             ? a.name.localeCompare(b.name)
@@ -31,13 +31,13 @@
             isNew: true
 
         };
-        availabilityies = [...availabilityies, newAvailability];
+        availabilities = [...availabilities, newAvailability];
     }
 
 </script>
 
 <ListUtil
-    bind:list={availabilityies}
+    bind:list={availabilities}
     endpoint= {endpoint}
     createRow={createAvailability}
     let:item

@@ -24,8 +24,7 @@
 
     async function saveEdit() {
         let updated;
-        console.log(endpoint);
-        console.log(editableRace);
+
         if (editableRace.isNew) {
             const response = await fetchPost(endpoint, editableRace);
             if (response.status === 201) {
@@ -51,9 +50,9 @@
         onDelete(editableRace.id);
     }
 
-    function selectStatline(statline) {
-        modalSelectCallback.set((selectedStatline) => {
-            editableRace = { ...editableRace, [statline]: selectedStatline };
+    function selectStatLine(statLine) {
+        modalSelectCallback.set((selectedStatLine) => {
+            editableRace = { ...editableRace, [statLine]: selectedStatLine };
             modalSelectCallback.set(null);
         });
         openModal(StatlinesList);
@@ -94,14 +93,14 @@
 
         <div class="statline-cards">
             <div>
-                <button on:click={() => selectStatline("base_statline")}
+                <button on:click={() => selectStatLine("base_statline")}
                     >Select Base Statline</button
                 >
                 <StatlineCard statline={editableRace.base_statline} />
             </div>
 
             <div>
-                <button on:click={() => selectStatline("max_statline")}
+                <button on:click={() => selectStatLine("max_statline")}
                     >Select Max Statline</button
                 >
                 <StatlineCard statline={editableRace.max_statline} />

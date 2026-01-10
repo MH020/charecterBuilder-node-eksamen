@@ -10,10 +10,10 @@
     import CombatLogWindow from "../componets/windows/combatLogWindow.svelte";
 
 
-	function newCharecter() {
+	function newCharacter() {
 	}
 
-	async function loadCharecter() {
+	async function loadCharacter() {
         const response = await fetchGet('/users/id/charectersheet')
         if (response.status === 200) {
             toastrDisplayHTTPCode(200, response.message)
@@ -42,11 +42,11 @@
 <div class="panel-container">
 	<div class="button-row">
 
-		<button class="icon-button" on:click={newCharecter}>
+		<button class="icon-button" on:click={newCharacter}>
 			<img alt="New character" class="new-load-buttons" />
 		</button>
 
-		<button class="icon-button" on:click={loadCharecter}>
+		<button class="icon-button" on:click={loadCharacter}>
 			<img alt="Load character" class="new-load-buttons" />
 		</button>
 

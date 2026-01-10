@@ -10,7 +10,7 @@
 
     let editableSkill = structuredClone(skill);
     let isEditing = skill.isNew;
-    let showTooltip
+    let showToolTip
 
     $: if (!isEditing) {
       editableSkill = structuredClone(editableSkill);
@@ -41,7 +41,6 @@
         isEditing = false;
 
         if (skill.isNew) {
-
             onDelete(skill.id, true); 
         } else {
             editableSkill = structuredClone(skill);
@@ -52,7 +51,7 @@
         onDelete(skill.id);  
     }
 
-    function setMainApptitude() {
+    function setMainAptitude() {
         modalSelectCallback.set((selectedAptitude) => {
         editableSkill.main_aptitude = selectedAptitude;
 
@@ -61,7 +60,7 @@
         openModal(ApptitudesList);
     }
 
-    function setSecoundaryApptitude() {
+    function setSecondaryAptitude() {
         modalSelectCallback.set((selectedAptitude) => {
         editableSkill.secondary_aptitude = selectedAptitude;
 
@@ -83,14 +82,14 @@
 
       <button
         class="description-btn"
-        on:mouseenter={() => showTooltip = true}
-        on:mouseleave={() => showTooltip = false}
+        on:mouseenter={() => showToolTip = true}
+        on:mouseleave={() => showToolTip = false}
         aria-describedby="tooltip-description"
       >
         description
       </button>
 
-      {#if showTooltip}
+      {#if showToolTip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
           {skill.description || "No description"}
         </div>
@@ -100,10 +99,10 @@
 
   <div class="aptitudes">
     {#if isEditing}
-      <button class="edit-button" on:click={setMainApptitude}>
+      <button class="edit-button" on:click={setMainAptitude}>
         <img src="/icons/edit-main.svg" alt="Edit main aptitude" />
       </button>
-      <button class="edit-button" on:click={setSecoundaryApptitude}>
+      <button class="edit-button" on:click={setSecondaryAptitude}>
         <img src="/icons/edit-secondary.svg" alt="Edit secondary aptitude" />
       </button>
 

@@ -2,13 +2,11 @@
     import { onMount } from "svelte";
     import { fetchGet } from "../../../../util/fetchUtil";
 
+    export let endpoint
+    export let card
+    let items = null; 
 
-        export let endpoint
-        export let card
-        let items = null; 
-
-
-        onMount(async () => {
+    onMount(async () => {
         const response = await fetchGet(endpoint);
         if (response.status === 200 ) {
             items = response.data;

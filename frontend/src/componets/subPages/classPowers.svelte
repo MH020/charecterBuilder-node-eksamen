@@ -12,17 +12,17 @@
 
     $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
 
-    const endpoint = `/api/class/${clss.id}/powers`;
+    const endpoint = `/api/class/${clss.id}/powers`; //refactor
 
     $: powers = clss.powers;
 
-    const new_category = { name: "new powers", isNew: true };
+    const newCategory = { name: "new powers", isNew: true };
 
     $: categories = (() => {
         const map = new Map();
 
         for (const p of powers) {
-            const cat = p.power.category ?? new_category;
+            const cat = p.power.category ?? newCategory;
 
             if (!map.has(cat.name)) {
                 map.set(cat.name, {
@@ -34,9 +34,9 @@
             map.get(cat.name).powers.push(p);
         }
 
-        if (!map.has(new_category.name)) {
-            map.set(new_category.name, {
-                ...new_category,
+        if (!map.has(newCategory.name)) {
+            map.set(newCategory.name, {
+                ...newCategory,
                 powers: [],
             });
         }
@@ -50,7 +50,7 @@
             class_id: clss.id,
             level: 1,
             power: {
-                category: new_category,
+                category: newCategory,
             },
             prerequisite_powers: [],
             isNew: true,
@@ -112,7 +112,7 @@
 
     {#each category.powers as card (card.id)}
         <div class="powers-cards">
-            <PowerCard PowerElement={card} {onSave} {onDelete} />
+            <PowerCard powerElement={card} {onSave} {onDelete} />
         </div>
     {/each}
 {/each}

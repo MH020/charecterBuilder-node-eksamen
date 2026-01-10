@@ -9,7 +9,6 @@
 
   let isEditing = item.isNew;
   
-
   function startEditing() {
     isEditing = true;
     editable;

@@ -14,8 +14,8 @@
 
   let isEditing = weapon.isNew;
   let editableWeapon = structuredClone(weapon);
-  let classTooltip = [];
-  let traitTooltip = [];
+  let classToolTip = [];
+  let traitToolTip = [];
 
   function startEditing() {
     isEditing = true;
@@ -29,7 +29,6 @@
       if (response.status === 201) {
         updated = editableWeapon;
         updated.id = response.created.id;
-        console.log(updated);
       }
     } else {
       await fetchUpdate("/api/weapons", editableWeapon);
@@ -158,11 +157,11 @@
         {#each editableWeapon.classes as WeaponClass, index}
           <button
             class="tag"
-            on:mouseenter={() => (classTooltip[index] = true)}
-            on:mouseleave={() => (classTooltip[index] = false)}
+            on:mouseenter={() => (classToolTip[index] = true)}
+            on:mouseleave={() => (classToolTip[index] = false)}
           >
             {WeaponClass.name || "----"}
-            {#if classTooltip[index]}
+            {#if classToolTip[index]}
               <div class="tooltip">
                 {WeaponClass.description || "No description"}
               </div>
@@ -196,11 +195,11 @@
         {#each editableWeapon.traits as WeaponTrait, index}
           <button
             class="tag"
-            on:mouseenter={() => (traitTooltip[index] = true)}
-            on:mouseleave={() => (traitTooltip[index] = false)}
+            on:mouseenter={() => (traitToolTip[index] = true)}
+            on:mouseleave={() => (traitToolTip[index] = false)}
           >
             {WeaponTrait.name || "----"}
-            {#if traitTooltip[index]}
+            {#if traitToolTip[index]}
               <div class="tooltip">
                 {WeaponTrait.description || "No description"}
               </div>
@@ -232,11 +231,11 @@
         {#each weapon.classes as WeaponClass, index}
           <button
             class="tag"
-            on:mouseenter={() => (classTooltip[index] = true)}
-            on:mouseleave={() => (classTooltip[index] = false)}
+            on:mouseenter={() => (classToolTip[index] = true)}
+            on:mouseleave={() => (classToolTip[index] = false)}
           >
             {WeaponClass.name || "----"}
-            {#if classTooltip[index]}
+            {#if classToolTip[index]}
               <div class="tooltip">
                 {WeaponClass.description || "No description"}
               </div>
@@ -278,11 +277,11 @@
         {#each weapon.traits as WeaponTrait, index}
           <button
             class="tag"
-            on:mouseenter={() => (traitTooltip[index] = true)}
-            on:mouseleave={() => (traitTooltip[index] = false)}
+            on:mouseenter={() => (traitToolTip[index] = true)}
+            on:mouseleave={() => (traitToolTip[index] = false)}
           >
             {WeaponTrait.name || "----"}
-            {#if traitTooltip[index]}
+            {#if traitToolTip[index]}
               <div class="tooltip">
                 {WeaponTrait.description || "No description"}
               </div>

@@ -5,21 +5,16 @@
     import WeaponTraitsRow from '../../rows/WeaponTraitsRow.svelte';
     import ListUtil from '../../wrappers/EditableList.svelte';
 
-
-
     let weaponTraits = [];
     let sortType = "all"; 
-    const endpoint = "/api/weapon/traits"
+    const endpoint = "/api/weapon/traits" //refactor
 
- 
     onMount(async () => {
         const response = await fetchGet(endpoint)
         if (response.status === 200) {
                 weaponTraits = response.data
         } 
     });
-
-
 
     function createWeaponTraits(){
         const newWeaponTrait = {

@@ -2,13 +2,13 @@
     import { fetchPost, fetchUpdate } from "../../../util/fetchUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let statline;
+    export let statLine;
     export let onSave;
     export let onDelete;
     export let endpoint
 
-    let isEditing = statline.isNew;
-    let editableStatline = structuredClone(statline);
+    let isEditing = statLine.isNew;
+    let editableStatLine = structuredClone(statLine);
 
     function startEditing() {
         isEditing = true;
@@ -16,15 +16,15 @@
 
     async function saveEdit() {
         let updated;
-        if (editableStatline.isNew) {
-            const response = await fetchPost(endpoint, editableStatline);
+        if (editableStatLine.isNew) {
+            const response = await fetchPost(endpoint, editableStatLine);
             if (response.status === 201) {
-                updated = editableStatline;
+                updated = editableStatLine;
                 updated.id = response.created.id;
             }
         } else {
-            await fetchUpdate(endpoint, editableStatline);
-            updated = editableStatline;
+            await fetchUpdate(endpoint, editableStatLine);
+            updated = editableStatLine;
         }
 
         onSave(updated);
@@ -33,12 +33,12 @@
 
     function cancelEdit() {
         isEditing = false;
-        if (editableStatline.isNew) onDelete(editableStatline.id, true);
-        else editableStatline = structuredClone(statline);
+        if (editableStatLine.isNew) onDelete(editableStatLine.id, true);
+        else editableStatLine = structuredClone(statLine);
     }
 
     function deleteRow() {
-        onDelete(editableStatline.id);
+        onDelete(editableStatLine.id);
     }
 </script>
 
@@ -46,51 +46,51 @@
     {#if isEditing}
         <div class="cell-box">
             <div class="label">Name</div>
-            <input bind:value={editableStatline.name} />
+            <input bind:value={editableStatLine.name} />
         </div>
 
         <div class="cell-box">
             <div class="label">weapon skill</div>
-            <input bind:value={editableStatline.weapon_skill} />
+            <input bind:value={editableStatLine.weapon_skill} />
         </div>
 
         <div class="cell-box">
             <div class="label">ballistic skill</div>
-            <input bind:value={editableStatline.ballistic_skill} />
+            <input bind:value={editableStatLine.ballistic_skill} />
         </div>
 
         <div class="cell-box">
             <div class="label">strength</div>
-            <input bind:value={editableStatline.strength} />
+            <input bind:value={editableStatLine.strength} />
         </div>
         <div class="cell-box">
             <div class="label">toughness</div>
-            <input bind:value={editableStatline.toughness} />
+            <input bind:value={editableStatLine.toughness} />
         </div>
 
         <div class="cell-box">
             <div class="label">agility</div>
-            <input bind:value={editableStatline.agility} />
+            <input bind:value={editableStatLine.agility} />
         </div>
 
         <div class="cell-box">
             <div class="label">intelligence</div>
-            <input bind:value={editableStatline.intelligence} />
+            <input bind:value={editableStatLine.intelligence} />
         </div>
 
         <div class="cell-box">
             <div class="label">perception</div>
-            <input bind:value={editableStatline.perception} />
+            <input bind:value={editableStatLine.perception} />
         </div>
 
         <div class="cell-box">
             <div class="label">willpower</div>
-            <input bind:value={editableStatline.willpower} />
+            <input bind:value={editableStatLine.willpower} />
         </div>
 
         <div class="cell-box">
             <div class="label">fellowship</div>
-            <input bind:value={editableStatline.fellowship} />
+            <input bind:value={editableStatLine.fellowship} />
         </div>
 
         <div class="buttons">
@@ -101,52 +101,52 @@
     {:else}
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{statline.name || "----"}</div>
+            <div>{statLine.name || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">weapon_skill</div>
-            <div>{statline.weapon_skill || "----"}</div>
+            <div>{statLine.weapon_skill || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">ballistic_skill</div>
-            <div>{statline.ballistic_skill || "----"}</div>
+            <div>{statLine.ballistic_skill || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">strength</div>
-            <div>{statline.strength || "----"}</div>
+            <div>{statLine.strength || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">toughness</div>
-            <div>{statline.toughness || "----"}</div>
+            <div>{statLine.toughness || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">agility</div>
-            <div>{statline.agility || "----"}</div>
+            <div>{statLine.agility || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">intelligence</div>
-            <div>{statline.intelligence || "----"}</div>
+            <div>{statLine.intelligence || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">perception</div>
-            <div>{statline.perception || "----"}</div>
+            <div>{statLine.perception || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">willpower</div>
-            <div>{statline.willpower || "----"}</div>
+            <div>{statLine.willpower || "----"}</div>
         </div>
 
                 <div class="cell-box">
             <div class="label">fellowship</div>
-            <div>{statline.fellowship || "----"}</div>
+            <div>{statLine.fellowship || "----"}</div>
         </div>
 
         <div class="buttons">
@@ -158,7 +158,7 @@
                 <button on:click={deleteRow}>Delete </button>
                 <button
                     on:click={() => {
-                        $modalSelectCallback(statline);
+                        $modalSelectCallback(statLine);
                         closeModal();
                     }}
                 >

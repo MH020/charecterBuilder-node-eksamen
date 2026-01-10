@@ -9,7 +9,7 @@
 
     let editableWeaponTrait = structuredClone(weaponTrait);
     let isEditing = weaponTrait.isNew;
-    let showTooltip
+    let showToolTip
 
     $: if (!isEditing) {
       editableWeaponTrait = structuredClone(editableWeaponTrait);
@@ -23,12 +23,12 @@
         let updated;
 
         if (weaponTrait.isNew) {
-            const response = await fetchPost("/api/weapon/traits", editableWeaponTrait);
+            const response = await fetchPost("/api/weapon/traits", editableWeaponTrait); //refactor endpoint
             if (response.status === 201) {
                 updated = response.created
             }
         } else {
-            await fetchUpdate("/api/weapon/traits", editableWeaponTrait);
+            await fetchUpdate("/api/weapon/traits", editableWeaponTrait);  //refactor endpoint
             updated = editableWeaponTrait
         }  
         onSave(updated)
@@ -39,8 +39,8 @@
         isEditing = false;
 
         if (weaponTrait.isNew) {
-
             onDelete(weaponTrait.id, true); 
+            
         } else {
             editableWeaponTrait = structuredClone(weaponTrait);
         }
@@ -74,14 +74,14 @@
 
         <button
             class="description-btn"
-            on:mouseenter={() => showTooltip = true}
-            on:mouseleave={() => showTooltip = false}
+            on:mouseenter={() => showToolTip = true}
+            on:mouseleave={() => showToolTip = false}
             aria-describedby="tooltip-description"
             >
             description
         </button>
 
-        {#if showTooltip}
+        {#if showToolTip}
         <div id="tooltip-description" role="tooltip" class="tooltip">
             {weaponTrait.description}
         </div>

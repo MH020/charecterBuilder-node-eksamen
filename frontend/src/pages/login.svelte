@@ -9,20 +9,18 @@
   let username
   let needsVerification = false
   let verificationCode = "";
-  let isSignup = false;
+  let isSignedUp = false;
 
   async function handleLogin(event) {
     event.preventDefault(); 
 
     const body = {email,password}
-    console.log(email,password)
 
     const data = await fetchPost("/api/login",body)
     toastrDisplayHTTPCode(data.status,data.message)
 
     if(data.status === 200){
       let redirectTo 
-
       
       redirectAfterlogin.subscribe(value => redirectTo = value)();
       navigate(redirectTo || "/")
@@ -46,20 +44,20 @@
   }
 
 
-  async function handleSignup(event) {
+  async function handleSignUp(event) {
     event.preventDefault();
     const request = {email, password, username}
     const data = await fetchPost("/api/users",request);
     toastrDisplayHTTPCode(data.status,data.message)
 
     if (data.status === 201) {
-      isSignup = false;
+      isSignedUp = false;
       needsVerification = true
     } 
   }
 </script>
 
-{#if !isSignup}
+{#if !isSignedUp}
 <h1>Login Page</h1>
 
 <form on:submit={handleLogin}>
@@ -75,17 +73,17 @@
 
     <button type="submit">Login</button>
 
-    <button type="button" on:click={() => isSignup = true}>
+    <button type="button" on:click={() => isSignedUp = true}>
         Go to Signup
     </button>
 </form>
 {/if}
 
 
-{#if isSignup}
+{#if isSignedUp}
 <h1>Signup Page</h1>
 
-<form on:submit={handleSignup}>
+<form on:submit={handleSignUp}>
     <div>
         <label for="email">email:</label>
         <input id="email" type="email" bind:value={email} required />
@@ -103,7 +101,7 @@
 
     <button type="submit">Create Account</button>
 
-    <button type="button" on:click={() => isSignup = false}>
+    <button type="button" on:click={() => isSignedUp = false}>
         Go to Login
     </button>
 </form>

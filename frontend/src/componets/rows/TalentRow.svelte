@@ -14,7 +14,7 @@
 
     let isEditing = talent.isNew;
     let editableTalent = structuredClone(talent);
-    let showTooltip;
+    let showToolTip;
 
     function startEditing() {
         isEditing = true;
@@ -61,10 +61,10 @@
         "Class Feature Only",
         "Expert Talent",
     ];
-    let SelectedType = talent.type;
+    let selectedType = talent.type;
 
-    $: if (SelectedType) {
-        editableTalent.type = SelectedType;
+    $: if (selectedType) {
+        editableTalent.type = selectedType;
     }
 </script>
 
@@ -177,14 +177,14 @@
 
         <button
             class="description-btn"
-            on:mouseenter={() => (showTooltip = true)}
-            on:mouseleave={() => (showTooltip = false)}
+            on:mouseenter={() => (showToolTip = true)}
+            on:mouseleave={() => (showToolTip = false)}
             aria-describedby="tooltip-description"
         >
             description
         </button>
 
-        {#if showTooltip}
+        {#if showToolTip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {talent.description}
             </div>

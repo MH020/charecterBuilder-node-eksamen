@@ -3,14 +3,14 @@
     import { selectMultibleFromModal } from "../../../util/ListUtil";
     import { closeModal, modalSelectCallback } from "../../store/modalStore";
 
-    export let craftmanship;
+    export let craftsmanship;
     export let onSave;
     export let onDelete;
     export let endpoint
 
-    let isEditing = craftmanship.isNew;
-    let editableCraftmanship = structuredClone(craftmanship);
-    let showTooltip;
+    let isEditing = craftsmanship.isNew;
+    let editableCraftsmanship = structuredClone(craftsmanship);
+    let showToolTip;
 
     function startEditing() {
         isEditing = true;
@@ -19,19 +19,18 @@
     async function saveEdit() {
         let updated;
 
-        if (craftmanship.isNew) {
+        if (craftsmanship.isNew) {
             const response = await fetchPost(
-                "/api/craftsmanship",
-                editableCraftmanship,
+                "/api/craftsmanship", //refactor
+                editableCraftsmanship,
             );
             if (response.status === 201) {
-                updated = editableCraftmanship;
+                updated = editableCraftsmanship;
                 updated.id = response.created.id;
-                console.log(updated);
             }
         } else {
-            await fetchUpdate("/api/craftsmanship", editableCraftmanship);
-            updated = editableCraftmanship;
+            await fetchUpdate("/api/craftsmanship", editableCraftsmanship); //refactor endpoint
+            updated = editableCraftsmanship;
         }
 
         onSave(updated);
@@ -41,15 +40,15 @@
     function cancelEdit() {
         isEditing = false;
 
-        if (craftmanship.isNew) {
-            onDelete(craftmanship.id, true);
+        if (craftsmanship.isNew) {
+            onDelete(craftsmanship.id, true);
         } else {
-            editableCraftmanship = structuredClone(craftmanship);
+            editableCraftsmanship = structuredClone(craftsmanship);
         }
     }
 
     function deleteRow() {
-        onDelete(craftmanship.id);
+        onDelete(craftsmanship.id);
     }
 </script>
 
@@ -57,18 +56,18 @@
     {#if isEditing}
         <div class="cell-box">
             <div class="label">Name</div>
-            <input bind:value={editableCraftmanship.name} />
+            <input bind:value={editableCraftsmanship.name} />
         </div>
 
         <textarea
-            bind:value={editableCraftmanship.description}
+            bind:value={editableCraftsmanship.description}
             rows="3"
             cols="30"
         ></textarea>
 
         <div class="cell-box">
             <div class="label">Category</div>
-            <select bind:value={editableCraftmanship.category}>
+            <select bind:value={editableCraftsmanship.category}>
                 <option value="" disabled>Select category</option>
                 <option value="melee">Melee</option>
                 <option value="ranged">Ranged</option>
@@ -80,7 +79,7 @@
             <div class="label">Hit Mod</div>
             <input
                 type="number"
-                bind:value={editableCraftmanship.hit_modifier}
+                bind:value={editableCraftsmanship.hit_modifier}
             />
         </div>
 
@@ -88,7 +87,7 @@
             <div class="label">Damage Mod</div>
             <input
                 type="number"
-                bind:value={editableCraftmanship.damage_modifier}
+                bind:value={editableCraftsmanship.damage_modifier}
             />
         </div>
 
@@ -96,7 +95,7 @@
             <div class="label">AP Mod</div>
             <input
                 type="number"
-                bind:value={editableCraftmanship.ap_modifier}
+                bind:value={editableCraftsmanship.ap_modifier}
             />
         </div>
 
@@ -104,7 +103,7 @@
             <div class="label">Weight Mod</div>
             <input
                 type="number"
-                bind:value={editableCraftmanship.wt_modifier}
+                bind:value={editableCraftsmanship.wt_modifier}
             />
         </div>
 
@@ -115,47 +114,47 @@
     {:else}
         <div class="cell-box">
             <div class="label">Category</div>
-            <div>{craftmanship.category || "----"}</div>
+            <div>{craftsmanship.category || "----"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Name</div>
-            <div>{craftmanship.name || "----"}</div>
+            <div>{craftsmanship.name || "----"}</div>
         </div>
 
         <button
             class="description-btn"
-            on:mouseenter={() => (showTooltip = true)}
-            on:mouseleave={() => (showTooltip = false)}
+            on:mouseenter={() => (showToolTip = true)}
+            on:mouseleave={() => (showToolTip = false)}
             aria-describedby="tooltip-description"
         >
             description
         </button>
 
-        {#if showTooltip}
+        {#if showToolTip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
-                {craftmanship.description}
+                {craftsmanship.description}
             </div>
         {/if}
 
         <div class="cell-box">
             <div class="label">Hit Mod</div>
-            <div>{craftmanship.hit_modifier ?? "—"}</div>
+            <div>{craftsmanship.hit_modifier ?? "—"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Damage Mod</div>
-            <div>{craftmanship.damage_modifier ?? "—"}</div>
+            <div>{craftsmanship.damage_modifier ?? "—"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">AP Mod</div>
-            <div>{craftmanship.ap_modifier ?? "—"}</div>
+            <div>{craftsmanship.ap_modifier ?? "—"}</div>
         </div>
 
         <div class="cell-box">
             <div class="label">Weight Mod</div>
-            <div>{craftmanship.wt_modifier ?? "—"}</div>
+            <div>{craftsmanship.wt_modifier ?? "—"}</div>
         </div>
 
         <div class="buttons">
@@ -165,7 +164,7 @@
             {:else}
                 <button
                     on:click={() => {
-                        $modalSelectCallback(craftmanship);
+                        $modalSelectCallback(craftsmanship);
                         closeModal();
                     }}
                 >

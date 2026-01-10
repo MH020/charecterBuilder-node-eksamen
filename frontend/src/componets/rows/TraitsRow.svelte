@@ -22,17 +22,17 @@
         openModal(component);
     }
 
-    const categoryies = [
+    const categories = [
         "nothing",
         "disorder",
         "malignancy",
         "malice",
         "blessing",
     ];
-    let SelectedCategory = trait.category;
+    let selectedCategory = trait.category;
 
-    $: if (SelectedCategory) {
-        editableTrait.category = SelectedCategory;
+    $: if (selectedCategory) {
+        editableTrait.category = selectedCategory;
     }
 </script>
 
@@ -74,7 +74,7 @@
                 <div class="label">type</div>
                 <select bind:value={editableTrait.category}>
                     <option value="" disabled selected>Select a type</option>
-                    {#each categoryies as category}
+                    {#each categories as category}
                         <option value={category}>{category}</option>
                     {/each}
                 </select>

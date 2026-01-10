@@ -6,39 +6,39 @@
     import { deleteEntity } from "../../../util/ListUtil";
     import ListUtil from "../wrappers/EditableList.svelte";
 
-    let apptitudesList = [];
+    let aptitudesList = [];
     const endpoint = "/api/aptitudes"
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
         console.log(response);
         if (response.status === 200) {
-            apptitudesList = response.data;
+            aptitudesList = response.data;
         }
     });
 
-    function createApptitude() {
-        const newApptitude = {
+    function createAptitude() {
+        const newAptitude = {
             id: null,
             name: "",
             isNew: true,
         };
-        apptitudesList = [...apptitudesList, newApptitude];
+        aptitudesList = [...aptitudesList, newAptitude];
     }
 
 
 </script>
 
 <ListUtil
-    bind:list={apptitudesList}
+    bind:list={aptitudesList}
     endpoint= {endpoint}
-    createRow={createApptitude}
+    createRow={createAptitude}
     let:item
     let:onSave
     let:onDelete
 >
     <ApptitudesRow
-        apptitude={item}
+        aptitude={item}
         onSave={onSave}
         onDelete={onDelete}
         endpoint={endpoint}

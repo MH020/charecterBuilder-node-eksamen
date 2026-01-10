@@ -18,7 +18,7 @@
     $: classPowers = clss?.powers ?? [];
     $: powersKnown = clss?.powers_known ?? [];
     $: classTraits = clss?.traits ?? [];
-    $: classApptitudes = clss?.aptitudes ?? [];
+    $: classAptitudes = clss?.aptitudes ?? [];
     $: classTalents = clss?.talents ?? [];
     $: weaponsTrainings = clss?.weapon_trainings ?? [];
     $: weaponsClasses = clss?.weapon_classes ?? [];
@@ -32,28 +32,27 @@
 
     function createBonus() {
         modalSelectCallback.set(async (selected) => {
-            console.log(selected);
-            const newbonus = {
+            const newBonus = {
                 id: null,
                 class_id: clss.id,
                 bonus: selected.bonus,
                 characteristic: selected.characteristic,
             };
-            const response = await fetchPost(endpoint + "/bonuses", newbonus);
-            newbonus.id = response.created.id;
+            const response = await fetchPost(endpoint + "/bonuses", newBonus);
+            newBonus.id = response.created.id;
 
             if (response.status === 201) {
                 classBonuses = [
                     ...classBonuses.filter(
                         (b) =>
-                            b.characteristic.id !== newbonus.characteristic.id,
+                            b.characteristic.id !== newBonus.characteristic.id,
                     ),
-                    newbonus,
+                    newBonus,
                 ];
             }
 
             modalSelectCallback.set(null);
-        });
+        }); //end of modal call back.
 
         openModal(ClassBonusCard);
     }
@@ -70,34 +69,31 @@
         }
     }
 
-    async function addApptitude() {
-        console.log(classApptitudes);
+    async function addAptitude() {
         modalSelectCallback.set(async (selected) => {
-            console.log(selected);
 
-            const newclassApptitude = {
+            const newClassAptitude = {
                 id: null,
                 class_id: clss.id,
                 aptitude: selected,
             };
 
             const response = await fetchPost(
-                endpoint + "/apptitudes",
+                endpoint + "/apptitudes", //refactor
                 selected,
             );
-            newclassApptitude.id = response.created.id;
+            newClassAptitude.id = response.created.id;
 
             if (response.status === 201) {
-                classApptitudes = [...classApptitudes, newclassApptitude];
+                classAptitudes = [...classAptitudes, newClassAptitude];
             }
             modalSelectCallback.set(null);
-            console.log(classApptitudes);
         });
 
         openModal(ApptitudesList);
     }
 
-    async function removeApptitude(apptitude) {
+    async function removeAptitude(apptitude) {
         console.log(apptitude);
         const response = await fetchDelete(
             endpoint + "/apptitudes",
@@ -105,8 +101,8 @@
         );
 
         if (response.status === 200) {
-            classApptitudes = [
-                ...classApptitudes.filter((a) => a.id !== apptitude.id),
+            classAptitudes = [
+                ...classAptitudes.filter((a) => a.id !== apptitude.id),
             ];
         }
     }
@@ -134,7 +130,7 @@
         openModal(WeaponClassList);
     }
 
-    async function removeWeaponProfecency(wp) {
+    async function removeWeaponProficiency(wp) {
         const response = await fetchDelete(endpoint + "/weapon-class", wp.id);
 
         if (response.status === 200) {
@@ -180,17 +176,17 @@
 
     async function addItems() {
         modalSelectCallback.set(async (selected) => {
-            const NewClassItem = {
+            const newClassItem = {
                 id: null,
                 class_id: clss.id,
                 item: selected,
             };
 
             const response = await fetchPost(endpoint + "/items", selected);
-            NewClassItem.id = response.created.id;
+            newClassItem.id = response.created.id;
 
             if (response.status === 201) {
-                classItems = [...classItems, NewClassItem];
+                classItems = [...classItems, newClassItem];
             }
             modalSelectCallback.set(null);
         });
@@ -208,17 +204,17 @@
 
     async function addTrait() {
         modalSelectCallback.set(async (selected) => {
-            const NewClassTrait = {
+            const newClassTrait = {
                 id: null,
                 class_id: clss.id,
                 trait: selected,
             };
 
             const response = await fetchPost(endpoint + "/traits", selected);
-            NewClassTrait.id = response.created.id;
+            newClassTrait.id = response.created.id;
 
             if (response.status === 201) {
-                classTraits = [...classTraits, NewClassTrait];
+                classTraits = [...classTraits, newClassTrait];
             }
             modalSelectCallback.set(null);
         });
@@ -255,9 +251,9 @@
     <ClassOverviewList
         label="Starting Aptitudes:"
         addLabel="+ Add aptitude"
-        items={classApptitudes}
-        onAdd={addApptitude}
-        onRemove={removeApptitude}
+        items={classAptitudes}
+        onAdd={addAptitude}
+        onRemove={removeAptitude}
     >
         <span slot="item" let:item>
             {item.aptitude.name}
@@ -269,7 +265,7 @@
         addLabel="+ Add Proficiency"
         items={weaponsClasses}
         onAdd={addWeaponProficiency}
-        onRemove={removeWeaponProfecency}
+        onRemove={removeWeaponProficiency}
     >
         <span slot="item" let:item>
             <DescriptionUtil item={item.weapon_class} />

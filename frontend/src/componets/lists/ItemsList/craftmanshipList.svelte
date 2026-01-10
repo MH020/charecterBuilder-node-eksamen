@@ -6,19 +6,19 @@
     import ListUtil from "../../wrappers/EditableList.svelte";
     
 
-    let craftmanships = [];
+    let craftsmanships = [];
     let sortType = "asc";
-    let endpoint = "/api/craftsmanship"
+    let endpoint = "/api/craftsmanship" //refactor
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
         if (response.status === 200) {
-            craftmanships = response.data;
+            craftsmanships = response.data;
         }
     });
 
     function createCraftmanship() {
-        const newCraftmanship = {
+        const newCraftsmanship = {
             id: null,
             name: "",
             description: "",
@@ -29,13 +29,13 @@
             category: "",
             isNew: true,
         };
-        craftmanships = [...craftmanships, newCraftmanship];
+        craftsmanships = [...craftsmanships, newCraftsmanship];
     }
 
 </script>
 
 <ListUtil
-    bind:list={craftmanships}
+    bind:list={craftsmanships}
     endpoint= {endpoint}
     createRow={createCraftmanship}
     let:item
@@ -43,7 +43,7 @@
     let:onDelete
 >
     <CraftsmanshipRow
-        craftmanship={item}
+        craftsmanship={item}
         onSave={onSave}
         onDelete={onDelete}
         endpoint={endpoint}

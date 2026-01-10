@@ -23,20 +23,21 @@
     }
 
 
-    function addpowerKnownColum(level){
-            const newPower = {
+    function addPowersKnownColumn(level){
+        const newPower = {
             id: crypto.randomUUID(),
             class_id: clss.id,
             powers_known: "",
             level: level,
             isNew: true
         };
+
         powersKnown = [...powersKnown, newPower]
         editingPowerId = newPower.id
     }
 
     async function addPowersKnown(level, power) {
-        let response    
+        let response;    
         
         const payload = {
             id: power.id, 
@@ -46,11 +47,9 @@
         };
 
         if (power.id  && !power.isNew) {
-
             response = await fetchUpdate(endpoint + "/powers-known", payload)
 
         } else {
-            console.log(payload)
             response = await fetchPost(
                 endpoint + "/powers-known",
                 payload,
@@ -59,7 +58,7 @@
         }
 
         if (response.status === 201) {
-             if (!powersKnown.some(p => p.id === power.id)) {
+            if (!powersKnown.some(p => p.id === power.id)) {
                 powersKnown = [...powersKnown, power];
             }
         }
@@ -76,6 +75,7 @@
     classTalents.forEach((talent) => {
         levels[talent.level - 1].talents.push(talent);
     });
+
     if (subClassTalents.length !== 0) {
         subClassTalents.forEach((subClasstalent) => {
             levels[subClasstalent.level - 1].talents.push({
@@ -84,14 +84,12 @@
         });
     }
 
-$: levels = levels.map(lvl => ({
-    ...lvl,
-    powers: powersKnown.filter(p => p.level === lvl.level),
-    
-}));
+    $: levels = levels.map(lvl => ({
+        ...lvl,
+        powers: powersKnown.filter(p => p.level === lvl.level),
+        
+    }));
 
-
-    console.log(levels)
 </script>
 
 <table class="level-table">
@@ -164,7 +162,7 @@ $: levels = levels.map(lvl => ({
                             {#if canEdit}
                                 <button
                                     class="powers-known-btn edit"
-                                    on:click={() => addpowerKnownColum(lvl.level)}
+                                    on:click={() => addPowersKnownColumn(lvl.level)}
                                 >
                                     + Add
                                 </button>

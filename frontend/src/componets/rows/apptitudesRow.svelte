@@ -2,19 +2,19 @@
   import { closeModal, modalSelectCallback } from "../../store/modalStore";
   import EditableRowSlot from "../wrappers/Editable.svelte";
 
-  export let apptitude;
+  export let aptitude;
   export let onSave;
   export let onDelete;
   export let endpoint;
-  let editableApptitude = structuredClone(apptitude);
+  let editableAptitude = structuredClone(aptitude);
 </script>
 
 <EditableRowSlot
-  item={apptitude}
+  item={aptitude}
   endpoint={endpoint}
   onSave={onSave}
   onDelete={onDelete}
-  bind:editable = {editableApptitude}
+  bind:editable = {editableAptitude}
   let:isEditing
   let:startEditing
   let:save
@@ -25,7 +25,7 @@
     {#if isEditing}
       <div class="cell-box">
         <div class="label">Name</div>
-        <input bind:value={editableApptitude.name} />
+        <input bind:value={editableAptitude.name} />
       </div>
 
       <div class="buttons">
@@ -35,7 +35,7 @@
     {:else}
       <div class="cell-box">
         <div class="label">Name</div>
-        <div>{apptitude.name || "----"}</div>
+        <div>{aptitude.name || "----"}</div>
       </div>
 
       <div class="buttons">
@@ -45,7 +45,7 @@
         {:else}
           <button
             on:click={() => {
-              $modalSelectCallback(apptitude);
+              $modalSelectCallback(aptitude);
               closeModal();
             }}
           >
