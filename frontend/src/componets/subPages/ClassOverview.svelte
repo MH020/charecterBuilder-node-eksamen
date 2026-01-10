@@ -8,6 +8,7 @@
     import TraitsList from "../lists/characterLists/TraitsList.svelte";
     import ItemsList from "../lists/ItemsList/itemsList.svelte";
     import WeaponClassList from "../lists/weaponLists/weaponClassList.svelte";
+    import ClassOverviewList from "../UI/ClassOverviewList.svelte";
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
     import LevelTable from "../UI/levelTable.svelte";
 
@@ -134,18 +135,14 @@
     }
 
     async function removeWeaponProfecency(wp) {
-        const response = await fetchDelete(
-            endpoint + "/weapon-class",
-            wp.id,
-        );
+        const response = await fetchDelete(endpoint + "/weapon-class", wp.id);
 
         if (response.status === 200) {
             weaponsClasses = [...weaponsClasses.filter((a) => a.id !== wp.id)];
         }
     }
 
-
-        async function addWeaponTraining() {
+    async function addWeaponTraining() {
         modalSelectCallback.set(async (selected) => {
             const classWeaponTraining = {
                 id: null,
@@ -175,12 +172,13 @@
         );
 
         if (response.status === 200) {
-            weaponsTrainings = [...weaponsTrainings.filter((ct) => ct.id !== wt.id)];
+            weaponsTrainings = [
+                ...weaponsTrainings.filter((ct) => ct.id !== wt.id),
+            ];
         }
     }
 
-
-            async function addItems() {
+    async function addItems() {
         modalSelectCallback.set(async (selected) => {
             const NewClassItem = {
                 id: null,
@@ -188,10 +186,7 @@
                 item: selected,
             };
 
-            const response = await fetchPost(
-                endpoint + "/items",
-                selected,
-            );
+            const response = await fetchPost(endpoint + "/items", selected);
             NewClassItem.id = response.created.id;
 
             if (response.status === 201) {
@@ -204,18 +199,14 @@
     }
 
     async function removeItems(wt) {
-        const response = await fetchDelete(
-            endpoint + "/items",
-            wt.id,
-        );
+        const response = await fetchDelete(endpoint + "/items", wt.id);
 
         if (response.status === 200) {
             classItems = [...classItems.filter((ct) => ct.id !== wt.id)];
         }
     }
 
-
-                async function addTrait() {
+    async function addTrait() {
         modalSelectCallback.set(async (selected) => {
             const NewClassTrait = {
                 id: null,
@@ -223,10 +214,7 @@
                 trait: selected,
             };
 
-            const response = await fetchPost(
-                endpoint + "/traits",
-                selected,
-            );
+            const response = await fetchPost(endpoint + "/traits", selected);
             NewClassTrait.id = response.created.id;
 
             if (response.status === 201) {
@@ -239,17 +227,12 @@
     }
 
     async function removeTrait(trait) {
-        const response = await fetchDelete(
-            endpoint + "/traits",
-            trait.id,
-        );
+        const response = await fetchDelete(endpoint + "/traits", trait.id);
 
         if (response.status === 200) {
             classTraits = [...classTraits.filter((t) => t.id !== trait.id)];
         }
     }
-
-
 </script>
 
 {#if clss}
@@ -257,248 +240,90 @@
         <h1>{clss.name}</h1>
     </div>
 
-    <div class="class-overview">
-        <div class="cell-box">
-            <div class="cell-header">
-                <div class="label">Characteristic Bonus:</div>
-                <button class="add" on:click={createBonus}>
-                    + Add bonus
-                </button>
-            </div>
+    <ClassOverviewList
+        label="Characteristic Bonus:"
+        addLabel="+ Characteristic Bonus"
+        items={classBonuses}
+        onAdd={createBonus}
+        onRemove={removeBonus}
+    >
+        <span slot="item" let:item>
+            {item.characteristic.name} + ({item.bonus})
+        </span>
+    </ClassOverviewList>
 
-            <div class="list">
-                {#each classBonuses as b (b.id)}
-                    <div class="item">
-                        <span><DescriptionUtil item={b.characteristic} /> + ({b.bonus})</span>
-                        <button
-                            class="delete-btn"
-                            on:click={() => removeBonus(b)}
-                            >Delete
-                        </button>
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
+    <ClassOverviewList
+        label="Starting Aptitudes:"
+        addLabel="+ Add aptitude"
+        items={classApptitudes}
+        onAdd={addApptitude}
+        onRemove={removeApptitude}
+    >
+        <span slot="item" let:item>
+            {item.aptitude.name}
+        </span>
+    </ClassOverviewList>
 
-    <div class="class-overview">
-        <div class="cell-box">
-            <div class="cell-header">
-                <div class="label">starting Apptitudes:</div>
-                <button class="add" on:click={addApptitude}>
-                    + Add apptitude
-                </button>
-            </div>
+    <ClassOverviewList
+        label="Weapon Proficiency:"
+        addLabel="+ Add Proficiency"
+        items={weaponsClasses}
+        onAdd={addWeaponProficiency}
+        onRemove={removeWeaponProfecency}
+    >
+        <span slot="item" let:item>
+            <DescriptionUtil item={item.weapon_class} />
+        </span>
+    </ClassOverviewList>
 
-            <div class="list">
-                {#each classApptitudes as a (a.id)}
-                    <div class="item">
-                        <span>{a.aptitude.name}</span>
-                        <button
-                            class="delete-btn"
-                            on:click={() => removeApptitude(a)}>Delete</button
-                        >
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
+    <ClassOverviewList
+        label="Weapon Training:"
+        addLabel="+ Add Weapon Training"
+        items={weaponsTrainings}
+        onAdd={addWeaponTraining}
+        onRemove={removeWeaponTraining}
+    >
+        <span slot="item" let:item>
+            <DescriptionUtil item={item.talent} />
+        </span>
+    </ClassOverviewList>
 
-    <div class="class-overview">
-        <div class="cell-box">
-            <div class="cell-header">
-                <div class="label">Weapon Proficiency:</div>
-                <button class="add" on:click={addWeaponProficiency}>
-                    + Add Proficiency
-                </button>
-            </div>
-
-            <div class="list">
-                {#each weaponsClasses as wp}
-                    <div class="item">
-                        <span><DescriptionUtil item={wp.weapon_class} /></span>
-                        <button
-                            class="delete-btn"
-                            on:click={() => removeWeaponProfecency(wp)}
-                            >Delete
-                        </button>
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
-
-
-        <div class="class-overview">
-        <div class="cell-box">
-            <div class="cell-header">
-                <div class="label">Weapon Training:</div>
-                <button class="add" on:click={addWeaponTraining}>
-                    + Add Weapon Training
-                </button>
-            </div>
-
-            <div class="list">
-                {#each weaponsTrainings as wt}
-                    <div class="item">
-                        <span><DescriptionUtil item={wt.talent} /></span>
-                        <button
-                            class="delete-btn"
-                            on:click={() => removeWeaponTraining(wt)}
-                            >Delete
-                        </button>
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
-
-
-            <div class="class-overview">
-        <div class="cell-box">
-            <div class="cell-header">
-                <div class="label">Specialist Equipment:</div>
-                <button class="add" on:click={addItems}>
-                    + Add Specialist Equipment
-                </button>
-            </div>
-
-            <div class="list">
-                {#each classItems as ci}
-                    <div class="item">
-                        <span><DescriptionUtil item={ci.item} /></span>
-                        <button
-                            class="delete-btn"
-                            on:click={() => removeItems(ci)}
-                            >Delete
-                        </button>
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
-
+    <ClassOverviewList
+        label="Specialist Equipment:"
+        addLabel="+ Add Specialist Equipment"
+        items={classItems}
+        onAdd={addItems}
+        onRemove={removeItems}
+    >
+        <span slot="item" let:item>
+            <DescriptionUtil item={item.item} />
+        </span>
+    </ClassOverviewList>
 
     {#if startingTraits.length !== 0}
-        <div class="class-overview">
-            <div class="cell-box">
-                <div class="cell-header">
-                    <div class="label">Starting Traits:</div>
-                    <button class="add" on:click={addTrait}>
-                        + Add Starting Traits
-                    </button>
-                </div>
-
-                <div class="list">
-                    {#each classTraits as t}
-                        <div class="item">
-                            <span><DescriptionUtil item={t.trait} /></span>
-                            <button
-                                class="delete-btn"
-                                on:click={() => removeTrait(t)}
-                                >Delete
-                            </button>
-                        </div>
-                    {/each}
-                </div>
-            </div>
-        </div>
+        <ClassOverviewList
+            label="Starting Traits:"
+            addLabel="+ Add Starting Traits"
+            items={classTraits}
+            onAdd={addTrait}
+            onRemove={removeTrait}
+        >
+            <span slot="item" let:item>
+                <DescriptionUtil item={item.trait} />
+            </span>
+        </ClassOverviewList>
     {/if}
 
     {#if clss.parent_id === null}
-        <LevelTable bind:classTalents bind:subClassTalents bind:powersKnown 
-            clss = {clss}
-            endpoint = {endpoint}
-            classPowers = {classPowers}
-            />
+        <LevelTable
+            bind:classTalents
+            bind:subClassTalents
+            bind:powersKnown
+            {clss}
+            {endpoint}
+            {classPowers}
+        />
     {/if}
 {:else}
     <p>Loading class…</p>
 {/if}
-
-<style>
-
-.class-overview {
-    background: var(--bg-panel, #1a1a1a);
-    border: 1px solid var(--border-dark, #333);
-     width: 100%;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    padding: 1rem 1.25rem;
-}
-
-
-.cell-box {
-    display: grid;
-    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
-    gap: 1.5rem;
-    align-items: start;
-}
-
-
-
-
-.cell-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #ffb86c;
-    line-height: 1.3;
-}
-
-
-.list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-
-.item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-
-    width: 90%;
-    min-height: 2.4rem;
-
-    padding: 0.55rem 0.9rem;
-    background: #111;
-    border: 1px solid var(--border-dark, #333);
-    border-radius: 4px;
-
-    font-family: 'Courier New', monospace;
-}
-
-
-.item span {
-    flex: 1;
-    min-width: 0;
-}
-
-
-.add,
-.delete-btn {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.55rem;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.delete-btn {
-    opacity: 0.85;
-}
-
-.delete-btn:hover {
-    opacity: 1;
-}
-
-</style>
