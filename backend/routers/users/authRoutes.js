@@ -30,13 +30,19 @@ router.get('/api/users/id', isLoggedIn, async (req, res) => {
   }
 })
 
+
+router.get('/api/me', isLoggedIn, (req, res) => {
+  res.status(200).send({
+    user: req.session.user
+  });
+});
+
 router.post('/api/login', async (req, res) => {
   const { password, email } = req.body
   const result = await db.query('SELECT * FROM "user" WHERE email = $1', [email])
   const user = result.rows[0]
-  console.log(user)
 
-  if (result.length === 0 || !auth.validatePassword(password, user.password)) {
+  if (result.rows.length === 0 || !auth.validatePassword(password, user.password)) {
     return res.status(401).send({ message: 'incorrect' })
   }
 
@@ -47,9 +53,10 @@ router.post('/api/login', async (req, res) => {
   req.session.user = {
     id: user.id,
     name: user.username,
+    email: user.email,
     role: user.role
   }
-  return res.status(200).send({ message: 'login successful' })
+  return res.status(200).send({ message: 'login successful', user: req.session.user })
 })
 
 router.post('/api/users', async (req, res) => {
@@ -70,9 +77,9 @@ router.post('/api/users', async (req, res) => {
     const hashPassword = await auth.encryptPassword(password)
 
     await db.query(
-            `INSERT INTO users (username, password, email, verified, verification_code)
+      `INSERT INTO users (username, password, email, verified, verification_code)
              VALUES ($1, $2, $3, 0, $4)`,
-            [username, hashPassword, email, verificationCode]
+      [username, hashPassword, email, verificationCode]
     )
 
     const singupHTML = buildSingupEmail(username, verificationCode)
