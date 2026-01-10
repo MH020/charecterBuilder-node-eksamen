@@ -12,6 +12,7 @@
   import BaseModal from "./componets/modal/BaseModal.svelte";
   import Adminlayout from "./componets/layouts/adminlayout.svelte";
   import ClassPage from "./pages/classPage.svelte";
+    import CreateSheetPage from "./pages/createSheetPage.svelte";
 
   let user = null;
   let loading = true;
@@ -55,6 +56,12 @@
               <Route path="/subclass/*">
         <Adminlayout>
           <ClassPage />
+        </Adminlayout>
+      </Route>
+
+        <Route path="/newSheet">
+        <Adminlayout>
+          <CreateSheetPage />
         </Adminlayout>
       </Route>
     {/if}
