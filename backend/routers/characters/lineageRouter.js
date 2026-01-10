@@ -62,18 +62,18 @@ router.post('/api/lineages', async (req, res) => {
       return res.status(400).send({ message: 'missing fields' })
     }
 
-    const is_custom = req.session.user?.role === 'ADMIN'
+    const isCustom = req.session.user?.role === 'ADMIN'
 
     const result = await db.query(
             `INSERT INTO lineage ("name", description, defining_features, required_race_id, is_custom) 
             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [name, description, defining_features, required_race.id, is_custom]
+            [name, description, defining_features, required_race.id, isCustom]
     )
     const createdLineage = result.rows[0]
 
     for (const bonus of bonuses) {
       await db.query('INSERT INTO lineage_characteristic_bonus (lineage_id, characteristic_id, bonus, is_custom) VALUES ($1, $2, $3, $4)',
-        [id, bonus.characteristic_id, bonus.bonus, is_custom])
+        [id, bonus.characteristic_id, bonus.bonus, isCustom])
     }
 
     for (const apptitude of aptitudes) {
@@ -81,6 +81,7 @@ router.post('/api/lineages', async (req, res) => {
         [id, apptitude.aptitude_id])
     }
     return res.status(201).send({ message: 'lineage created sucessfully', created: createdLineage })
+    
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
@@ -120,12 +121,9 @@ router.put('/api/lineages/:id', async (req, res) => {
 router.delete('/api/lineages/:id', async (req, res) => {
   try {
     const { id } = req.params
-    console.log('skillid?', id)
 
     await db.query('DELETE FROM lineage_characteristic_bonus WHERE lineage_id = $1', [id])
-
     await db.query('DELETE FROM lineage_aptitude WHERE lineage_id = $1', [id])
-
     await db.query('DELETE FROM lineage where id = $1 ', [id])
 
     return res.status(200).send({ message: 'armor deleted' })

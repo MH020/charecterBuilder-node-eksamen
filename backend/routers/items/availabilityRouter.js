@@ -4,11 +4,11 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/availability', async (req, res) => {
+router.get('/api/availability', async (req, res) => { //refactor: 'api/availabilities'
   try {
     const result = await db.query('SELECT * FROM "availability"')
-    const availabilityties = result.rows
-    return res.status(200).send(availabilityties)
+    const availabilities = result.rows
+    return res.status(200).send(availabilities)
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

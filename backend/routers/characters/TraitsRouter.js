@@ -1,3 +1,5 @@
+// TraitsRouter.js -> traitRouter.js (remove after refactor)
+
 import Router from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -42,13 +44,13 @@ router.post('/api/traits', async (req, res) => {
       return res.status(400).send({ message: 'wrong category' })
     }
 
-    const is_custom = req.session.user?.role === 'ADMIN'
+    const isCustom = req.session.user?.role === 'ADMIN'
 
     const result = await db.query(
             `INSERT INTO trait (name, description, has_input, race_id, is_custom, category)
             VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
 
-            [name, description, has_input || false, category, race.id || null, is_custom]
+            [name, description, has_input || false, category, race.id || null, isCustom]
     )
     const createdTrait = result.rows[0]
 
@@ -70,7 +72,7 @@ router.put('/api/traits/:id', async (req, res) => {
                         name = $1, description = $2, has_input = $3, category = $4, race_id = $5
                         WHERE id = $6`,
 
-    [name, description, has_input || false, category, race.id || null, id]
+                        [name, description, has_input || false, category, race.id || null, id]
     )
 
     return res.status(200).send({ message: 'trait updated' })

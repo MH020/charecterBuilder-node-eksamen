@@ -52,7 +52,6 @@ router.put('/api/characteristics/:id', async (req, res) => {
 router.delete('/api/characteristics/:id', async (req, res) => {
   try {
     const { id } = req.params
-    console.log('skillid?', id)
 
     await db.query(
       'DELETE FROM characteristic where id = $1 ', [id]

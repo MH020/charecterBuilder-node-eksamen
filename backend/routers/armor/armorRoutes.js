@@ -1,3 +1,5 @@
+// armorRoutes.js -> armorRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -28,7 +30,7 @@ router.get('/api/armors', async (req, res) => {
 router.post('/api/armors', async (req, res) => {
   try {
     const {
-      name, description, head_ap, body_ap,
+      name, description, head_ap, body_ap, //headAp, bodyAp, etc.
       right_arm_ap, left_arm_ap, right_leg_ap, left_leg_ap, wt, availability
     } = req.body
 
@@ -36,12 +38,12 @@ router.post('/api/armors', async (req, res) => {
       return res.status(400).send({ message: 'missing fields' })
     }
 
-    const is_custom = req.session.user?.role === 'ADMIN'
+    const isCustom = req.session.user?.role === 'ADMIN'
 
     const result = await db.query(
             `INSERT INTO armor ("name", description, head_ap, body_ap, right_arm_ap, left_arm_ap, right_leg_ap, left_leg_ap, wt, 
       availability_id, is_custom) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
-            [name, description, head_ap, body_ap, right_arm_ap, left_arm_ap, right_leg_ap, left_leg_ap, wt, availability.id, is_custom]
+            [name, description, head_ap, body_ap, right_arm_ap, left_arm_ap, right_leg_ap, left_leg_ap, wt, availability.id, isCustom]
     )
     const createdArmor = result.rows[0]
     return res.status(201).send({ message: 'armor created sucessfully', created: createdArmor })

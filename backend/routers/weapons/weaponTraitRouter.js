@@ -4,8 +4,8 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/weapon/traits', async (req, res) => {
-  try {
+router.get('/api/weapon/traits', async (req, res) => { //refactor (all endpoints): '/api/weapons/(...)'
+  try { 
     const result = await db.query('SELECT * FROM weapon_trait')
     const weaponTraits = result.rows
     return res.status(200).send(weaponTraits)
@@ -22,10 +22,10 @@ router.post('/api/weapon/traits', async (req, res) => {
     if (!name || !description) {
       return res.status(400).send({ message: 'missing fields' })
     }
-    const is_custom = req.session.user?.role === 'ADMIN' || false
+    const isCustom = req.session.user?.role === 'ADMIN' || false
     const result = await db.query(
       'INSERT INTO weapon_trait ("name", description, is_custom) VALUES ($1, $2, $3) RETURNING *',
-      [name, description, is_custom]
+      [name, description, isCustom]
     )
     const createdTrait = result.rows[0]
     return res.status(201).send({ message: 'weapon trait created sucessfully', created: createdTrait })

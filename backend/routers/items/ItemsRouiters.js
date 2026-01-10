@@ -1,3 +1,5 @@
+// ItemsRouiters.js -> itemRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -37,13 +39,11 @@ router.post('/api/items', async (req, res) => {
     if (!name || !description || !category || !availability) {
       return res.status(400).send({ message: 'missing fields' })
     }
-    const is_custom = req.session.user?.role === 'ADMIN'
-
-    console.log('here?')
+    const isCustom = req.session.user?.role === 'ADMIN'
 
     const result = await db.query(
       'INSERT INTO item ("name", description, category_id, availability_id, is_custom) VALUES ($1, $2, $3, $4 ,$5) RETURNING *',
-      [name, description, category.id, availability.id, is_custom]
+      [name, description, category.id, availability.id, isCustom]
     )
     const createdItem = result.rows[0]
     return res.status(201).send({ message: 'item created sucessfully', created: createdItem })

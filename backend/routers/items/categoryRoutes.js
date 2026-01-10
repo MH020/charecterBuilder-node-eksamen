@@ -1,14 +1,16 @@
+// categoryRoutes.js -> categoryRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/category', async (req, res) => {
+router.get('/api/category', async (req, res) => { //refactor (all endpoints): '/api/categories'
   try {
     const result = await db.query('SELECT * FROM category')
-    const categoryies = result.rows
-    return res.status(200).send(categoryies)
+    const categories = result.rows
+    return res.status(200).send(categories)
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

@@ -1,3 +1,5 @@
+// racesRouter.js -> raceRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'

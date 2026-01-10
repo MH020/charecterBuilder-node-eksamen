@@ -1,3 +1,5 @@
+// talentsRouter.js -> talentRouter.js (remove after refactor)
+
 import Router from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -71,14 +73,14 @@ router.post('/api/talents', async (req, res) => {
       return res.status(400).send({ message: 'wrong type' })
     }
 
-    const is_custom = req.session.user?.role === 'ADMIN'
+    const isCustom = req.session.user?.role === 'ADMIN'
 
     const result = await db.query(
             `INSERT INTO talent (name, description, type, asi, prerequisite_talent_id, required_race_id, lineage_id, is_custom)
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
 
             [name, description, type, asi || false, prerequisite_talent.id || null, required_race.id || null,
-              required_lineage.id || null, is_custom
+              required_lineage.id || null, isCustom
             ]
     )
     const createdTalent = result.rows[0]
@@ -106,9 +108,10 @@ router.put('/api/talents/:id', async (req, res) => {
                         name = $1, description = $2, type = $3, prerequisite_talent_id = $4, required_race_id = $5,
                         lineage_id = $6, asi = $7 
                         WHERE id = $8`,
-    [name, description, type, prerequisite_talent.id || null, required_race.id,
-      required_lineage.id || null, asi || false, id
-    ])
+                        [name, description, type, prerequisite_talent.id || null, required_race.id,
+                          required_lineage.id || null, asi || false, id
+                        ]
+    )
 
     await db.query('DELETE FROM talent_aptitude WHERE talent_id = $1', [id])
 

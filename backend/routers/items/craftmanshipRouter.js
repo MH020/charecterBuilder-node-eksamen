@@ -1,14 +1,18 @@
+// craftmanshipRouter.js -> craftsmanshipRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/craftsmanship', async (req, res) => {
+router.get('/api/craftsmanship', async (req, res) => { //refactor (all endpoints): 'api/craftsmanships'
   try {
     const result = await db.query(`
-      SELECT * from craftsmanship`)
+      SELECT * from craftsmanship`
+    )
     const items = result.rows
+    
     return res.status(200).send(items)
   } catch (error) {
     console.error(error)

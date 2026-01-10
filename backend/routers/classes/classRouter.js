@@ -117,7 +117,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY ct.level;
         `, [id])
 
-    const aptitudesRows = await db.query(`
+    const aptitudeRows = await db.query(`
             SELECT
                 ca.id,
                 ca.class_id,
@@ -131,7 +131,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY ca.id;
         `, [id])
 
-    const talentsRows = await db.query(`
+    const talentRows = await db.query(`
             SELECT
                 ct.id,
                 ct.class_id,
@@ -148,7 +148,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY ct.level;
         `, [id])
 
-    const subClasstalentsRows = await db.query(`
+    const subClassTalentRows = await db.query(`
             SELECT
                 ct.id,
                 ct.class_id,
@@ -194,7 +194,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY cwc.id;
         `, [id])
 
-    const bonusesRows = await db.query(`
+    const bonusRows = await db.query(`
             SELECT 
                 cb.id,
                 cb.class_id,
@@ -211,7 +211,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
         `, [id])
 
 
-        const classItemsRows = await db.query(`
+        const classItemRows = await db.query(`
             SELECT 
                 ci.id,
                 ci.class_id,
@@ -237,13 +237,13 @@ router.get('/api/classes/:id/full', async (req, res) => {
       powers: powerRows.rows,
       powers_known: powersKnownResult.rows,
       traits: traitRows.rows,
-      aptitudes: aptitudesRows.rows,
-      talents: talentsRows.rows,
-      SubclassTalents: subClasstalentsRows.rows,
-      weapon_trainings: weaponTrainingRows.rows,
-      weapon_classes: weaponClassRows.rows,
-      bonuses: bonusesRows.rows,
-      items: classItemsRows.rows
+      aptitudes: aptitudeRows.rows,
+      talents: talentRows.rows,
+      SubclassTalents: subClassTalentRows.rows, //subclassTalents (refactor)
+      weapon_trainings: weaponTrainingRows.rows, //weaponTrainings
+      weapon_classes: weaponClassRows.rows, //weaponClasses
+      bonuses: bonusRows.rows,
+      items: classItemRows.rows
     }
 
     if (classRow.rows.length === 0) {
@@ -360,7 +360,7 @@ router.post('/api/classes/:id/bonuses', async (req, res) => {
   }
 })
 
-router.post('/api/classes/:classID/apptitudes', async (req, res) => {
+router.post('/api/classes/:classID/apptitudes', async (req, res) => { //refactor: '(...)/:class-id/(...)'
   try {
     const { classID } = req.params
     const { id, name } = req.body
@@ -386,16 +386,16 @@ router.post('/api/classes/:classID/apptitudes', async (req, res) => {
 
             [classID, id]
     )
-    const createdclassApptitude = result.rows[0]
+    const createdClassApptitude = result.rows[0]
 
-    return res.status(201).send({ message: 'apptitude added to class', created: createdclassApptitude })
+    return res.status(201).send({ message: 'apptitude added to class', created: createdClassApptitude })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.post('/api/classes/:classID/weapon-class', async (req, res) => {
+router.post('/api/classes/:classID/weapon-class', async (req, res) => {  //refactor: '(...)/:class-id/(...)'
   try {
     const { classID } = req.params
     const { id } = req.body
@@ -431,7 +431,7 @@ router.post('/api/classes/:classID/weapon-class', async (req, res) => {
 })
 
 
-router.post('/api/classes/:classID/weapon-training', async (req, res) => {
+router.post('/api/classes/:classID/weapon-training', async (req, res) => {  //refactor: '(...)/:class-id/weapon-trainings'
   try {
     const { classID } = req.params
     const { id } = req.body
@@ -466,7 +466,7 @@ router.post('/api/classes/:classID/weapon-training', async (req, res) => {
   }
 })
 
-router.post('/api/classes/:classID/items', async (req, res) => {
+router.post('/api/classes/:classID/items', async (req, res) => { //refactor: '(...)/:class-id/(...)'
   try {
     const { classID } = req.params
     const { id } = req.body

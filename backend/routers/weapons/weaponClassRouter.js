@@ -4,7 +4,7 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/weapon/classes', async (req, res) => {
+router.get('/api/weapon/classes', async (req, res) => {  //refactor (all endpoints): '/api/weapons/(...)'
   try {
     const result = await db.query('SELECT * FROM weapon_class')
     const weaponClasses = result.rows
