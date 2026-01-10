@@ -5,20 +5,20 @@
     import ListUtil from "../../wrappers/EditableList.svelte";
 
 
-    let Statlines = [];
+    let statLines = [];
  
-    const endpoint = "/api/statlines"
+    const endpoint = "/api/statlines" //refactor
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
         console.log(response);
         if (response.status === 200) {
-            Statlines = response.data;
+            statLines = response.data;
         }
     });
 
-    function createStatline() {
-        const newStatline = {
+    function createStatLine() {
+        const newStatLine = {
             id: null,
             name: "",
             weapon_skill: 0,
@@ -32,20 +32,20 @@
             fellowship: 0,
             isNew: true,
         };
-        Statlines = [...Statlines, newStatline];
+        statLines = [...statLines, newStatLine];
     }
 </script>
 
 <ListUtil
-    bind:list={Statlines}
+    bind:list={statLines}
     endpoint= {endpoint}
-    createRow={createStatline}
+    createRow={createStatLine}
     let:item
     let:onSave
     let:onDelete
 >
     <StatlineRow
-        statline={item}
+        statLine={item}
         onSave={onSave}
         onDelete={onDelete}
         endpoint={endpoint}

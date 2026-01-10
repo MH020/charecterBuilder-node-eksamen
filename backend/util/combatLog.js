@@ -31,5 +31,3 @@ io.on('connection', (socket) => {
     console.log('Socket disconnected', socket.id)
   })
 })
-
-// http server why ?

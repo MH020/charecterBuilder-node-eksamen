@@ -1,9 +1,11 @@
+// classPowersRouter.js -> classPowerRouter.js (remove after refactor)
+
 import Router from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 const router = Router()
 
-router.get('/api/class/:id/powers', async (req, res) => {
+router.get('/api/class/:id/powers', async (req, res) => { //refactor: '/api/classes/(...)'
   const { id } = req.params
   try {
     const result = await db.query(`
@@ -27,7 +29,10 @@ router.get('/api/class/:id/powers', async (req, res) => {
         JOIN powers_category pc ON pc.id = p.powers_category_id
         WHERE cp.class_id = $1
         ORDER BY cp.level;
-        `, [id])
+        `, 
+        [id]
+    )
+    
     const classPowers = result.rows
 
     return res.status(200).send(classPowers)
@@ -37,7 +42,7 @@ router.get('/api/class/:id/powers', async (req, res) => {
   }
 })
 
-router.post('/api/class/:id/powers', async (req, res) => {
+router.post('/api/class/:id/powers', async (req, res) => { //refactor: '/api/classes/(...)'
   const { id } = req.params
   try {
     const { level, power } = req.body
@@ -95,9 +100,9 @@ router.post('/api/class/:id/powers', async (req, res) => {
   }
 })
 
-router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
+router.put('/api/class/:classID/powers/:powerID', async (req, res) => { //refactor: '/api/classes/:class-id/powers/:power-id'
   try {
-    const { classID, powerID } = req.params
+    const { classId, powerId } = req.params 
     const { level, power } = req.body
 
     await db.query(`UPDATE power SET
@@ -105,17 +110,17 @@ router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
                         actions = $6, concentration = $7, dc = $8, range = $9, shape = $10
                         WHERE id = $11`,
 
-    [power.name, power.description, power.category.id, power.ascendant, power.duration,
-      power.actions, power.concentration, power.dc, power.range, power.shape,
-      power.id
-    ]
+                        [power.name, power.description, power.category.id, power.ascendant, power.duration,
+                          power.actions, power.concentration, power.dc, power.range, power.shape,
+                          power.id
+                        ]
     )
 
     await db.query(
             `UPDATE class_powers
             SET level = $1
             WHERE class_id = $2 AND power_id = $3`,
-            [level, classID, powerID]
+            [level, classId, powerId]
     )
 
     return res.status(200).send({ message: 'power updated' })
@@ -125,20 +130,20 @@ router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
   }
 })
 
-router.delete('/api/class/:classID/powers/:powerID', async (req, res) => {
+router.delete('/api/class/:classID/powers/:powerID', async (req, res) => { //refactor: '/api/classes/:class-id/powers/:power-id'
   try {
-    const classID = Number(req.params.classID)
-    const powerID = Number(req.params.powerID)
+    const classId = Number(req.params.classID)
+    const powerId = Number(req.params.powerID)
 
-    console.log(classID, powerID)
+    console.log(classId, powerId)
 
     const result = await db.query(
       'DELETE FROM class_powers WHERE class_id = $1 AND power_id = $2 RETURNING *',
-      [classID, powerID]
+      [classId, powerId]
     )
     console.log('deleted rows:', result.rowCount)
 
-    await db.query('DELETE FROM "power" where id = $1', [powerID])
+    await db.query('DELETE FROM "power" where id = $1', [powerId])
 
     return res.status(200).send({ message: 'power deleted' })
   } catch (error) {

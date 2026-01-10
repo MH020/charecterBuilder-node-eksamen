@@ -1,9 +1,11 @@
+// authRoutes.js -> authRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import auth from '../../util/encrypter.js'
 import db from '../../db/connection.js'
 import sendMail from '../../util/nodeMailer.js'
 import crypto from 'crypto'
-import { buildSingupEmail } from '../../util/emailPageBuilder.js'
+import { buildSingupEmail as buildSignUpEmail } from '../../util/emailPageBuilder.js'
 import { rateLimit } from 'express-rate-limit'
 import { isLoggedIn } from '../../middleware/auth.js'
 
@@ -75,19 +77,19 @@ router.post('/api/users', async (req, res) => {
             [username, hashPassword, email, verificationCode]
     )
 
-    const singupHTML = buildSingupEmail(username, verificationCode)
+    const signUpHTML = buildSignUpEmail(username, verificationCode)
 
     // email needs to be sent
-    sendMail(email, 'vaify signup', 'welcome to the front soldier', singupHTML)
+    sendMail(email, 'verify signup', 'welcome to the front, soldier', signUpHTML)
 
-    return res.status(201).send({ message: 'User created successfully a email has been sent with the ferification code' })
+    return res.status(201).send({ message: 'User created successfully. An email has been sent with the verification code' })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.post('/api/vaify', async (req, res) => {
+router.post('/api/vaify', async (req, res) => { //refactor: '/api/verify'
   try {
     const { verificationCode } = req.body
     const result = await db.query('SELECT * FROM "user" WHERE verification_code = $1', [verificationCode])

@@ -20,12 +20,10 @@ const pool = new Pool({
 })
 
 try {
-  const res = await pool.query('SELECT NOW()')
+  const res = await pool.query('SELECT NOW()') //response
   console.log(res.rows)
 } catch (err) {
   console.error(err)
-} finally {
-  // await pool.end()
 }
 
 export default pool

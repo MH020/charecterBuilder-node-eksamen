@@ -1,3 +1,5 @@
+// weaponsRouter.js -> weaponRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -106,13 +108,13 @@ router.put('/api/weapons/:id', async (req, res) => {
     console.log(id)
     const { type, name, range, hands, rof, damage, pen, clip, reload, wt, category, availability, classes, traits } = req.body
 
-    const is_custom = req.session.user?.role === 'ADMIN' || false
+    const isCustom = req.session.user?.role === 'ADMIN' || false
 
     const result = await db.query(
             `UPDATE weapon SET type = $1, category_id = $2, name = $3, range = $4, hands = $5, rof = $6, damage = $7, pen = $8, clip = $9,
                 reload = $10, wt = $11, availability_id = $12, is_custom = $13 WHERE id = $14
             RETURNING *`,
-            [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom, id]
+            [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, isCustom, id]
     )
 
     const updatedWeapon = result.rows[0]

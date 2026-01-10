@@ -1,3 +1,5 @@
+// powerCategory.js -> powerCategoryRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -7,8 +9,8 @@ const router = Router()
 router.get('/api/power-categories', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM powers_category')
-    const powersCategoryies = result.rows
-    return res.status(200).send(powersCategoryies)
+    const powerCategories = result.rows
+    return res.status(200).send(powerCategories)
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

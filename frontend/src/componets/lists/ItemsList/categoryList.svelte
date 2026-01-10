@@ -5,13 +5,13 @@
     import CategoryRow from "../../rows/CategoryRow.svelte";
     import ListUtil from "../../wrappers/EditableList.svelte";
 
-    let categoryies = [];
-    let endpoint = "/api/Category"
+    let categories = [];
+    let endpoint = "/api/Category" //refactor
 
     onMount(async () => {
         const response = await fetchGet(endpoint);
         if (response.status === 200) {
-            categoryies = response.data;
+            categories = response.data;
         }
     });
 
@@ -23,13 +23,13 @@
             category_type: "",
             isNew: true,
         };
-        categoryies = [...categoryies, newCategory];
+        categories = [...categories, newCategory];
     }
 
 </script>
 
 <ListUtil
-    bind:list={categoryies}
+    bind:list={categories}
     endpoint= {endpoint}
     createRow={createCategory}
     let:item

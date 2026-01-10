@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { spawn } from 'child_process'
+import { spawn } from 'child_process' //threads
 
 const dbDevUrl = process.env.DB_URI_DEV
 const dbProdUrl = process.env.DB_URI_PROD

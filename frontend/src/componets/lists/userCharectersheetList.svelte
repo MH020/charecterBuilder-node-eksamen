@@ -3,21 +3,19 @@
     import { onMount } from 'svelte';
 
     export let data;
-    let charectersheetList = [];
+    let characterSheetList = [];
     let uniqueClasses;
     let selectedClass = "all"; 
     let filteredSheets = [];
     let selectedSort = "recent";
 
-
     onMount(async () => {
-            charectersheetList = data
-            uniqueClasses = new Set(charectersheetList.map(sheet => sheet.class))
+        characterSheetList = data
+        uniqueClasses = new Set(characterSheetList.map(sheet => sheet.class))
     });
 
-
     $: {
-        let classSheets = selectedClass === "all" ? charectersheetList : charectersheetList.filter(sheet => sheet.class === selectedClass);
+        let classSheets = selectedClass === "all" ? characterSheetList : characterSheetList.filter(sheet => sheet.class === selectedClass);
 
         if(selectedSort === "recent"){
             filteredSheets = [...classSheets].sort((a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime());

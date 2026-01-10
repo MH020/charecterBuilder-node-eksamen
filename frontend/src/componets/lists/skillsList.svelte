@@ -27,9 +27,7 @@
             isNew: true,
         };
         skills = [...skills, newSkill];
-        console.log(skills);
     }
-
 </script>
 
 <ListUtil

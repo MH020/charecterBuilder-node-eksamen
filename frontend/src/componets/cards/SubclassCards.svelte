@@ -1,26 +1,25 @@
 <script>
-    import { navigate } from "svelte-routing";
-    import { user } from "../../store/userStore";
+  import { navigate } from "svelte-routing";
+  import { user } from "../../store/userStore";
 
-
-  export let subClass;
+  export let subclass;
   export let onSave;
   export let onDelete;
 
   $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
-  let isEditing = subClass.isNew ?? false;
-  let editableSubclass = structuredClone(subClass);
+  let isEditing = subclass.isNew ?? false;
+  let editableSubclass = structuredClone(subclass);
 
   function startEdit() {
-    editableSubclass = structuredClone(subClass);
+    editableSubclass = structuredClone(subclass);
     isEditing = true;
   }
 
   function cancel() {
-    if (subClass.isNew) {
-      onDelete(subClass.id, null, true); 
+    if (subclass.isNew) {
+      onDelete(subclass.id, null, true); 
     } else {
-      editableSubclass = structuredClone(subClass);
+      editableSubclass = structuredClone(subclass);
       isEditing = false;
     }
   }
@@ -49,19 +48,19 @@
     </div>
   {:else}
 
-    <div class="name">{subClass.name}</div>
+    <div class="name">{subclass.name}</div>
 
     <div class="stat-cell">
       <div class="label">Subclass description</div>
-      <div class="value">{subClass.description}</div>
+      <div class="value">{subclass.description}</div>
     </div>
 
     <div class="buttons">
       {#if canEdit}
         <button on:click={startEdit}>Edit</button>
-        <button on:click={() => onDelete(subClass.id, subClass.id)}>Delete</button>
+        <button on:click={() => onDelete(subclass.id, subclass.id)}>Delete</button>
       {/if}
-      <button on:click={() => navigate(`/subclass/?id=${subClass.id}`)}>subclass page</button>
+      <button on:click={() => navigate(`/subclass/?id=${subclass.id}`)}>subclass page</button>
     </div>
   {/if}
 </div>

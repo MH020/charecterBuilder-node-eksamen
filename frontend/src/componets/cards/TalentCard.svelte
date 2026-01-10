@@ -1,45 +1,45 @@
 <script>
     import DescriptionUtil from "../UI/DescriptionUtil.svelte";
 
-  export let Talent;
+  export let talent;
 </script>
 
 
 <div class="card">
 
-    <div class="name">{Talent.name }</div>
+    <div class="name">{talent.name }</div>
 
     <div class="stat-cell">
         <div class="label">Talent description</div>
-        <div class="value">{Talent.description }</div>
+        <div class="value">{talent.description }</div>
     </div>
-    {#if Talent.type}
+    {#if talent.type}
           <div class="stat-cell">
         <div class="label">type</div>
-        <div class="value">{Talent.type }</div>
+        <div class="value">{talent.type }</div>
     </div>
     {/if}
 
-    {#if Talent.prerequisite_talent}
+    {#if talent.prerequisite_talent}
           <div class="stat-cell">
         <div class="label">prerequisite talent</div>
-        <DescriptionUtil item = {Talent.prerequisite_talent} />
+        <DescriptionUtil item = {talent.prerequisite_talent} />
     </div>
     {/if}
 
-    {#if Talent.required_race}
+    {#if talent.required_race}
       <div class="stat-cell">
         <div class="label">required race</div>
-        <div class="value">{Talent.required_race.name }</div>
+        <div class="value">{talent.required_race.name }</div>
     </div>
     {/if}
 
-    {#if Talent.apptitudes}
+    {#if talent.apptitudes}
           <div class="stat-cell">
         <div class="label">aptitudes</div>
         <div class="value">
-            {#each Talent.aptitudes as aptitude, i}
-            {aptitude.name}{i < Talent.aptitudes.length - 1 ? ', ' : ''}
+            {#each talent.aptitudes as aptitude, i}
+            {aptitude.name}{i < talent.aptitudes.length - 1 ? ', ' : ''}
             {/each}
         </div>
     </div>

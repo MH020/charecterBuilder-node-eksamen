@@ -4,15 +4,15 @@
     import { user } from "../../store/userStore";
     import ClassPowersCategoryList from "../lists/classes/ClassPowersCategoryList.svelte";
 
-    export let PowerElement;
+    export let powerElement;
     export let onSave;
     export let onDelete;
 
     $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
 
     let selecting = false;
-    let editablePowerElement = structuredClone(PowerElement);
-    let isEditing = PowerElement.isNew ?? false;
+    let editablePowerElement = structuredClone(powerElement);
+    let isEditing = powerElement.isNew ?? false;
 
     function selectPreReq() {
         selecting = true;
@@ -32,16 +32,16 @@
     }
 
     function startEdit() {
-        editablePowerElement = structuredClone(PowerElement);
+        editablePowerElement = structuredClone(powerElement);
         isEditing = true;
     }
 
     function cancel() {
-        if (PowerElement.isNew) {
+        if (powerElement.isNew) {
             // remove new card
-            onDelete(PowerElement.id, null, true);
+            onDelete(powerElement.id, null, true);
         } else {
-            editablePowerElement = structuredClone(PowerElement);
+            editablePowerElement = structuredClone(powerElement);
             isEditing = false;
         }
     }
@@ -52,7 +52,7 @@
     }
 
     function remove() {
-        onDelete(PowerElement.id, PowerElement.power.id, PowerElement.isNew);
+        onDelete(powerElement.id, powerElement.power.id, powerElement.isNew);
     }
 </script>
 
@@ -136,14 +136,14 @@
             <button on:click={cancel}> Cancel </button>
         </div>
     {:else}
-        <div class="name">{PowerElement.power.name}</div>
+        <div class="name">{powerElement.power.name}</div>
 
-        {#if PowerElement.prerequisite_powers?.length}
+        {#if powerElement.prerequisite_powers?.length}
             <div class="stat-cell">
                 <div class="label">Prerequisites</div>
 
                 <div class="value prereq-list">
-                    {#each PowerElement.prerequisite_powers as prereq}
+                    {#each powerElement.prerequisite_powers as prereq}
                         <span class="prereq-pill">
                             {prereq.name}
                         </span>
@@ -154,69 +154,69 @@
 
             <div class="stat-cell">
             <div class="label">level</div>
-            <div class="value">{PowerElement.level}</div>
+            <div class="value">{powerElement.level}</div>
         </div>
 
         <div class="stat-cell">
             <div class="label">Description</div>
-            <div class="value">{PowerElement.power.description}</div>
+            <div class="value">{powerElement.power.description}</div>
         </div>
 
-        {#if PowerElement.power.category}
+        {#if powerElement.power.category}
             <div class="stat-cell">
                 <div class="label">Category</div>
-                <div class="value">{PowerElement.power.category.name}</div>
+                <div class="value">{powerElement.power.category.name}</div>
             </div>
         {/if}
 
-        {#if PowerElement.power.ascendant}
+        {#if powerElement.power.ascendant}
             <div class="stat-cell">
                 <div class="label">Ascendant</div>
-                <div class="value">{PowerElement.power.ascendant}</div>
+                <div class="value">{powerElement.power.ascendant}</div>
             </div>
         {/if}
 
-        {#if PowerElement.power.duration}
+        {#if powerElement.power.duration}
             <div class="stat-cell">
                 <div class="label">Duration</div>
-                <div class="value">{PowerElement.power.duration}</div>
+                <div class="value">{powerElement.power.duration}</div>
             </div>
         {/if}
 
-        {#if PowerElement.power.actions !== null}
+        {#if powerElement.power.actions !== null}
             <div class="stat-cell">
                 <div class="label">Actions</div>
-                <div class="value">{PowerElement.power.actions}</div>
+                <div class="value">{powerElement.power.actions}</div>
             </div>
         {/if}
 
-        {#if PowerElement.power.concentration !== null}
+        {#if powerElement.power.concentration !== null}
             <div class="stat-cell">
                 <div class="label">Concentration</div>
                 <div class="value">
-                    {PowerElement.power.concentration ? "Yes" : "No"}
+                    {powerElement.power.concentration ? "Yes" : "No"}
                 </div>
             </div>
         {/if}
 
-        {#if PowerElement.power.dc}
+        {#if powerElement.power.dc}
             <div class="stat-cell">
                 <div class="label">DC</div>
-                <div class="value">{PowerElement.power.dc}</div>
+                <div class="value">{powerElement.power.dc}</div>
             </div>
         {/if}
 
-        {#if PowerElement.power.range}
+        {#if powerElement.power.range}
             <div class="stat-cell">
                 <div class="label">Range</div>
-                <div class="value">{PowerElement.power.range}</div>
+                <div class="value">{powerElement.power.range}</div>
             </div>
         {/if}
 
-        {#if PowerElement.power.shape}
+        {#if powerElement.power.shape}
             <div class="stat-cell">
                 <div class="label">Shape</div>
-                <div class="value">{PowerElement.power.shape}</div>
+                <div class="value">{powerElement.power.shape}</div>
             </div>
         {/if}
 

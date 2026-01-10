@@ -1,22 +1,21 @@
 <script>
 
-export let sheet
+    export let sheet
 
     $: characteristics = sheet?.characteristics ?? [];
 
-
     function bonus(value) {
-        return Math.floor((value - 10) / 2);
+        return Math.floor( (value - 10) / 2 );
     }
+
 </script>
 
 
-    <div class="class-name">
-        <h1>{sheet.name}</h1>
-    </div>
+<div class="class-name">
+    <h1>{sheet.name}</h1>
+</div>
 
-
-    <div class="sheet-container">
+<div class="sheet-container">
 
 <div class="sheet-CHARACTERISTICS">
     <h1>CHARACTERISTICS</h1>

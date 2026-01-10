@@ -10,7 +10,7 @@
     let logEntry
     let logEntryMessage = '';
 
-        onMount(() => {
+    onMount(() => {
         socket = io(BASE_URL, {
             withCredentials: true
         });
@@ -20,10 +20,9 @@
         })
     });
 
-        onDestroy(() => {
+    onDestroy(() => {
         socket?.disconnect();
     });
-
 
     function submitEvent() {
         if (!logEntryMessage.trim()) return;

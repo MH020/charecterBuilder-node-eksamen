@@ -1,12 +1,12 @@
 <script>
   export let item;
-  let showTooltip = false;
+  let showToolTip = false;
 
   function show() {
-    showTooltip = true;
+    showToolTip = true;
   }
   function hide() {
-    showTooltip = false;
+    showToolTip = false;
   }
 </script>
 
@@ -22,7 +22,7 @@
 >
   {item.name}
 
-  {#if showTooltip}
+  {#if showToolTip}
     <div id="tooltip-description" role="tooltip" class="tooltip">
       {item.description}
     </div>

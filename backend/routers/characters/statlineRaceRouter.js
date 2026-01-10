@@ -1,25 +1,27 @@
+// statlineRaceRouter.js -> statLineRaceRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/statlines', async (req, res) => {
+router.get('/api/statlines', async (req, res) => { //refactor: '/api/stat-lines'
   try {
     const result = await db.query(`
             SELECT id, name, weapon_skill, ballistic_skill, strength, toughness, agility, intelligence, perception, willpower, fellowship, is_custom
             FROM statline_race;
         `)
-    const statlines = result.rows
+    const statLines = result.rows
 
-    return res.status(200).send(statlines)
+    return res.status(200).send(statLines)
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.post('/api/statlines', async (req, res) => {
+router.post('/api/statlines', async (req, res) => { //refactor: '/api/stat-lines'
   try {
     const {
       name, weapon_skill, ballistic_skill, strength, toughness, agility,
@@ -30,28 +32,29 @@ router.post('/api/statlines', async (req, res) => {
       return res.status(400).send({ message: 'missing fields' })
     }
 
-    const is_custom = req.session.user?.role === 'ADMIN'
+    const isCustom = req.session.user?.role === 'ADMIN'
 
     const result = await db.query(
             `INSERT INTO statline_race (
-        name, weapon_skill, ballistic_skill, strength,toughness, agility, intelligence, perception,
-        willpower, fellowship, is_custom)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+            name, weapon_skill, ballistic_skill, strength,toughness, agility, intelligence, perception,
+            willpower, fellowship, is_custom)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
 
             [name, weapon_skill, ballistic_skill, strength, toughness, agility,
-              intelligence, perception, willpower, fellowship, is_custom
+              intelligence, perception, willpower, fellowship, isCustom
             ]
     )
     const createdRace = result.rows[0]
 
     return res.status(201).send({ message: 'statline created sucessfully', created: createdRace })
+
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.put('/api/statlines/:id', async (req, res) => {
+router.put('/api/statlines/:id', async (req, res) => { //refactor: '/api/stat-lines/:id'
   try {
     const { id } = req.params
     const {
@@ -63,24 +66,27 @@ router.put('/api/statlines/:id', async (req, res) => {
                         name = $1, weapon_skill = $2, ballistic_skill = $3, strength = $4, toughness = $5,
                         agility = $6, intelligence = $7, perception = $8, willpower = $9, fellowship = $10 
                         WHERE id = $11`,
-    [name, weapon_skill, ballistic_skill, strength, toughness, agility,
-      intelligence, perception, willpower, fellowship, id
-    ])
 
+                        [name, weapon_skill, ballistic_skill, strength, toughness, agility,
+                          intelligence, perception, willpower, fellowship, id
+                        ]
+    )
     return res.status(200).send({ message: 'statline updated' })
+
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 // needs to check if race has statline before delete
-router.delete('/api/statlines/:id', async (req, res) => {
+router.delete('/api/statlines/:id', async (req, res) => { //refactor: '/api/stat-lines/:id'
   try {
     const { id } = req.params
-
+    
     await db.query('DELETE FROM statline_race where id = $1 ', [id])
 
     return res.status(200).send({ message: 'statline race deleted' })
+
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

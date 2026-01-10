@@ -18,8 +18,8 @@
 
     let isEditing = lineage.isNew;
     let editableLineage = structuredClone(lineage);
-    let showTooltip;
-    let featureShowTooltip;
+    let showToolTip;
+    let featureShowToolTip;
 
     function startEditing() {
         isEditing = true;
@@ -29,11 +29,10 @@
         let updated;
 
         if (lineage.isNew) {
-            const response = await fetchPost("/api/lineage", editableLineage);
+            const response = await fetchPost("/api/lineage", editableLineage); //refactor endpoint
             if (response.status === 201) {
                 updated = editableLineage;
                 updated.id = response.created.id;
-                console.log(updated);
             }
         } else {
             await fetchUpdate("/api/lineage", editableLineage);
@@ -69,8 +68,6 @@
 
     function createBonus() {
         modalSelectCallback.set((bonus) => {
-            console.log(bonus);
-
             const list = editableLineage.bonuses || [];
 
             const exists = list.some(
@@ -88,7 +85,6 @@
             };
 
             modalSelectCallback.set(null);
-            console.log(editableLineage.bonuses);
         });
 
         openModal(LineageBonusCard);
@@ -182,14 +178,14 @@
 
         <button
             class="description-btn"
-            on:mouseenter={() => (showTooltip = true)}
-            on:mouseleave={() => (showTooltip = false)}
+            on:mouseenter={() => (showToolTip = true)}
+            on:mouseleave={() => (showToolTip = false)}
             aria-describedby="tooltip-description"
         >
             description
         </button>
 
-        {#if showTooltip}
+        {#if showToolTip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {lineage.description || "No description"}
             </div>
@@ -197,14 +193,14 @@
 
         <button
             class="description-btn"
-            on:mouseenter={() => (featureShowTooltip = true)}
-            on:mouseleave={() => (featureShowTooltip = false)}
+            on:mouseenter={() => (featureShowToolTip = true)}
+            on:mouseleave={() => (featureShowToolTip = false)}
             aria-describedby="tooltip-description"
         >
             defining_features
         </button>
 
-        {#if featureShowTooltip}
+        {#if featureShowToolTip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {lineage.defining_features || "No defining features"}
             </div>

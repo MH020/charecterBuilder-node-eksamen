@@ -7,18 +7,14 @@
 
     let weaponClasses = [];
     let sortType = "all"; 
-    const endpoint = "/api/weapon/classes"
+    const endpoint = "/api/weapon/classes" //refactor
 
-
- 
     onMount(async () => {
         const response = await fetchGet(endpoint)
         if (response.status === 200) {
                 weaponClasses = response.data
         } 
     });
-
-
 
     function createWeaponClass(){
         const newWeaponClass = {

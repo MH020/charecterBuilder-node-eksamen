@@ -6,9 +6,9 @@
     import ListUtil from '../../wrappers/EditableList.svelte';
     import ClassRow from '../../rows/ClassRow.svelte';
     
-    export let classID
+    export let classId
     let classes = [];
-    let endpoint = `/api/class/:${classID}/subclasses`
+    let endpoint = `/api/class/:${classId}/subclasses`
 
     onMount(async () => {
         const response = await fetchGet(endpoint);

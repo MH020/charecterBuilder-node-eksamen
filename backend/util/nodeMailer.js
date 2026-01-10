@@ -25,7 +25,6 @@ async function sendMail (email, subject, text, html) {
   }
   try {
     transporter.sendMail(info)
-    console.log('Mail sent!')
   } catch (error) {
     console.log('Error sending mail:', error)
   }

@@ -2,7 +2,7 @@
     export let race;
 
 
-    const Characteristics = [
+    const characteristics = [
         "agility",
         "ballistic_skill",
         "fellowship",
@@ -15,7 +15,8 @@
     ];
 
     let stats = {};
-    Characteristics.forEach(name => {
+    
+    characteristics.forEach(name => {
         stats[name] = race.base_statline[name] || 0;
     });
 
@@ -31,7 +32,7 @@
 </script>
 
 <div class="characteristics-grid">
-    {#each Characteristics as name}
+    {#each characteristics as name}
         <div class="char-box">
             <input type="number"
                    bind:value={stats[name]}

@@ -1,3 +1,5 @@
+// skillsRouter.js -> skillRouter.js (remove after refactor)
+
 import { Router } from 'express'
 import { isAdmin, isOwner } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
@@ -35,11 +37,11 @@ router.post('/api/skills', async (req, res) => {
       return res.status(400).send({ message: 'missing fields' })
     }
 
-    const is_custom = req.session.user?.role === 'ADMIN' || false
+    const isCustom = req.session.user?.role === 'ADMIN' || false
     const result = await db.query(
             `INSERT INTO skill ("name", "description", main_aptitude_id, secondary_aptitude_id, is_custom)
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [name, description, main_aptitude.id, secondary_aptitude.id, is_custom]
+            [name, description, main_aptitude.id, secondary_aptitude.id, isCustom]
     )
     console.log('result?', result)
     const createdSkill = result.rows[0]

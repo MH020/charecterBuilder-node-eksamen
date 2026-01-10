@@ -15,7 +15,7 @@
 
     let isEditing = item.isNew;
     let editableItem = structuredClone(item);
-    let showTooltip;
+    let showToolTip;
 
     function startEditing() {
         isEditing = true;
@@ -29,7 +29,6 @@
             if (response.status === 201) {
                 updated = editableItem;
                 updated.id = response.created.id;
-                console.log(updated);
             }
         } else {
             await fetchUpdate("/api/items", editableItem);
@@ -113,14 +112,14 @@
 
         <button
             class="description-btn"
-            on:mouseenter={() => (showTooltip = true)}
-            on:mouseleave={() => (showTooltip = false)}
+            on:mouseenter={() => (showToolTip = true)}
+            on:mouseleave={() => (showToolTip = false)}
             aria-describedby="tooltip-description"
         >
             description
         </button>
 
-        {#if showTooltip}
+        {#if showToolTip}
             <div id="tooltip-description" role="tooltip" class="tooltip">
                 {item.description}
             </div>
