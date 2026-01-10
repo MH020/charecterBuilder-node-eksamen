@@ -1,11 +1,14 @@
 <script>
     import { classSelectCallback } from "../../store/classStore";
     import { modalSelectCallback, openModal } from "../../store/modalStore";
+    import { user } from "../../store/userStore";
     import ClassPowersCategoryList from "../lists/classes/ClassPowersCategoryList.svelte";
 
     export let PowerElement;
     export let onSave;
     export let onDelete;
+
+    $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
 
     let selecting = false;
     let editablePowerElement = structuredClone(PowerElement);
@@ -219,8 +222,10 @@
 
         <div class="buttons">
             {#if !selecting}
+            {#if canEdit}
                 <button on:click={startEdit}>Edit</button>
                 <button on:click={remove}>Delete </button>
+                {/if}
             {:else}
                 <button on:click={selectPreReq}> select</button>
             {/if}
