@@ -1,5 +1,10 @@
 <script>
+    import toastr from "toastr";
+    import { Selectedcharacteristics } from "../../../store/createStore";
+
     export let race;
+
+    const maxPoints = 32;
 
 
     const Characteristics = [
@@ -28,9 +33,25 @@
         const val = parseInt(event.target.value);
         stats[name] = val >= minValue ? val : minValue;
     }
+
+    function sendToStore() {
+        const list = Characteristics.map(name => ({
+            name,
+            value: stats[name],
+            bonus: calcBonus(stats[name])
+        }));
+
+        Selectedcharacteristics.set(list)
+        toastr.success("Characteristics added")
+    }
 </script>
 
 <div class="characteristics-grid">
+
+<button class="send-btn" on:click={sendToStore}>
+    Save Characteristics
+</button>
+
     {#each Characteristics as name}
         <div class="char-box">
             <input type="number"
