@@ -4,7 +4,7 @@ import db from '../../db/connection.js'
 
 const router = Router()
 
-router.get('/api/lineage', async (req, res) => {
+router.get('/api/lineages', async (req, res) => {
   try {
     const result = await db.query(`
       SELECT lineage.id, lineage.name, lineage.description, lineage.defining_features, lineage.required_race_id, 
@@ -54,7 +54,7 @@ router.get('/api/lineage', async (req, res) => {
   }
 })
 
-router.post('/api/lineage', async (req, res) => {
+router.post('/api/lineages', async (req, res) => {
   try {
     const { name, description, defining_features, required_race, bonuses, aptitudes } = req.body
 
@@ -87,7 +87,7 @@ router.post('/api/lineage', async (req, res) => {
   }
 })
 
-router.put('/api/lineage/:id', async (req, res) => {
+router.put('/api/lineages/:id', async (req, res) => {
   try {
     const { id } = req.params
     const { name, description, defining_features, required_race, bonuses, aptitudes, is_custom } = req.body
@@ -117,7 +117,7 @@ router.put('/api/lineage/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/lineage/:id', async (req, res) => {
+router.delete('/api/lineages/:id', async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)
