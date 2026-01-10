@@ -1,11 +1,13 @@
 <script>
     import { navigate } from "svelte-routing";
+    import { user } from "../../store/userStore";
 
 
   export let subClass;
   export let onSave;
   export let onDelete;
 
+  $: canEdit = $user.role === 'ADMIN' || $user.role === 'OWNER'
   let isEditing = subClass.isNew ?? false;
   let editableSubclass = structuredClone(subClass);
 
@@ -55,8 +57,10 @@
     </div>
 
     <div class="buttons">
-      <button on:click={startEdit}>Edit</button>
-      <button on:click={() => onDelete(subClass.id, subClass.id)}>Delete</button>
+      {#if canEdit}
+        <button on:click={startEdit}>Edit</button>
+        <button on:click={() => onDelete(subClass.id, subClass.id)}>Delete</button>
+      {/if}
       <button on:click={() => navigate(`/subclass/?id=${subClass.id}`)}>subclass page</button>
     </div>
   {/if}
