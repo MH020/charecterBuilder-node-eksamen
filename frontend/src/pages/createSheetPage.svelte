@@ -3,10 +3,11 @@
     import LineageCard from "../componets/cards/LineageCard.svelte";
     import SelectList from "../componets/subPages/createSheet/SelectList.svelte";
     import Createcharacteristics from "../componets/subPages/createSheet/Createcharacteristics.svelte";
+    import { activeTabStore, buildingSheet, selectedRace } from "../store/createStore";
+    import { get } from "svelte/store";
 
-  let id;
-
-  let activeTab = "overview";
+    buildingSheet.set(true)
+    let activeTab = get(activeTabStore) || "overview";
   
     const tabs = [
         { id: "overview", label: "Overview" },
@@ -17,19 +18,24 @@
         { id: "comrades", label: "Comrades", requiresRace: true },
     ];
 
+    function selectTab(tabId) {
+    activeTab = tabId;
+    activeTabStore.set(tabId); 
+  }
+
 </script>
 
 <div class="sheet-overview">
-    <nav class="tabs">
-      {#each tabs as tab}
-        <button
-          class:active={activeTab === tab.id}
-          on:click={() => (activeTab = tab.id)}
-        >
-          {tab.label}
-        </button>
-      {/each}
-    </nav>
+        <nav class="tabs">
+        {#each tabs as tab}
+            <button
+            class:active={activeTab === tab.id}
+            on:click={() => selectTab(tab.id)}
+            >
+            {tab.label}
+            </button>
+        {/each}
+        </nav>
 
     <section class="sheet-content">
       {#if activeTab === "overview"}
@@ -45,9 +51,11 @@
         card = {LineageCard}/>
         
       {:else if activeTab === "characteristics"}
-
+        <Createcharacteristics race={$selectedRace} />
 
       {:else if activeTab === "classes"}
+
+
 
       {:else if activeTab === "comrades"}
         
