@@ -4,8 +4,6 @@
     import { fetchGet } from "../../util/fetchUtil";
     import { navigate } from 'svelte-routing';
     import toastrDisplayHTTPCode from "../../util/ToastrUtil";
-    import {lockBodyScroll, unlockBodyScroll} from "../../util/scrolling.js"
-    import { onDestroy } from 'svelte';
 	import {modalStore, openModal, closeModal} from "../store/modalStore.js"
     import CombatLogWindow from "../componets/windows/combatLogWindow.svelte";
 
