@@ -20,7 +20,7 @@
     }
 
   function GoToClassPage(id) {
-    navigate(`/classes/${id}`); 
+    navigate(`/class/?id=${id}`); 
   }
     
 
