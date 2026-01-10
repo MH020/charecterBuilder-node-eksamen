@@ -6,6 +6,8 @@
   import ClassPowers from "../componets/subPages/classPowers.svelte";
   import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
     import { refresh } from "../store/userStore";
+    import { navigate } from "svelte-routing";
+    import { buildingSheet } from "../store/createStore";
 
   let currentClass;
   let id = "";
@@ -16,7 +18,7 @@
   onMount(async () => {
     const url = new URL(window.location.href);
     id = new URLSearchParams(url.search).get("id");
-    refresh()
+    //refresh()
     const response = await fetchGet(`/api/classes/${id}/full`);
     if (response.status === 200) {
       currentClass = response.data;
@@ -42,6 +44,16 @@
     }
     return tabs;
   }
+
+  function goToParent() {
+    if (currentClass?.parent_id) {
+      navigate(`/classes/${currentClass.parent_id}`);
+    }
+  }
+
+  function returnToSheet() {
+    navigate("/newSheet"); 
+  }
 </script>
 
 <div class="class-overview">
@@ -55,6 +67,17 @@
           {tab.label}
         </button>
       {/each}
+
+   ;
+      {#if currentClass?.parent_id}
+        <button on:click={goToParent}>Parent Class</button>
+      {/if}
+
+      {#if $buildingSheet}
+        <button on:click={returnToSheet}>Return to Sheet</button>
+      {/if}
+
+
     </nav>
 
     <section class="class-content">
