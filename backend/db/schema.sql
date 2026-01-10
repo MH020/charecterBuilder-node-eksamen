@@ -428,6 +428,7 @@ CREATE TABLE IF NOT EXISTS force_field (
 --- add private or not private 
 CREATE TABLE IF NOT EXISTS charactersheet (
     id SERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
     "level" INTEGER NOT NULL DEFAULT 1,
     race_id INTEGER NOT NULL,
     lineage_id INTEGER NOT NULL,
