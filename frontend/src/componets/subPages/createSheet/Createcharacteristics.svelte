@@ -54,6 +54,7 @@
 
     {#each Characteristics as name}
         <div class="char-box">
+            <p>  ${name}</p>
             <input type="number"
                    bind:value={stats[name]}
                    min={race.base_statline[name]}
