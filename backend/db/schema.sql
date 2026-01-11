@@ -515,6 +515,7 @@ CREATE TABLE IF NOT EXISTS character_skills (
     charactersheet_id INTEGER NOT NULL,
     skill_id INTEGER NOT NULL,
     training_level INTEGER DEFAULT 0,
+    talent_bonus INTEGER DEFAULT 0,
     CONSTRAINT fk_cs_charactersheet_id FOREIGN KEY (charactersheet_id) REFERENCES charactersheet(id),
     CONSTRAINT fk_cs_skill_id FOREIGN KEY (skill_id) REFERENCES skill(id)
 );
