@@ -23,6 +23,21 @@ router.get('/api/classes', async (req, res) => {
   }
 })
 
+
+router.get('/api/classes/root', async (req, res) => {
+  try {
+    const result = await db.query(`
+            SELECT * from "class" WHERE parent_id IS NULL
+        `)
+    const classes = result.rows
+
+    return res.status(200).send(classes)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
 router.get('/api/classes/:id', async (req, res) => {
   try {
     const { id } = req.params
