@@ -23,7 +23,6 @@
     if (response.status === 200) {
       currentClass = response.data;
       tabs = createTabs(currentClass)
-
     }
   });
 
@@ -47,12 +46,12 @@
 
   function goToParent() {
     if (currentClass?.parent_id) {
-      navigate(`/classes/${currentClass.parent_id}`);
+      navigate(`/class/?id=${currentClass.parent_id}`);
     }
   }
 
   function returnToSheet() {
-    navigate("/newSheet"); 
+    navigate("/newSheet") 
   }
 </script>
 
@@ -68,7 +67,7 @@
         </button>
       {/each}
 
-   ;
+   
       {#if currentClass?.parent_id}
         <button on:click={goToParent}>Parent Class</button>
       {/if}
