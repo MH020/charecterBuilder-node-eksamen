@@ -1,9 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import ApptitudesRow from "../rows/apptitudesRow.svelte";
-    import { fetchDelete, fetchGet } from "../../../util/fetchUtil";
-    import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
-    import { deleteEntity } from "../../../util/ListUtil";
+    import { fetchGet } from "../../../util/fetchUtil";
     import ListUtil from "../wrappers/EditableList.svelte";
 
     let apptitudesList = [];
