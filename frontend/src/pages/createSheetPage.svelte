@@ -9,9 +9,13 @@
     import CreateCLassOverview from "../componets/subPages/createSheet/CreateCLassOverview.svelte";
     import SkillCard from "../componets/subPages/createSheet/setupSkills.svelte";
     import HandleApptitudes from "../componets/subPages/createSheet/HandleApptitudes.svelte";
+    import { refresh } from "../store/userStore";
 
     buildingSheet.set(true)
+    refresh()
+    
     let activeTab = get(activeTabStore) || "overview";
+
   
     const tabs = [
         { id: "overview", label: "Overview" },
