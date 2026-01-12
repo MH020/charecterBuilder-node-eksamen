@@ -14,6 +14,7 @@
     import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
     import CharectersheetPage from "./pages/charectersheetPage.svelte";
     import { softRefresh, user } from "./store/userStore.js";
+    import Logout from "./pages/Logout.svelte";
 
 
 let loading = true;
@@ -46,6 +47,7 @@ onMount(async () => {
           <Login />
         </NotLoggedinLayout>
       </Route>
+      
     {/if}
     {#if $user?.role === "USER"}
       <Route path="/">
@@ -76,6 +78,12 @@ onMount(async () => {
         <UserLayout>
           <ClassPage />
         </UserLayout>
+
+      </Route>
+            <Route path="/logout/">
+        <UserLayout>
+          <Logout />
+        </UserLayout>
       </Route>
 
       <Route path="/charactersheets">
@@ -95,6 +103,12 @@ onMount(async () => {
       <Route path="/">
         <Adminlayout>
           <Frontpage />
+        </Adminlayout>
+      </Route>
+
+            <Route path="/logout">
+        <Adminlayout>
+          <Logout />
         </Adminlayout>
       </Route>
 
