@@ -1,8 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import { fetchGet } from "../../util/fetchUtil";
-  import ClassOverview from "../componets/subPages/ClassOverview.svelte";
-  import ClassTalents from "../componets/subPages/classTalents.svelte";
+  import ClassOverview from "../componets/subPages/class/ClassOverview.svelte";
+  import ClassTalents from "../componets/subPages/class/classTalents.svelte";
   import ClassPowers from "../componets/subPages/classPowers.svelte";
   import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
 
