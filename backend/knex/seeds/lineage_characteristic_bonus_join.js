@@ -15,13 +15,15 @@ export async function seed (knex) {
   const bloodAngels = await knex('lineage').where({ name: 'Blood Angels' }).first()
 
   // ---- Resolve Characteristics ----
-  const weaponSkill = await knex('characteristic').where({ name: 'Weapon Skill' }).first()
-  const ballisticSkill = await knex('characteristic').where({ name: 'Ballistic Skill' }).first()
-  const strength = await knex('characteristic').where({ name: 'Strength' }).first()
-  const toughness = await knex('characteristic').where({ name: 'Toughness' }).first()
-  const agility = await knex('characteristic').where({ name: 'Attacks' }).first() // Using "Attacks" as example
-  const leadership = await knex('characteristic').where({ name: 'Leadership' }).first()
-  const save = await knex('characteristic').where({ name: 'Save' }).first()
+  const weaponSkill = await knex('characteristic').where({ name: 'Weapon Skill' }).first();
+  const ballisticSkill = await knex('characteristic').where({ name: 'Ballistic Skill' }).first();
+  const strength = await knex('characteristic').where({ name: 'Strength' }).first();
+  const toughness = await knex('characteristic').where({ name: 'Toughness' }).first();
+  const agility = await knex('characteristic').where({ name: 'Agility' }).first();
+  const intelligence = await knex('characteristic').where({ name: 'Intelligence' }).first();
+  const perception = await knex('characteristic').where({ name: 'Perception' }).first();
+  const willpower = await knex('characteristic').where({ name: 'Willpower' }).first();
+  const fellowship = await knex('characteristic').where({ name: 'Fellowship' }).first();
 
   await knex('lineage_characteristic_bonus').insert([
 
@@ -37,12 +39,12 @@ export async function seed (knex) {
     },
     {
       lineage_id: forgeWorlder.id,
-      characteristic_id: save.id,
+      characteristic_id: intelligence.id,
       bonus: 2
     },
     {
       lineage_id: imperialWorlder.id,
-      characteristic_id: leadership.id,
+      characteristic_id: fellowship.id,
       bonus: 3
     },
     {
@@ -58,7 +60,7 @@ export async function seed (knex) {
     },
     {
       lineage_id: ultramarines.id,
-      characteristic_id: leadership.id,
+      characteristic_id: fellowship.id,
       bonus: 5
     },
     {
