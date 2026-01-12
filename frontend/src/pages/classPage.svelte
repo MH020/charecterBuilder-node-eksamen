@@ -18,7 +18,7 @@
   onMount(async () => {
     const url = new URL(window.location.href);
     id = new URLSearchParams(url.search).get("id");
-    //refresh()
+    refresh()
     const response = await fetchGet(`/api/classes/${id}/full`);
     if (response.status === 200) {
       currentClass = response.data;
