@@ -2,42 +2,42 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // Join tables
-  await knex('class_weapon_training').del();
-  await knex('class_weapon_class').del();
-  await knex('class_talents').del();
-  await knex('class_aptitudes').del();
-  await knex('class_bonuses').del();
-  await knex('class_powers').del();
-  await knex('class_powers_known').del();
-  await knex('class_traits').del();
-  await knex('class_items').del();
+  await knex('class_weapon_training').del()
+  await knex('class_weapon_class').del()
+  await knex('class_talents').del()
+  await knex('class_aptitudes').del()
+  await knex('class_bonuses').del()
+  await knex('class_powers').del()
+  await knex('class_powers_known').del()
+  await knex('class_traits').del()
+  await knex('class_items').del()
 
-  await knex('talent_aptitude').del();
-  await knex('prerequisite_powers').del();
-  await knex('weapon_weapon_traits').del();
-  await knex('weapon_weapon_class').del();
-  await knex('lineage_characteristic_bonus').del();
-  await knex('lineage_aptitude').del();
+  await knex('talent_aptitude').del()
+  await knex('prerequisite_powers').del()
+  await knex('weapon_weapon_traits').del()
+  await knex('weapon_weapon_class').del()
+  await knex('lineage_characteristic_bonus').del()
+  await knex('lineage_aptitude').del()
 
   // Core tables
-  await knex('weapon_upgrade').del();
-  await knex('weapon').del();
-  await knex('item').del();
-  await knex('armor').del();
-  await knex('availability').del();
-  await knex('characteristic').del();
-  await knex('talent').del();
-  await knex('lineage').del();
-  await knex('trait').del();
-  await knex('race').del();
-  await knex('class').del();
-  await knex('skill').del();
-  await knex('aptitude').del();
-  await knex('weapon_class').del();
-  await knex('power').del();
-  await knex('powers_category').del();
+  await knex('weapon_upgrade').del()
+  await knex('weapon').del()
+  await knex('item').del()
+  await knex('armor').del()
+  await knex('availability').del()
+  await knex('characteristic').del()
+  await knex('talent').del()
+  await knex('lineage').del()
+  await knex('trait').del()
+  await knex('race').del()
+  await knex('class').del()
+  await knex('skill').del()
+  await knex('aptitude').del()
+  await knex('weapon_class').del()
+  await knex('power').del()
+  await knex('powers_category').del()
 
   // Insert characteristics with correct descriptions
   await knex('characteristic').insert([
@@ -77,5 +77,5 @@ export async function seed(knex) {
       name: 'Fellowship',
       description: 'Represents social skills, charisma, and ability to influence or lead others.'
     }
-  ]);
+  ])
 }

@@ -30,12 +30,11 @@ router.get('/api/users/id', isLoggedIn, async (req, res) => {
   }
 })
 
-
 router.get('/api/me', isLoggedIn, (req, res) => {
   res.status(200).send({
     user: req.session.user
-  });
-});
+  })
+})
 
 router.post('/api/login', async (req, res) => {
   const { password, email } = req.body
@@ -60,10 +59,9 @@ router.post('/api/login', async (req, res) => {
 })
 
 router.post('/api/logout', isLoggedIn, (req, res) => {
-  req.session.destroy();
-    return res.status(200).send({ message: 'Logout successful' });
-});
-
+  req.session.destroy()
+  return res.status(200).send({ message: 'Logout successful' })
+})
 
 router.post('/api/users', async (req, res) => {
   try {

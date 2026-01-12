@@ -125,7 +125,7 @@ router.put('/api/class/:classID/powers/:powerID', isOwner, async (req, res) => {
   }
 })
 
-router.delete('/api/class/:classID/powers/:powerID',isOwner, async (req, res) => {
+router.delete('/api/class/:classID/powers/:powerID', isOwner, async (req, res) => {
   try {
     const classID = Number(req.params.classID)
     const powerID = Number(req.params.powerID)

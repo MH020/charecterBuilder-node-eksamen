@@ -30,7 +30,7 @@ router.get('/api/items', async (req, res) => {
   }
 })
 
-router.post('/api/items',isAdmin, async (req, res) => {
+router.post('/api/items', isAdmin, async (req, res) => {
   try {
     const { name, description, category, availability } = req.body
 
@@ -53,7 +53,7 @@ router.post('/api/items',isAdmin, async (req, res) => {
   }
 })
 
-router.put('/api/items/:id',isAdmin, async (req, res) => {
+router.put('/api/items/:id', isAdmin, async (req, res) => {
   try {
     const id = req.params.id
     const { name, description, category_id } = req.body
@@ -68,7 +68,7 @@ router.put('/api/items/:id',isAdmin, async (req, res) => {
   }
 })
 
-router.delete('/api/items/:id',isOwner, async (req, res) => {
+router.delete('/api/items/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

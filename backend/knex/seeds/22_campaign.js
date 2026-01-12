@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
+export async function seed (knex) {
   // First, make sure your 'user' seed ran and admin exists
   const admin = await knex('user').where({ role: 'OWNER' }).first()
 

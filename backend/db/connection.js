@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import pg from 'pg'
-const { Pool, Client } = pg
+const { Pool } = pg
 
 const prod = process.argv.includes('prod')
 let connectionString
@@ -24,8 +24,6 @@ try {
   console.log(res.rows)
 } catch (err) {
   console.error(err)
-} finally {
-  // await pool.end()
-}
+} 
 
 export default pool

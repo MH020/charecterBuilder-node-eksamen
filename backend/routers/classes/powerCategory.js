@@ -15,7 +15,7 @@ router.get('/api/power-categories', async (req, res) => {
   }
 })
 
-router.post('/api/power-categories',isAdmin, async (req, res) => {
+router.post('/api/power-categories', isAdmin, async (req, res) => {
   try {
     const { name } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/power-categories',isAdmin, async (req, res) => {
   }
 })
 
-router.put('/api/power-categories/:id',isOwner, async (req, res) => {
+router.put('/api/power-categories/:id', isOwner, async (req, res) => {
   try {
     const id = req.params.id
     const { name } = req.body
@@ -49,7 +49,7 @@ router.put('/api/power-categories/:id',isOwner, async (req, res) => {
   }
 })
 
-router.delete('/api/power-categories/:id',isOwner, async (req, res) => {
+router.delete('/api/power-categories/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

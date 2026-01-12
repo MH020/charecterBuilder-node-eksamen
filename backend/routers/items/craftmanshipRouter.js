@@ -16,7 +16,7 @@ router.get('/api/craftsmanship', async (req, res) => {
   }
 })
 
-router.post('/api/craftsmanship',isAdmin, async (req, res) => {
+router.post('/api/craftsmanship', isAdmin, async (req, res) => {
   try {
     const { name, description, hit_modifier, damage_modifier, wt_modifier, ap_modifier, category } = req.body
 
@@ -65,7 +65,7 @@ router.put('/api/craftsmanship/:id', isAdmin, async (req, res) => {
   }
 })
 
-router.delete('/api/craftsmanship/:id',isOwner, async (req, res) => {
+router.delete('/api/craftsmanship/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

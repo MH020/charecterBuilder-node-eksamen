@@ -23,7 +23,6 @@ router.get('/api/classes', async (req, res) => {
   }
 })
 
-
 router.get('/api/classes/root', async (req, res) => {
   try {
     const result = await db.query(`
@@ -225,8 +224,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             ORDER BY cb.id;
         `, [id])
 
-
-        const classItemsRows = await db.query(`
+    const classItemsRows = await db.query(`
             SELECT 
                 ci.id,
                 ci.class_id,
@@ -240,7 +238,7 @@ router.get('/api/classes/:id/full', async (req, res) => {
             LEFT JOIN item i ON ci.item_id = i.id
             WHERE ci.class_id = $1
             ORDER BY ci.id;
-        `, [id]);
+        `, [id])
 
     const powersKnownResult = await db.query(`
         SELECT * FROM class_powers_known where (class_id = $1) 
@@ -417,7 +415,7 @@ router.post('/api/classes/:classID/weapon-class', async (req, res) => {
 
     console.log(req.body)
 
-    if (!id ) {
+    if (!id) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
@@ -438,13 +436,11 @@ router.post('/api/classes/:classID/weapon-class', async (req, res) => {
     )
 
     return res.status(201).send({ message: 'weapon class added to class', created: result.rows[0] })
-
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
-
 
 router.post('/api/classes/:classID/weapon-training', async (req, res) => {
   try {
@@ -453,7 +449,7 @@ router.post('/api/classes/:classID/weapon-training', async (req, res) => {
 
     console.log(req.body)
 
-    if (!id ) {
+    if (!id) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
@@ -474,7 +470,6 @@ router.post('/api/classes/:classID/weapon-training', async (req, res) => {
     )
 
     return res.status(201).send({ message: 'weapon class added to class', created: result.rows[0] })
-
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
@@ -488,7 +483,7 @@ router.post('/api/classes/:classID/items', async (req, res) => {
 
     console.log(req.body)
 
-    if (!id ) {
+    if (!id) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
@@ -509,13 +504,11 @@ router.post('/api/classes/:classID/items', async (req, res) => {
     )
 
     return res.status(201).send({ message: 'class item added to class', created: result.rows[0] })
-
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
-
 
 router.post('/api/classes/:classID/traits', async (req, res) => {
   try {
@@ -524,7 +517,7 @@ router.post('/api/classes/:classID/traits', async (req, res) => {
 
     console.log(req.body)
 
-    if (!id ) {
+    if (!id) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
@@ -545,7 +538,6 @@ router.post('/api/classes/:classID/traits', async (req, res) => {
     )
 
     return res.status(201).send({ message: 'class trait added to class', created: result.rows[0] })
-
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
@@ -557,8 +549,7 @@ router.post('/api/classes/:classID/powers-known', async (req, res) => {
     const { classID } = req.params
     const { powers_known, level } = req.body
 
-
-    if (!classID || !powers_known ) {
+    if (!classID || !powers_known) {
       return res.status(400).send({ message: 'missing fields' })
     }
 
@@ -566,11 +557,10 @@ router.post('/api/classes/:classID/powers-known', async (req, res) => {
             `INSERT INTO class_powers_known (class_id, powers_known, level)
             VALUES ($1, $2, $3 ) RETURNING *`,
 
-            [ classID, powers_known , level]
+            [classID, powers_known, level]
     )
 
     return res.status(201).send({ message: 'added new powers known added to class', created: result.rows[0] })
-
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })

@@ -15,15 +15,15 @@ export async function seed (knex) {
   const bloodAngels = await knex('lineage').where({ name: 'Blood Angels' }).first()
 
   // ---- Resolve Characteristics ----
-  const weaponSkill = await knex('characteristic').where({ name: 'Weapon Skill' }).first();
-  const ballisticSkill = await knex('characteristic').where({ name: 'Ballistic Skill' }).first();
-  const strength = await knex('characteristic').where({ name: 'Strength' }).first();
-  const toughness = await knex('characteristic').where({ name: 'Toughness' }).first();
-  const agility = await knex('characteristic').where({ name: 'Agility' }).first();
-  const intelligence = await knex('characteristic').where({ name: 'Intelligence' }).first();
-  const perception = await knex('characteristic').where({ name: 'Perception' }).first();
-  const willpower = await knex('characteristic').where({ name: 'Willpower' }).first();
-  const fellowship = await knex('characteristic').where({ name: 'Fellowship' }).first();
+  const weaponSkill = await knex('characteristic').where({ name: 'Weapon Skill' }).first()
+  const ballisticSkill = await knex('characteristic').where({ name: 'Ballistic Skill' }).first()
+  const strength = await knex('characteristic').where({ name: 'Strength' }).first()
+  const toughness = await knex('characteristic').where({ name: 'Toughness' }).first()
+  const agility = await knex('characteristic').where({ name: 'Agility' }).first()
+  const intelligence = await knex('characteristic').where({ name: 'Intelligence' }).first()
+  const perception = await knex('characteristic').where({ name: 'Perception' }).first()
+  const willpower = await knex('characteristic').where({ name: 'Willpower' }).first()
+  const fellowship = await knex('characteristic').where({ name: 'Fellowship' }).first()
 
   await knex('lineage_characteristic_bonus').insert([
 

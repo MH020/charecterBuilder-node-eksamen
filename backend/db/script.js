@@ -3,7 +3,6 @@ import { spawn } from 'child_process'
 
 const dbDevUrl = process.env.DB_URI_DEV
 const dbProdUrl = process.env.DB_URI_PROD
-const prod = process.argv.includes('prod')
 const dev = process.argv.includes('dev')
 
 function connectToDev () {
