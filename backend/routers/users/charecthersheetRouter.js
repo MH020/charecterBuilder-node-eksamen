@@ -1,5 +1,5 @@
 import Router from 'express'
-import { isAdmin, isLoggedIn, isOwner } from '../../middleware/auth.js'
+import { isAdmin, isLoggedIn } from '../../middleware/auth.js'
 import db from '../../db/connection.js'
 const router = Router()
 
@@ -8,8 +8,7 @@ router.get('/api/charectersheets', isLoggedIn, async (req, res) => {
     try {
         const result = await db.query(`
             SELECT * FROM charactersheet WHERE player_id = $1 
-        `[req.session.user.id])
-
+        `, [req.session.user.id])
 
         return res.status(200).send(result.rows)
 
@@ -254,3 +253,37 @@ router.post('/api/classes/:id/subclasses', async (req, res) => {
     }
 })
 
+
+router.delete('/api/charectersheets/:id', isLoggedIn, async (req, res) => {
+  try {
+    const { id } = req.params
+    console.log('charactersheet id?', id)
+
+    const result = await db.query(
+      `SELECT id FROM charactersheet WHERE player_id = $1 AND id = $2`,
+      [req.session.user.id, id]
+    )
+
+    if (result.rows.length === 0) {
+      return res.status(404).send({ message: 'character sheet not found' })
+    }
+
+    const sheetId = result.rows[0].id
+
+    await db.query(`DELETE FROM character_weapon WHERE charactersheet_id = $1`, [sheetId])
+    await db.query(`DELETE FROM character_skills WHERE charactersheet_id = $1`, [sheetId])
+    await db.query(`DELETE FROM character_characteristics WHERE charactersheet_id = $1`, [sheetId])
+    await db.query(`DELETE FROM character_aptitudes WHERE charactersheet_id = $1`, [sheetId])
+    await db.query(`DELETE FROM character_classes WHERE charactersheet_id = $1`, [sheetId])
+
+    await db.query(`DELETE FROM charactersheet WHERE id = $1`, [sheetId])
+
+    return res.status(200).send({ message: 'character sheet deleted' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ message: 'server error', error: error.message })
+  }
+})
+
+
+export default router
