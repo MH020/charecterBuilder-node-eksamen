@@ -5,7 +5,7 @@
     createdSheet,
         postSheet,
         Selectedcharacteristics,
-        selectedLevel,
+        baseSheet,
         selectedSkills,
     } from "../../../store/createStore";
     import { fetchGet } from "../../../../util/fetchUtil";
@@ -24,7 +24,7 @@
         : 0;
 
     $: selectable =
-        4 + Math.ceil(($selectedLevel ?? 0) / 2) + intelligenceBonus;
+        4 + Math.ceil(($baseSheet.level ?? 0) / 2) + intelligenceBonus;
 
     $: totalSelected = skills.reduce(
         (sum, skill) => sum + (skill.training_level || 0),
@@ -57,7 +57,7 @@
             return;
         }
 
-        if (($selectedLevel ?? 0) < (levelRequirements[nextLevelName] ?? 0)) {
+        if (($baseSheet.level ?? 0) < (levelRequirements[nextLevelName] ?? 0)) {
             skills = skills.map((skill) =>
                 skill.id === skill.id
                     ? { ...skill, training_level: 0, talent_bonus: 0 }
@@ -78,7 +78,7 @@
         if (levelName === "U") return 0 + Number(skill.talent_bonus || 0);
 
         return (
-            ($selectedLevel ?? 0) +
+            ($baseSheet.level ?? 0) +
             levelValue[levelName] +
             Number(skill.talent_bonus || 0)
         );
