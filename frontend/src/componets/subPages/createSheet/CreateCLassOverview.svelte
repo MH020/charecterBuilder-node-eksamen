@@ -1,61 +1,94 @@
 <script>
-    import { buildingSheet, selectedLevel, selectedName } from "../../../store/createStore";
+    import { baseSheet, buildingSheet} from "../../../store/createStore";
 
     let name = "";
     let level = 1;
 
     function save() {
-        selectedName.set(name);
-        selectedLevel.set(level)
+        baseSheet.set(newSheet)
         buildingSheet.set(true)
+    }
+
+
+    const newSheet = {
+        name: "",
+        level: 1,
+        race_id: null,
+        lineage_id: null, 
+        fate_points: 0, 
+        fortitude: 0,
+        insanity: 0,
+        corruption: 0,
+        sanctification: 0, 
     }
 
 </script>
 
-<div class="create-charecter-page">
 
-
+<div class="create-character-page">
     <div class="description-box">
         <h2>Character Creation</h2>
-
-        <p> Though all may serve their Emperor, no two guardsmen are the same. 
-            They all bring varying backgrounds, specialties, skills, and, most importantly of all, 
-            personalities. This will take you though all the steps in order to make your charecter. 
-            For the Emperor!   
+        <p>
+            Though all may serve their Emperor, no two guardsmen are the same.
+            They all bring varying backgrounds, specialties, skills, and, most importantly of all,
+            personalities. This will take you through all the steps in order to make your character.
+            For the Emperor!
         </p>
     </div>
 
-<div class="form-row">
+    <div class="form-row">
+        <div class="char-box">
+            <label for="char-name">Name</label>
+            <input
+                id="char-name"
+                type="text"
+                bind:value={name}
+                placeholder="Enter your name"
+            />
+        </div>
 
-    <div class="char-box">
-        <label for="char-name">Name</label>
-        <input
-            id="char-name"
-            type="text"
-            bind:value={name}
-            placeholder="Enter your name"
-        />
+        <div class="char-box">
+            <label for="char-level">Level</label>
+            <select id="char-level" bind:value={level}>
+                {#each Array(20) as _, i}
+                    <option value={i + 1}>Level {i + 1}</option>
+                {/each}
+            </select>
+        </div>
     </div>
 
-    <div class="char-box">
-        <label for="char-level">Level</label>
-        <select
-            id="char-level"
-            bind:value={level}
-        >
-            {#each Array(20) as _, i}
-                <option value={i + 1}>Level {i + 1}</option>
-            {/each}
-        </select>
+    <div class="form-row">
+        <div class="char-box">
+            <label for="fate-points">Fate Points</label>
+            <input id="fate-points" type="number" bind:value={newSheet.fate_points} min="0" />
+        </div>
+
+        <div class="char-box">
+            <label for="fortitude">Fortitude</label>
+            <input id="fortitude" type="number" bind:value={newSheet.fortitude} min="0" />
+        </div>
     </div>
 
-</div>
+    <div class="form-row">
+        <div class="char-box">
+            <label for="insanity">Insanity</label>
+            <input id="insanity" type="number" bind:value={newSheet.insanity} min="0" />
+        </div>
 
+        <div class="char-box">
+            <label for="corruption">Corruption</label>
+            <input id="corruption" type="number" bind:value={newSheet.corruption} min="0" />
+        </div>
+    </div>
 
-    <button class="send-btn" on:click={save}>
-        Save
-    </button>
+    <div class="form-row">
+        <div class="char-box">
+            <label for="sanctification">Sanctification</label>
+            <input id="sanctification" type="number" bind:value={newSheet.sanctification} min="0" />
+        </div>
+    </div>
 
+    <button class="send-btn" on:click={save}>Save</button>
 </div>
 
 
