@@ -6,5 +6,4 @@
   <Link to="/">home</Link>
   <Link to="/logout">logout</Link>
   <Link to="/profile">Profile</Link>
-  <Link to="/admin">Admin Page</Link>
 </nav>
