@@ -3,7 +3,7 @@ import { writable } from 'svelte/store'
 import { fetchGet } from '../../util/fetchUtil';
 
 export const user = writable({ id: null, username: '', email: '', role: '' })
-export const loading = writable(true)
+
 
 
 export async function refresh() {
@@ -22,5 +22,33 @@ export async function refresh() {
     console.log(err)
     user.set({ id: null, username: '', email: '', role: '' });
     navigate('/login');
-  } 
+  }
+}
+
+
+export async function softRefresh() {
+  try {
+    const res = await fetch("/api/me", {
+      method: "GET",
+      credentials: "include", // important if your session is cookie-based
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.status === 401) {
+      user.set({ id: null, username: '', email: '', role: '' });
+      return;
+    }
+
+    if (res.status === 200) {
+      const data = await res.json(); 
+      user.set(data.user); 
+      return;
+    }
+
+  } catch (err) {
+    console.error("softRefresh error:", err);
+    user.set({ id: null, username: '', email: '', role: '' });
+  }
 }
