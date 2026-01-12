@@ -14,6 +14,7 @@
   import ClassPage from "./pages/classPage.svelte";
     import CreateSheetPage from "./pages/createSheetPage.svelte";
     import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
+    import CharectersheetPage from "./pages/charectersheetPage.svelte";
 
   let user = null;
   let loading = true;
@@ -101,7 +102,7 @@
 
         <Route path="/charectersheet/*">
         <Adminlayout>
-          <CharectersheetsList />
+          <CharectersheetPage />
         </Adminlayout>
       </Route>
     {/if}
@@ -150,7 +151,7 @@
 
         <Route path="/charectersheet/*">
         <Adminlayout>
-          <CharectersheetsList />
+          <CharectersheetPage />
         </Adminlayout>
       </Route>
     {/if}
