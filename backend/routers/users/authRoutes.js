@@ -59,6 +59,12 @@ router.post('/api/login', async (req, res) => {
   return res.status(200).send({ message: 'login successful', user: req.session.user })
 })
 
+router.post('/api/logout', isLoggedIn, (req, res) => {
+  req.session.destroy();
+    return res.status(200).send({ message: 'Logout successful' });
+});
+
+
 router.post('/api/users', async (req, res) => {
   try {
     const { username, password, email } = req.body
