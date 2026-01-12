@@ -13,11 +13,10 @@ export const Selectedclass = writable(null);
 export const SelectedApptitudes = writable([]);
 export const selectedSkills = writable([]);
 
-export const createdSheet = writable([]);
+export const createdSheet = writable(null);
 
 
 export function postSheet () {
-    let currentUser = get(user)
     const newSheet = {
         level: get(selectedLevel),
         race: get(selectedRace),
@@ -28,9 +27,10 @@ export function postSheet () {
         skills: get(selectedSkills)
     }
     if (get(createdSheet) === null) {
-        fetchPost(`api/user/${currentUser.id}/charectersheet`, newSheet)
+        console.log(newSheet)
+        fetchPost(`api/user/charectersheet`, newSheet)
     } else {
-        fetchUpdate(`api/user/${currentUser.id}/charectersheet`, newSheet)
+        console.log(newSheet)
+        fetchUpdate(`api/user/charectersheet`, newSheet)
     }
-
 }
