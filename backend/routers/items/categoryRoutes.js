@@ -15,7 +15,7 @@ router.get('/api/category', async (req, res) => {
   }
 })
 
-router.post('/api/category', async (req, res) => {
+router.post('/api/category', isOwner, async (req, res) => {
   try {
     const { name, description, category_type } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/category', async (req, res) => {
   }
 })
 
-router.put('/api/category/:id', async (req, res) => {
+router.put('/api/category/:id', isOwner, async (req, res) => {
   try {
     const id = req.params.id
     const { name, description, category_type } = req.body

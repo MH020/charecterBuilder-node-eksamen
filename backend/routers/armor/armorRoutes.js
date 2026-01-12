@@ -25,7 +25,7 @@ router.get('/api/armors', async (req, res) => {
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
-router.post('/api/armors', async (req, res) => {
+router.post('/api/armors', isAdmin, async (req, res) => {
   try {
     const {
       name, description, head_ap, body_ap,
@@ -51,7 +51,7 @@ router.post('/api/armors', async (req, res) => {
   }
 })
 
-router.put('/api/armors/:id', async (req, res) => {
+router.put('/api/armors/:id', isAdmin, async (req, res) => {
   try {
     const id = req.params.id
     const {
@@ -72,7 +72,7 @@ router.put('/api/armors/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/armors/:id', async (req, res) => {
+router.delete('/api/armors/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)

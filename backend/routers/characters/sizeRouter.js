@@ -17,7 +17,7 @@ router.get('/api/sizes', async (req, res) => {
   }
 })
 
-router.post('/api/sizes', async (req, res) => {
+router.post('/api/sizes', isAdmin, async (req, res) => {
   try {
     const { name, score } = req.body
 
@@ -37,7 +37,7 @@ router.post('/api/sizes', async (req, res) => {
   }
 })
 
-router.put('/api/sizes/:id', async (req, res) => {
+router.put('/api/sizes/:id', isAdmin, async (req, res) => {
   try {
     const id = req.params.id
     const { name, score } = req.body
@@ -51,7 +51,7 @@ router.put('/api/sizes/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/sizes/:id', async (req, res) => {
+router.delete('/api/sizes/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

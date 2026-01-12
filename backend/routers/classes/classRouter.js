@@ -293,7 +293,7 @@ router.get('/api/classes/:id/subclasses', async (req, res) => {
   }
 })
 
-router.post('/api/classes', async (req, res) => {
+router.post('/api/classes', isOwner, async (req, res) => {
   try {
     const { name, description, parent_id } = req.body
 

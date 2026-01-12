@@ -19,7 +19,7 @@ router.get('/api/statlines', async (req, res) => {
   }
 })
 
-router.post('/api/statlines', async (req, res) => {
+router.post('/api/statlines', isAdmin, async (req, res) => {
   try {
     const {
       name, weapon_skill, ballistic_skill, strength, toughness, agility,
@@ -51,7 +51,7 @@ router.post('/api/statlines', async (req, res) => {
   }
 })
 
-router.put('/api/statlines/:id', async (req, res) => {
+router.put('/api/statlines/:id', isAdmin, async (req, res) => {
   try {
     const { id } = req.params
     const {
@@ -73,8 +73,8 @@ router.put('/api/statlines/:id', async (req, res) => {
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
-// needs to check if race has statline before delete
-router.delete('/api/statlines/:id', async (req, res) => {
+
+router.delete('/api/statlines/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

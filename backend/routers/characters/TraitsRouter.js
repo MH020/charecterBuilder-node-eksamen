@@ -27,7 +27,7 @@ router.get('/api/traits', async (req, res) => {
   }
 })
 
-router.post('/api/traits', async (req, res) => {
+router.post('/api/traits', isAdmin, async (req, res) => {
   try {
     const {
       name, description, has_input, category, race
@@ -59,7 +59,7 @@ router.post('/api/traits', async (req, res) => {
   }
 })
 
-router.put('/api/traits/:id', async (req, res) => {
+router.put('/api/traits/:id', isAdmin, async (req, res) => {
   try {
     const { id } = req.params
     const {
@@ -80,7 +80,7 @@ router.put('/api/traits/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/traits/:id', async (req, res) => {
+router.delete('/api/traits/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

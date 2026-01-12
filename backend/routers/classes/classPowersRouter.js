@@ -37,7 +37,7 @@ router.get('/api/class/:id/powers', async (req, res) => {
   }
 })
 
-router.post('/api/class/:id/powers', async (req, res) => {
+router.post('/api/class/:id/powers', isOwner, async (req, res) => {
   const { id } = req.params
   try {
     const { level, power } = req.body
@@ -95,7 +95,7 @@ router.post('/api/class/:id/powers', async (req, res) => {
   }
 })
 
-router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
+router.put('/api/class/:classID/powers/:powerID', isOwner, async (req, res) => {
   try {
     const { classID, powerID } = req.params
     const { level, power } = req.body
@@ -125,7 +125,7 @@ router.put('/api/class/:classID/powers/:powerID', async (req, res) => {
   }
 })
 
-router.delete('/api/class/:classID/powers/:powerID', async (req, res) => {
+router.delete('/api/class/:classID/powers/:powerID',isOwner, async (req, res) => {
   try {
     const classID = Number(req.params.classID)
     const powerID = Number(req.params.powerID)

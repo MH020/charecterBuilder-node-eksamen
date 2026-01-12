@@ -54,7 +54,7 @@ router.get('/api/lineages', async (req, res) => {
   }
 })
 
-router.post('/api/lineages', async (req, res) => {
+router.post('/api/lineages', isAdmin, async (req, res) => {
   try {
     const { name, description, defining_features, required_race, bonuses, aptitudes } = req.body
 
@@ -87,7 +87,7 @@ router.post('/api/lineages', async (req, res) => {
   }
 })
 
-router.put('/api/lineages/:id', async (req, res) => {
+router.put('/api/lineages/:id', isAdmin, async (req, res) => {
   try {
     const { id } = req.params
     const { name, description, defining_features, required_race, bonuses, aptitudes, is_custom } = req.body
@@ -117,7 +117,7 @@ router.put('/api/lineages/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/lineages/:id', async (req, res) => {
+router.delete('/api/lineages/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)

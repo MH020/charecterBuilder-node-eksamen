@@ -15,7 +15,7 @@ router.get('/api/availability', async (req, res) => {
   }
 })
 
-router.post('/api/availability', async (req, res) => {
+router.post('/api/availability', isOwner, async (req, res) => {
   try {
     const { name } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/availability', async (req, res) => {
   }
 })
 
-router.put('/api/availability/:id', async (req, res) => {
+router.put('/api/availability/:id', isOwner, async (req, res) => {
   try {
     const id = req.params.id
     const { name } = req.body
@@ -49,7 +49,7 @@ router.put('/api/availability/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/availability/:id', async (req, res) => {
+router.delete('/api/availability/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)

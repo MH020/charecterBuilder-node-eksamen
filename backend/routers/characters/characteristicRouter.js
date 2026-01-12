@@ -15,7 +15,7 @@ router.get('/api/characteristics', async (req, res) => {
   }
 })
 
-router.post('/api/characteristics', async (req, res) => {
+router.post('/api/characteristics', isOwner, async (req, res) => {
   try {
     const { name, description } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/characteristics', async (req, res) => {
   }
 })
 
-router.put('/api/characteristics/:id', async (req, res) => {
+router.put('/api/characteristics/:id', isOwner, async (req, res) => {
   try {
     const id = req.params.id
     const { name, description } = req.body
@@ -49,7 +49,7 @@ router.put('/api/characteristics/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/characteristics/:id', async (req, res) => {
+router.delete('/api/characteristics/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)

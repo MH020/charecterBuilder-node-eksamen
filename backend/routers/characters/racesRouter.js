@@ -88,7 +88,7 @@ router.post('/api/races', async (req, res) => {
   }
 })
 
-router.put('/api/races/:id', async (req, res) => {
+router.put('/api/races/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     const { name, description, wounds, base_statline, max_statline, size } = req.body
@@ -105,7 +105,7 @@ router.put('/api/races/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/races/:id', async (req, res) => {
+router.delete('/api/races/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)

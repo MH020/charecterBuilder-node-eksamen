@@ -15,7 +15,7 @@ router.get('/api/aptitudes', async (req, res) => {
   }
 })
 
-router.post('/api/aptitudes', async (req, res) => {
+router.post('/api/aptitudes', isOwner, async (req, res) => {
   try {
     const { name } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/aptitudes', async (req, res) => {
   }
 })
 
-router.put('/api/aptitudes/:id', async (req, res) => {
+router.put('/api/aptitudes/:id', isOwner, async (req, res) => {
   try {
     const id = req.params.id
     const { name } = req.body
@@ -49,7 +49,7 @@ router.put('/api/aptitudes/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/aptitudes/:id', async (req, res) => {
+router.delete('/api/aptitudes/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)

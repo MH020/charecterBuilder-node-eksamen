@@ -55,7 +55,7 @@ router.get('/api/talents', async (req, res) => {
   }
 })
 
-router.post('/api/talents', async (req, res) => {
+router.post('/api/talents', isAdmin, async (req, res) => {
   try {
     const {
       name, description, type, asi, prerequisite_talent, required_race,
@@ -94,7 +94,7 @@ router.post('/api/talents', async (req, res) => {
   }
 })
 
-router.put('/api/talents/:id', async (req, res) => {
+router.put('/api/talents/:id', isAdmin, async (req, res) => {
   try {
     const { id } = req.params
     const {
@@ -123,7 +123,7 @@ router.put('/api/talents/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/talents/:id', async (req, res) => {
+router.delete('/api/talents/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 
