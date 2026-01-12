@@ -27,7 +27,7 @@ router.get('/api/skills', async (req, res) => {
   }
 })
 
-router.post('/api/skills', async (req, res) => {
+router.post('/api/skills', isAdmin, async (req, res) => {
   try {
     const { name, description, main_aptitude, secondary_aptitude } = req.body
 
@@ -51,7 +51,7 @@ router.post('/api/skills', async (req, res) => {
   }
 })
 
-router.put('/api/skills/:id', async (req, res) => {
+router.put('/api/skills/:id', isOwner, async (req, res) => {
   try {
     const id = req.params.id
     const { name, description, main_aptitude, secondary_aptitude } = req.body
@@ -66,7 +66,7 @@ router.put('/api/skills/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/skills/:id', async (req, res) => {
+router.delete('/api/skills/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

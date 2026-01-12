@@ -15,7 +15,7 @@ router.get('/api/weapon/traits', async (req, res) => {
   }
 })
 
-router.post('/api/weapon/traits', async (req, res) => {
+router.post('/api/weapon/traits', isAdmin, async (req, res) => {
   try {
     const { name, description } = req.body
 
@@ -35,7 +35,7 @@ router.post('/api/weapon/traits', async (req, res) => {
   }
 })
 
-router.put('/api/weapon/traits/:id', async (req, res) => {
+router.put('/api/weapon/traits/:id', isAdmin, async (req, res) => {
   try {
     const id = req.params.id
     const { name, description } = req.body
@@ -49,7 +49,7 @@ router.put('/api/weapon/traits/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/weapon/traits/:id', async (req, res) => {
+router.delete('/api/weapon/traits/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

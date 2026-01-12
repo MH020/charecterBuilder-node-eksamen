@@ -229,7 +229,7 @@ router.post('/api/charectersheets', isLoggedIn, async (req, res) => {
     }
 })
 
-router.post('/api/classes/:id/subclasses', async (req, res) => {
+router.post('/api/classes/:id/subclasses', isLoggedIn, async (req, res) => {
     try {
         const { id } = req.params
         const { name, description } = req.body

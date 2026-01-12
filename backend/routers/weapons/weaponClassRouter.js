@@ -15,7 +15,7 @@ router.get('/api/weapon/classes', async (req, res) => {
   }
 })
 
-router.post('/api/weapon/classes', async (req, res) => {
+router.post('/api/weapon/classes', isAdmin, async (req, res) => {
   try {
     const { name, description } = req.body
 
@@ -27,15 +27,15 @@ router.post('/api/weapon/classes', async (req, res) => {
       'INSERT INTO weapon_class ("name", description) VALUES ($1, $2) RETURNING *',
       [name, description]
     )
-    const createdClass = result.rows[0]
-    return res.status(201).send({ message: 'weapon class created sucessfully', created: createdClass })
+
+    return res.status(201).send({ message: 'weapon class created sucessfully', created: result.rows[0] })
   } catch (error) {
     console.error(error)
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
 
-router.put('/api/weapon/classes/:id', async (req, res) => {
+router.put('/api/weapon/classes/:id', isAdmin, async (req, res) => {
   try {
     const id = req.params.id
     const { name, description } = req.body
@@ -49,7 +49,7 @@ router.put('/api/weapon/classes/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/weapon/classes/:id', async (req, res) => {
+router.delete('/api/weapon/classes/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
 

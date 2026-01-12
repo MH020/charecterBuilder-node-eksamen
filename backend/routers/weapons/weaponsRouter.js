@@ -68,7 +68,7 @@ router.get('/api/weapons', async (req, res) => {
   }
 })
 
-router.post('/api/weapons', async (req, res) => {
+router.post('/api/weapons', isAdmin, async (req, res) => {
   try {
     const { type, name, range, hands, rof, damage, pen, clip, reload, wt, category, availability, classes, traits } = req.body
 
@@ -79,9 +79,9 @@ router.post('/api/weapons', async (req, res) => {
     const is_custom = req.session.user?.role === 'ADMIN' || false
 
     const result = await db.query(
-            `INSERT INTO weapon (type, category_id, "name", range, hands, rof, damage, pen, clip, reload, wt, availability_id, is_custom) 
+      `INSERT INTO weapon (type, category_id, "name", range, hands, rof, damage, pen, clip, reload, wt, availability_id, is_custom) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
-            [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom]
+      [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom]
     )
     const createdWeapon = result.rows[0]
 
@@ -100,7 +100,7 @@ router.post('/api/weapons', async (req, res) => {
   }
 })
 
-router.put('/api/weapons/:id', async (req, res) => {
+router.put('/api/weapons/:id', isAdmin, async (req, res) => {
   try {
     const id = req.params.id
     console.log(id)
@@ -109,10 +109,10 @@ router.put('/api/weapons/:id', async (req, res) => {
     const is_custom = req.session.user?.role === 'ADMIN' || false
 
     const result = await db.query(
-            `UPDATE weapon SET type = $1, category_id = $2, name = $3, range = $4, hands = $5, rof = $6, damage = $7, pen = $8, clip = $9,
+      `UPDATE weapon SET type = $1, category_id = $2, name = $3, range = $4, hands = $5, rof = $6, damage = $7, pen = $8, clip = $9,
                 reload = $10, wt = $11, availability_id = $12, is_custom = $13 WHERE id = $14
             RETURNING *`,
-            [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom, id]
+      [type, category.id, name, range, hands, rof, damage, pen, clip, reload, wt, availability.id, is_custom, id]
     )
 
     const updatedWeapon = result.rows[0]
@@ -136,7 +136,7 @@ router.put('/api/weapons/:id', async (req, res) => {
   }
 })
 
-router.delete('/api/weapons/:id', async (req, res) => {
+router.delete('/api/weapons/:id', isOwner, async (req, res) => {
   try {
     const { id } = req.params
     console.log('skillid?', id)
