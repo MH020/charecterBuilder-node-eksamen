@@ -1,16 +1,14 @@
 <script>
     import { baseSheet, buildingSheet} from "../../../store/createStore";
 
-    let name = "";
-    let level = 1;
-
     function save() {
         baseSheet.set(newSheet)
         buildingSheet.set(true)
+        console.log(newSheet)
     }
 
 
-    const newSheet = {
+    let newSheet = {
         name: "",
         level: 1,
         race_id: null,
@@ -42,14 +40,14 @@
             <input
                 id="char-name"
                 type="text"
-                bind:value={name}
+                bind:value={newSheet.name}
                 placeholder="Enter your name"
             />
         </div>
 
         <div class="char-box">
             <label for="char-level">Level</label>
-            <select id="char-level" bind:value={level}>
+            <select id="char-level" bind:value={newSheet.level}>
                 {#each Array(20) as _, i}
                     <option value={i + 1}>Level {i + 1}</option>
                 {/each}
