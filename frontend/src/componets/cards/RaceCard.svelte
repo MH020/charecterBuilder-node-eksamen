@@ -1,12 +1,16 @@
 <script>
-    import { selectedRace } from "../../store/createStore";
+    import { baseSheet, selectedRace } from "../../store/createStore";
     import StatlineCard from "../cards/StatlineCard.svelte";
 
     export let item;
 
     function selectRace() {
         selectedRace.set(item);
+                baseSheet.update(sheet => {
+            return { ...sheet, race_id: item.id }; 
+        });
     }
+
 </script>
 
 <div class="race-card { $selectedRace?.id === item.id ? 'selected' : '' }">
