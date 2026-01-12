@@ -3,8 +3,9 @@
   import { fetchGet } from "../../util/fetchUtil";
   import ClassOverview from "../componets/subPages/class/ClassOverview.svelte";
   import ClassTalents from "../componets/subPages/class/classTalents.svelte";
-  import ClassPowers from "../componets/subPages/classPowers.svelte";
-  import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
+  import ClassPowers from "../componets/subPages/class/classPowers.svelte";
+  import ClassSubclasses from "../componets/subPages/class/classSubclasses.svelte";
+
 
   let currentSheet;
   let id;
@@ -24,7 +25,7 @@
     const url = new URL(window.location.href);
     id = new URLSearchParams(url.search).get("id");
 
-    const response = await fetchGet(`/api/classes/${id}/full`);
+    const response = await fetchGet(`/api/charectersheets/${id}/full`);
     if (response.status === 200) {
       currentSheet = response.data;
     }
