@@ -9,71 +9,40 @@
 
 
 	function newCharecter() {
+		navigate("/newSheet")
 	}
 
 	async function loadCharecter() {
-        const response = await fetchGet('/users/id/charectersheet')
+        const response = await fetchGet('/users/charectersheets')
         if (response.status === 200) {
-            toastrDisplayHTTPCode(200, response.message)
-			openModal("load", response.data);
+
+
         } else {
-            toastrDisplayHTTPCode(response.status, response.message)
+
             navigate("/login")
         }
 
 		console.log("Load character clicked!");
 	}
 
-	async function Campaigns() {
-		console.log("Campaigns clicked!");
-        const response = await fetchGet('/users/id/charectersheet')
-        if (response.status === 200) {
-			openModal("campaigns", response.data);
-        } else {
-            toastrDisplayHTTPCode(response.status, response.message)
-            navigate("/login")
-        }
-	}
 
 </script>
 
 <div class="panel-container">
-	<div class="button-row">
+  <div class="button-row">
+	<button
+        on:click={() => {navigate("/newSheet")}}>
+        Create new character
+	</button>
 
-		<button class="icon-button" on:click={newCharecter}>
-			<img alt="New character" class="new-load-buttons" />
-		</button>
+	<button
+        on:click={() => {loadCharecter}}>
+        load characters
+	</button>
 
-		<button class="icon-button" on:click={loadCharecter}>
-			<img alt="Load character" class="new-load-buttons" />
-		</button>
 
-		<button class="icon-button" on:click={Campaigns}>
-			<img alt="Campaigns" class="new-load-buttons" />
-		</button>
+    <CombatLogWindow />
 
-		<CombatLogWindow />
-
-	</div>
+  </div>
 </div>
 
-
-<BaseModal show={$modalStore.show} onClose={closeModal}>
-
-	{#if $modalStore.page === "load"}
-
-		<UserCharectersheetList data={$modalStore.data} />
-	
-	{:else if $modalStore.page === "campaigns"}
-
-		<h2>Campaigns</h2>
-
-		<pre>{JSON.stringify($modalStore.data, null, 2)}</pre>
-
-	{:else if $modalStore.page === "newCharacter"}
-
-		<h2>New Character</h2>
-
-	{/if}
-
-</BaseModal>
