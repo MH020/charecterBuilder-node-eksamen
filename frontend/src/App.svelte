@@ -13,6 +13,7 @@
   import Adminlayout from "./componets/layouts/adminlayout.svelte";
   import ClassPage from "./pages/classPage.svelte";
     import CreateSheetPage from "./pages/createSheetPage.svelte";
+    import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
 
   let user = null;
   let loading = true;
@@ -41,13 +42,7 @@
         </NotLoggedinLayout>
       </Route>
 
-            <Route path="/admin/*">
-        <Adminlayout>
-          <AdminPage />
-        </Adminlayout>
-      </Route>
-
-            <Route path="/class/*">
+      <Route path="/class/*">
         <Adminlayout>
           <ClassPage />
         </Adminlayout>
@@ -82,6 +77,31 @@
       <Route path="/newSheet">
         <Adminlayout>
           <CreateSheetPage />
+        </Adminlayout>
+      </Route>
+
+
+          <Route path="/class/*">
+        <Adminlayout>
+          <ClassPage />
+        </Adminlayout>
+      </Route>
+
+              <Route path="/subclass/*">
+        <Adminlayout>
+          <ClassPage />
+        </Adminlayout>
+      </Route>
+
+              <Route path="/charectersheets">
+        <Adminlayout>
+          <CharectersheetsList />
+        </Adminlayout>
+      </Route>
+
+        <Route path="/charectersheet/*">
+        <Adminlayout>
+          <CharectersheetsList />
         </Adminlayout>
       </Route>
     {/if}
@@ -119,6 +139,18 @@
         <Route path="/newSheet">
         <Adminlayout>
           <CreateSheetPage />
+        </Adminlayout>
+      </Route>
+
+        <Route path="/charectersheets">
+        <Adminlayout>
+          <CharectersheetsList />
+        </Adminlayout>
+      </Route>
+
+        <Route path="/charectersheet/*">
+        <Adminlayout>
+          <CharectersheetsList />
         </Adminlayout>
       </Route>
     {/if}
