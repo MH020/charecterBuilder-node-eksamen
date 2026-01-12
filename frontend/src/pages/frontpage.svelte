@@ -36,7 +36,7 @@
 	</button>
 
 	<button
-        on:click={() => {loadCharecter}}>
+        on:click={() => {navigate("charectersheets")}}>
         load characters
 	</button>
 
