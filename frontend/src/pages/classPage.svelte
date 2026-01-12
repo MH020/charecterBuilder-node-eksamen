@@ -1,13 +1,15 @@
 <script>
-  import { onMount } from "svelte";
-  import { fetchGet } from "../../util/fetchUtil";
-  import ClassOverview from "../componets/subPages/ClassOverview.svelte";
-  import ClassTalents from "../componets/subPages/classTalents.svelte";
-  import ClassPowers from "../componets/subPages/classPowers.svelte";
-  import ClassSubclasses from "../componets/subPages/classSubclasses.svelte";
-    import { refresh } from "../store/userStore";
+    import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
+    import { fetchGet } from "../../util/fetchUtil";
+    import ClassOverview from "../componets/subPages/class/ClassOverview.svelte";
+    import ClassPowers from "../componets/subPages/class/classPowers.svelte";
+    import ClassSubclasses from "../componets/subPages/class/classSubclasses.svelte";
+    import ClassTalents from "../componets/subPages/class/classTalents.svelte";
     import { buildingSheet } from "../store/createStore";
+    import { refresh } from "../store/userStore";
+
+
 
   let currentClass;
   let id = "";
