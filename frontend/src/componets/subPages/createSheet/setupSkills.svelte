@@ -3,6 +3,7 @@
     import DescriptionUtil from "../../UI/DescriptionUtil.svelte";
     import {
     createdSheet,
+        postSheet,
         Selectedcharacteristics,
         selectedLevel,
         selectedSkills,
@@ -88,10 +89,6 @@
         toastr.success("skills added");
     }
 
-        function saveSheet() {
-        selectedSkills.set(skills);
-        toastr.success("skills added");
-    }
 </script>
 
 <div class="selection-counter">
@@ -104,10 +101,13 @@
     </button>
 
     {#if $createdSheet !== null}
-        <button class="send-btn" on:click={sendToStore}>
+        <button class="send-btn" on:click={postSheet}>
         Save sheet 
         </button>
     {/if}
+            <button class="send-btn" on:click={postSheet}>
+        Save sheet 
+        </button>
 
     {#each skills as skill}
         <div class="skill-row">
