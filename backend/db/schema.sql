@@ -444,7 +444,7 @@ CREATE TABLE IF NOT EXISTS charactersheet (
     primary_slots INTEGER DEFAULT 0,
     large_slots INTEGER DEFAULT 0,
     small_slots INTEGER DEFAULT 0,
-    updated DATE NOT NULL,
+    updated TIMESTAMP NOT NULL,
     CONSTRAINT fk_c_player_id FOREIGN KEY (player_id) REFERENCES "user"(id),
     CONSTRAINT fk_c_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaign(id),
     CONSTRAINT fk_c_race_id FOREIGN KEY (race_id) REFERENCES race(id),
