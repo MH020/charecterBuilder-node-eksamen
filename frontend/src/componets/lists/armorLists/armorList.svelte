@@ -1,9 +1,8 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchGet } from '../../../../util/fetchUtil';
-    import { deleteEntity } from '../../../../util/ListUtil';
     import ArmorRow from '../../rows/armorRow.svelte';
-    import ListUtil from '../../wrappers/EditableList.svelte';
+    import EditableList from '../../wrappers/EditableList.svelte';
 
     let armors = [];
     let endpoint = "/api/armors"
@@ -37,7 +36,7 @@
 
 </script>
 
-<ListUtil
+<EditableList
     bind:list={armors}
     endpoint= {endpoint}
     createRow={createArmor}
@@ -51,5 +50,5 @@
         onDelete={onDelete}
         endpoint={endpoint}
     />
-</ListUtil>
+</EditableList>
 
