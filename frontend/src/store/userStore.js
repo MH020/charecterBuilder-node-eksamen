@@ -30,7 +30,7 @@ export async function softRefresh() {
   try {
     const res = await fetch("/api/me", {
       method: "GET",
-      credentials: "include", // important if your session is cookie-based
+      credentials: "include", 
       headers: {
         "Content-Type": "application/json",
       },
