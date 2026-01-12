@@ -1,7 +1,6 @@
 <script>
     import toastr from "toastr";
-    import toastrDisplayHTTPCode from "../../../util/ToastrUtil";
-    import { selectedLineage, selectedRace } from "../../store/createStore";
+    import { baseSheet, selectedLineage, selectedRace } from "../../store/createStore";
 
     export let item;
 
@@ -14,6 +13,10 @@
             }
         }
         selectedLineage.set(item);
+        
+        baseSheet.update(sheet => {
+            return { ...sheet, lineage_id: item.id }; 
+        });
     }
 </script>
 
