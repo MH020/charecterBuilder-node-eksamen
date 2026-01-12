@@ -78,6 +78,12 @@
           <Profile />
         </UserLayout>
       </Route>
+
+      <Route path="/newSheet">
+        <Adminlayout>
+          <CreateSheetPage />
+        </Adminlayout>
+      </Route>
     {/if}
 
     {#if user?.role === "ADMIN" || user?.role === "OWNER"}
@@ -107,6 +113,12 @@
         <Route path="/subclass/*">
         <Adminlayout>
           <ClassPage />
+        </Adminlayout>
+      </Route>
+
+        <Route path="/newSheet">
+        <Adminlayout>
+          <CreateSheetPage />
         </Adminlayout>
       </Route>
     {/if}
