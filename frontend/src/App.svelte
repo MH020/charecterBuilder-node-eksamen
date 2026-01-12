@@ -1,8 +1,6 @@
 <script>
   import { Router, Route } from "svelte-routing";
   import { onMount } from "svelte";
-  import { fetchGet } from "../util/fetchUtil.js";
-
   import Frontpage from "./pages/frontpage.svelte";
   import Login from "./pages/login.svelte";
   import Profile from "./pages/profile.svelte";
@@ -15,22 +13,28 @@
     import CreateSheetPage from "./pages/createSheetPage.svelte";
     import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
     import CharectersheetPage from "./pages/charectersheetPage.svelte";
+    import { softRefresh, user } from "./store/userStore.js";
 
-  let user = null;
-  let loading = true;
 
-  onMount(async () => {
-    const response = await fetchGet("/api/users/id");
-    user = response.status === 200 ? response.data : null;
+let loading = true;
+
+onMount(async () => {
+  try {
+    await softRefresh();
+    console.log($user)
+  } catch (err) {
+    console.error(err);
+  } finally {
     loading = false;
-  });
+  }
+});
 </script>
 
 <BaseModal />
 
 {#if !loading}
   <Router>
-    {#if !user}
+    {#if $user.id === null}
       <Route path="/">
         <NotLoggedinLayout>
           <Frontpage />
@@ -42,27 +46,8 @@
           <Login />
         </NotLoggedinLayout>
       </Route>
-
-      <Route path="/class/*">
-        <Adminlayout>
-          <ClassPage />
-        </Adminlayout>
-      </Route>
-
-              <Route path="/subclass/*">
-        <Adminlayout>
-          <ClassPage />
-        </Adminlayout>
-      </Route>
-
-        <Route path="/newSheet">
-        <Adminlayout>
-          <CreateSheetPage />
-        </Adminlayout>
-      </Route>
     {/if}
-
-    {#if user?.role === "USER"}
+    {#if $user?.role === "USER"}
       <Route path="/">
         <UserLayout>
           <Frontpage />
@@ -76,43 +61,36 @@
       </Route>
 
       <Route path="/newSheet">
-        <Adminlayout>
+        <UserLayout>
           <CreateSheetPage />
-        </Adminlayout>
+        </UserLayout>
       </Route>
 
-
-          <Route path="/class/*">
-        <Adminlayout>
+      <Route path="/class/*">
+        <UserLayout>
           <ClassPage />
-        </Adminlayout>
+        </UserLayout>
       </Route>
 
-              <Route path="/subclass/*">
-        <Adminlayout>
+      <Route path="/subclass/*">
+        <UserLayout>
           <ClassPage />
-        </Adminlayout>
+        </UserLayout>
       </Route>
 
-              <Route path="/charectersheets">
-        <Adminlayout>
+      <Route path="/charactersheets">
+        <UserLayout>
           <CharectersheetsList />
-        </Adminlayout>
+        </UserLayout>
       </Route>
 
-        <Route path="/charectersheet/*">
-        <Adminlayout>
+      <Route path="/charactersheet/*">
+        <UserLayout>
           <CharectersheetPage />
-        </Adminlayout>
+        </UserLayout>
       </Route>
     {/if}
-
-    {#if user?.role === "ADMIN" || user?.role === "OWNER"}
-      <Route path="/admin/*">
-        <Adminlayout>
-          <AdminPage />
-        </Adminlayout>
-      </Route>
+    {#if $user?.role === "ADMIN" || $user?.role === "OWNER"}
 
       <Route path="/">
         <Adminlayout>
@@ -125,35 +103,44 @@
           <Profile />
         </Adminlayout>
       </Route>
+
+      <Route path="/admin/*">
+        <Adminlayout>
+          <AdminPage />
+        </Adminlayout>
+      </Route>
+
+      <Route path="/newSheet">
+        <Adminlayout>
+          <CreateSheetPage />
+        </Adminlayout>
+      </Route>
+
       <Route path="/class/*">
         <Adminlayout>
           <ClassPage />
         </Adminlayout>
       </Route>
 
-        <Route path="/subclass/*">
+      <Route path="/subclass/*">
         <Adminlayout>
           <ClassPage />
         </Adminlayout>
       </Route>
 
-        <Route path="/newSheet">
-        <Adminlayout>
-          <CreateSheetPage />
-        </Adminlayout>
-      </Route>
-
-        <Route path="/charectersheets">
+      <Route path="/charactersheets">
         <Adminlayout>
           <CharectersheetsList />
         </Adminlayout>
       </Route>
 
-        <Route path="/charectersheet/*">
+      <Route path="/charactersheet/*">
         <Adminlayout>
           <CharectersheetPage />
         </Adminlayout>
       </Route>
     {/if}
+
   </Router>
 {/if}
+
