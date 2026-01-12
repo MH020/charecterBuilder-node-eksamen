@@ -37,7 +37,7 @@
             <Route path="skills"><SkillsList /></Route>
             <Route path="aptitudes"><ApptitudesList /></Route>
             <Route path="lineage"><LineageList /></Route>
-
+            
             <Route path="races"><RaceList /></Route>
             <Route path="statlines"><StatlinesList /></Route>
             <Route path="sizes"><SizeList /></Route>
