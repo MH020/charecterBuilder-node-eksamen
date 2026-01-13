@@ -19,7 +19,7 @@
     { id: "inventory", label: "Inventory" },
     { id: "comrades", label: "Comrades" }
   ];
-
+  refresh()
   onMount(async () => {
     refresh()
     const url = new URL(window.location.href);

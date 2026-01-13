@@ -29,6 +29,7 @@ import classPowers from './routers/classes/classPowersRouter.js'
 import classRouter from './routers/classes/classRouter.js'
 import powerCategoriesRouter from './routers/classes/powerCategory.js'
 import charectersheetsRouter from './routers/users/charecthersheetRouter.js'
+
 const app = express()
 
 app.use(express.json())
@@ -142,9 +143,10 @@ app.use(classPowers)
 app.use(powerCategoriesRouter)
 
 // user
+app.use(charectersheetsRouter)
+
 app.use(authRouthes)
 
-app.use(charectersheetsRouter)
 
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve('../frontend/dist/index.html'))

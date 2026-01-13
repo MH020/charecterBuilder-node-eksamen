@@ -1,6 +1,5 @@
 import { get, writable } from "svelte/store";
 import { fetchPost, fetchUpdate } from "../../util/fetchUtil";
-import { user } from "./userStore";
 
 export const activeTabStore = writable("overview");
 export const buildingSheet = writable(false)

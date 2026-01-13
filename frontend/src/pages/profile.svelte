@@ -1,9 +1,10 @@
 <script>
   import { onMount } from 'svelte';
-  import { user, refresh } from '../store/userStore';
+    import { refresh, user } from '../store/userStore';
+ 
 
 
-  onMount(async () => {
+  onMount(() => {
     refresh()
   });
 
