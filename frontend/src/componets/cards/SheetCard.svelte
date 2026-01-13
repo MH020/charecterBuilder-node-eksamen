@@ -15,7 +15,7 @@
 
     <div class="buttons">
         <button on:click={() => onDelete(sheet.id)}>Delete</button>
-      <button on:click={() => navigate(`/charectersheet/?id=${sheet.id}`)}>charectersheet page</button>
+      <button on:click={() => navigate(`/charactersheet/?id=${sheet.id}`)}>charectersheet page</button>
     </div>
 </div>
 

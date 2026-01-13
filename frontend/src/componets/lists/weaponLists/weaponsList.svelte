@@ -2,16 +2,15 @@
     import { onMount } from 'svelte';
     import WeaponsRow from '../../rows/weaponsRow.svelte';
     import { fetchGet } from '../../../../util/fetchUtil';
-    import { deleteEntity} from '../../../../util/ListUtil';
     import ListUtil from '../../wrappers/EditableList.svelte';
-    import WeaponClassRow from '../../rows/weaponClassRow.svelte';
+   
 
     let weapons = [];
     let sortType = "all"; 
     const endpoint = "/api/weapons"
 
     onMount(async () => {
-        const response = await fetchGet("/api/weapons")
+        const response = await fetchGet(endpoint)
         if (response.status === 200) {
             weapons = response.data
         } 
@@ -38,7 +37,6 @@
         isNew: true
         };
         weapons = [...weapons, newWeapon];
-        console.log(weapons)
     }
 </script>
 

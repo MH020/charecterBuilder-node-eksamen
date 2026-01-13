@@ -5,7 +5,7 @@
     import { navigate } from 'svelte-routing';
     import toastrDisplayHTTPCode from "../../util/ToastrUtil";
 	import {modalStore, openModal, closeModal} from "../store/modalStore.js"
-    import CombatLogWindow from "../componets/windows/combatLogWindow.svelte";
+    import CombatLogWindow from "../componets/windows/CombatLogWindow.svelte";
 
 
 	function newCharecter() {
@@ -36,12 +36,9 @@
 	</button>
 
 	<button
-        on:click={() => {navigate("charectersheets")}}>
+        on:click={() => {navigate("/charactersheets")}}>
         load characters
 	</button>
-
-
-    <CombatLogWindow />
 
   </div>
 </div>

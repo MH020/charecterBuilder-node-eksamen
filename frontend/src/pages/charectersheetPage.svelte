@@ -4,6 +4,8 @@
 
   import CharacterSheetCharacteristics from "../componets/subPages/CharacterSheetCharacteristics.svelte";
   import CharacterSheetSkills from "../componets/subPages/CharacterSheetSkills.svelte";
+    import WeaponsSection from "../componets/subPages/WeaponsSection.svelte";
+    import { refresh } from "../store/userStore";
 
   let currentSheet;
   let id;
@@ -19,6 +21,7 @@
   ];
 
   onMount(async () => {
+    refresh()
     const url = new URL(window.location.href);
     id = new URLSearchParams(url.search).get("id");
 
@@ -52,11 +55,8 @@
       </select>
     </div>
   </header>
-
-  <!-- BODY -->
   <div class="sheet-body">
 
-    <!-- LEFT COLUMN: CORE STATS -->
     <aside class="stats-panel">
       <div class="stat-card">
         <label>Fate</label>
@@ -84,7 +84,6 @@
       </div>
     </aside>
 
-    <!-- RIGHT COLUMN: TABS -->
     <main class="content-panel">
       <nav class="tabs">
         {#each tabs as tab}
@@ -109,6 +108,9 @@
             charactersheetId={currentSheet.id}
           />
 
+        {:else if activeTab === "weapons"}
+          <WeaponsSection 
+          player = {currentSheet.sheet}/>
         {:else}
           <p class="placeholder">Coming soon…</p>
         {/if}
