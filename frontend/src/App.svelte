@@ -11,7 +11,7 @@
   import Adminlayout from "./componets/layouts/adminlayout.svelte";
   import ClassPage from "./pages/classPage.svelte";
     import CreateSheetPage from "./pages/createSheetPage.svelte";
-    import CharectersheetsList from "./componets/lists/charectersheetsList.svelte";
+    import CharectersheetsList from "./componets/lists/usersLists/charectersheetsList.svelte";
     import CharectersheetPage from "./pages/charectersheetPage.svelte";
     import { softRefresh, user } from "./store/userStore.js";
     import Logout from "./pages/Logout.svelte";

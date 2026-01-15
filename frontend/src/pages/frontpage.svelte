@@ -1,5 +1,5 @@
 <script>
-	import UserCharectersheetList from "../componets/lists/userCharectersheetList.svelte";
+	import UserCharectersheetList from "../componets/lists/usersLists/userCharectersheetList.svelte";
 	import BaseModal from "../componets/modal/BaseModal.svelte";
     import { fetchGet } from "../../util/fetchUtil";
     import { navigate } from 'svelte-routing';

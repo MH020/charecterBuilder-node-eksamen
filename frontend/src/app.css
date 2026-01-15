@@ -71,6 +71,7 @@ h1 {
 
 
 button {
+  max-width: 50px;
   padding: 10px 20px;
   background-color: var(--color-btn-bg);
   color: var(--color-accent);

@@ -81,14 +81,14 @@ router.post('/api/users', async (req, res) => {
     const hashPassword = await auth.encryptPassword(password)
 
     await db.query(
-      `INSERT INTO users (username, password, email, verified, verification_code)
-             VALUES ($1, $2, $3, 0, $4)`,
-      [username, hashPassword, email, verificationCode]
+      `INSERT INTO "user" (username, password, email, verified, verification_code)
+             VALUES ($1, $2, $3, $4, $5)`,
+      [username, hashPassword, email, false, verificationCode]
     )
 
     const singupHTML = buildSingupEmail(username, verificationCode)
 
-    // email needs to be sent
+
     sendMail(email, 'vaify signup', 'welcome to the front soldier', singupHTML)
 
     return res.status(201).send({ message: 'User created successfully a email has been sent with the ferification code' })
@@ -112,7 +112,7 @@ router.post('/api/vaify', async (req, res) => {
       return res.status(403).send({ message: 'this "user" is allready varified' })
     }
 
-    await db.query('UPDATE "user" SET verified = 1 WHERE verification_code = $1', [verificationCode])
+    await db.query('UPDATE "user" SET verified = true WHERE verification_code = $1', [verificationCode])
 
     return res.status(200).send({ message: 'vaification successful' })
   } catch (error) {

@@ -25,6 +25,9 @@ router.get('/api/armors', async (req, res) => {
     return res.status(500).send({ message: 'server error', error: error.message })
   }
 })
+
+
+
 router.post('/api/armors', isAdmin, async (req, res) => {
   try {
     const {

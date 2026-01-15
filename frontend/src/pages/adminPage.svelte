@@ -7,7 +7,7 @@
     import UsersList from "../componets/lists/usersList.svelte";
     import SkillsList from "../componets/lists/skillsList.svelte";
     import WeaponsList from "../componets/lists/weaponLists/weaponsList.svelte";
-    import CharectersheetsList from "../componets/lists/charectersheetsList.svelte";
+    import CharectersheetsList from "../componets/lists/usersLists/charectersheetsList.svelte";
     import ApptitudesList from "../componets/lists/ApptitudesList.svelte";
     import LineageList from "../componets/lists/characterLists/lineageList.svelte";
     import RaceList from "../componets/lists/characterLists/RaceList.svelte";
